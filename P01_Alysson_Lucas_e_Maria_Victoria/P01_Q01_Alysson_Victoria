@@ -1,0 +1,29 @@
+		;ES422	- MICROCOMPUTADORES - 2026.1
+		;Prática1	- Primeira questão (Usando valores imediatos e acesso a memória).
+		;Autores:	Alysson Lucas Pontes Cavalcante da Silva e Maria Victória Martins Neves.
+		
+		
+		
+		;		Carregar valores nos registradores R0-R3
+		
+		MOV		R0,	#0X12 ;SALVA NO REGISTRADOR R0-R3 O endereço na memoria de dados
+		LDR		R1, =0x1234
+		LDR		R2, =0x123456
+		LDR		R3, =0x12345678
+		
+		;		Salvar na memória de dados (endereços 0x100 até 0x10C)
+		LDR		R13, =0X100 ;Ponteiro criado para os endereços de mémoria
+		
+		STR		R0, [R13,#0]       ; 0x100 Salva no endereço de mémoria os valores atribuidos a R0-R3 
+		STR		R1, [R13,#4]       ; 0x104
+		STR		R2, [R13,#8]       ; 0x108
+		STR		R3, [R13,#12]      ; 0x10C
+		
+		
+		;		Ler da memória os valores salvos atráves do ponteiro R13 e colocar em R8-R11
+		LDR		R8,	[R13,#0]
+		LDR		R9,	[R13,#4]
+		LDR		R10,	[R13,#8]
+		LDR		R11,	[R13,#12]
+		
+		
