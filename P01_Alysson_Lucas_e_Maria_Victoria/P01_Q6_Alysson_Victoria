@@ -1,0 +1,37 @@
+		;		ES422	- MICROCOMPUTADORES - 2026.1
+		;		Prática 1	- Sexta questão (Uso de algoritmos clássicos).
+		;		Autores:	Alysson Lucas Pontes Cavalcante da Silva e Maria Victória Martins Neves.
+		
+		
+		;		DIVISÃO EUCLIDIANA
+		;		d(i) = d(v) * q + r
+		;		Divisão por subtrações sucessivas
+		
+		;		--- DEFINIÇÃO DOS TERMOS
+		;		'MOV' movimenta os valores desejados para os registradores
+		;		'LDR' funciona de forma semelhante ao MOV, mas para valores maiores
+		MOV		R0, #17		; Dividendo
+		MOV		R1, #5		; Divisor
+		MOV		R2, #0		; Quociente (contador de divisões, começa zerado)
+		LDR		R13, =0x100	; Endereço base de memória
+		
+divisao
+		;		--- CONDIÇÃO DE PARADA
+		;		'CMP' faz uma comparação
+		;		'BLT' significa "Se for menor que" (Branch if Less Than)
+		CMP		R0, R1		; Verifica se o Dividendo atual é menor que o Divisor
+		BLT		fim			; Se for menor, encerra a divisão
+		
+		;		--- SUBTRAÇÕES SUCESSIVAS
+		;		'SUB' opera a subtração, o primeiro recebe a subtração do terceiro pelo segundo
+		;		'ADD' opera a adição, o primeiro termo recebe a soma entre o segundo e o terceiro
+		SUB		R0, R0, R1	; Subtrai o Divisor do Dividendo
+		ADD		R2, R2, #1	; Aumenta 1 nosso Quociente (contador)
+		B		divisao		; Reinicia a divisão
+		
+fim
+		;		--- REGISTRO DO RESULTADO NA MEMÓRIA
+		;		'STR' significa Store Register (Armazenar Registrador)
+		STR		R2, [R13]	; Salva o Quociente (R2) no endereço 0x100
+		ADD		R13, R13, #4	; Avança o ponteiro da memória em 4 bytes (0x104)
+		STR		R0, [R13]	; Salva o Resto (R0) no endereço 0x104

@@ -1,0 +1,37 @@
+		;		ES422	- MICROCOMPUTADORES - 2026.1
+		;		Prática 1	- Segunda questão (Usando laços).
+		;		Autores:	Alysson Lucas Pontes Cavalcante da Silva e Maria Victória Martins Neves.
+		
+		
+		;		SEQUÊNCIA DE FIBONACCI
+		;		F(0) = 1 e F(1) = 1
+		;		F(n) = F(n-1) + F(n-2)
+		
+		;		'MOV' movimenta os valores desejados para os registradores
+		;		'LDR' funciona de forma semelhante ao MOV, mas para valores maiores
+		MOV		R0, #1          ; R0 é o F(n-2), começando com 1
+		MOV		R1, #1          ; R1 é o F(n-1), começando com 1
+		LDR		R13, =0x100     ; R13 é o apontador de memória
+		MOV		R3, #20         ; R3 é o contador do laço (para 20 termos)
+		
+fibonacci
+		;		--- SALVAR NA MEMÓRIA
+		;		'STR' significa Store Register (Armazenar Registrador)
+		;		'ADD' opera a adição, o primeiro termo recebe a soma entre o segundo e o terceiro
+		STR		R0, [R13]		; Salva o valor atual de R0 na memória
+		ADD		R13, R13, #4	; Avança o apontador de memória em 4 bytes (próxima posição)
+		
+		;		--- CALCULAR O PRÓXIMO TERMO
+		ADD		R2, R0, R1	; Aplica a fórmula: R2 = R0 + R1
+		
+		;		--- ATUALIZAR OS VALORES
+		MOV		R0, R1		; O antigo F(n-1) vira o novo F(n-2)
+		MOV		R1, R2		; O termo recém-calculado vira o novo F(n-1)
+		
+		;		--- CONTROLAR O LAÇO
+		;		'SUB' opera a subtração, o primeiro é a subtração do terceiro pelo segundo
+		;		'CMP' faz uma comparação
+		;		'BGT' significa Branch if Greater Than (Desviar se Maior Que)
+		SUB		R3, R3, #1	; Diminui 1 do contador
+		CMP		R3, #0		; Compara o contador com zero
+		BGT		fibonacci			; Se for Maior que Zero, volta pro loop

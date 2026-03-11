@@ -1,0 +1,46 @@
+			;		ES422	- MICROCOMPUTADORES - 2026.1
+			;		Prática 1	- Quinta questão (Reutilizando código).
+			;		Autores:	Alysson Lucas Pontes Cavalcante da Silva e Maria Victória Martins Neves.
+
+			
+			;		FATORIAL
+			;		Repitidas multiplicações através de somas
+						
+			;		--- DEFINIÇÃO DOS TERMOS DO FATORIAL
+			;		'MOV' movimenta os valores desejados para os registradores
+			;		'LDR' funciona de forma semelhante ao MOV, mas para valores maiores
+			MOV		R0, #5		; O número atual do fatorial (Começa valendo 5)
+			MOV		R1, #4		; O multiplicador regressivo (Começa valendo 4)
+			LDR		R13, =0x100	; Endereço de memória para salvar no final
+			
+fatorial
+			;		--- CONTROLE DO LAÇO EXTERNO (fatorial)
+			;		'CMP' faz uma comparação
+			;		'BLE' significa "Se Menor ou Igual a" (Branch if Less or Equal)
+			CMP		R1, #1		; Verifica se todos os termos já foram multiplicados
+			BLE		fim_fat		; Se for menor ou igual a 1 (termos já multiplicados), encerra o laço do fatorial
+			
+			;		--- DEFINIÇÃO DOS TERMOS DA MULTIPLICAÇÃO
+			MOV		R2, R1		; Copia o multiplicador atual (R1) para o contador da multiplicação (R2)
+			MOV		R3, #0		; Acumulador da multiplicação, começa zerado
+			
+multiplicacao
+			;		--- CONTROLE DO LAÇO INTERNO (multiplicação)
+			;		'BEQ' significa Branch if Equal (Desvie se igual)
+			;		'ADD' opera a adição, o primeiro termo recebe a soma entre o segundo e o terceiro
+			;		'SUB' opera a subtração, o primeiro recebe a subtração do terceiro pelo segundo
+			CMP		R2, #0		; Verifica se todos os termos já foram somados
+			BEQ		fim_mult		; Se for menor ou igual a 0 (termos já somados), encerra o laço da multiplicação
+			ADD		R3, R3, R0	; Realiza a soma termo a termo
+			SUB		R2, R2, #1	; Decrementa 1 do  contador
+			B		multiplicacao
+			
+fim_mult
+			;		--- ATUALIZAÇÃO PARA A PRÓXIMA VOLTA DO FATORIAL
+			MOV		R0, R3		; O resultado da multiplicação vira o novo número atual do fatorial
+			SUB		R1, R1, #1	; Diminui o multiplicador regressivo
+			B		fatorial		; Volta para o início do laço do fatorial
+			
+fim_fat
+			;		--- REGISTRO DO RESULTADO NA MEMÓRIA
+			STR		R0, [R13]        ; Salva o resultado final do fatorial na memória
