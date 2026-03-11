@@ -1,27 +1,41 @@
 		;		ES422	- MICROCOMPUTADORES - 2026.1
-		;		Pr�tica 1	- Primeira quest�o (Usando valores imediatos e acesso a mem�ria).
-		;		Autores:	Alysson Lucas Pontes Cavalcante da Silva e Maria Vict�ria Martins Neves.
+		;		Prática 1	- Primeira questão (Usando valores imediatos e acesso a memória).
+		;		Autores:	Alysson Lucas Pontes Cavalcante da Silva e Maria Victória Martins Neves.
 		
 		
-		;		--- CARREGAR VALORES NOS REGISTRADORES R0-R3
-		;		LDR significa Load Register (Carregar Registrador)
-		LDR		R0, =0X12
-		LDR		R1, =0x1234
-		LDR		R2, =0x123456
-		LDR		R3, =0x12345678
+		;		--- CARREGAR VALORES NOS REGISTRADORES R0–R3
+		;		LDR significa Load Register (Carregar Registrador) é uma função permitida no visUAL para o assembly.
+		;Porém	neste caso utilizamos MOV para carregar valores imediatos pequenos diretamente no registrador.
 		
-		;		--- CRIAR PONTEIRO PARA OS ENDERE�OS DE MEM�RIA
+		MOV		R0, #0x12        ; Carrega o valor imediato hexadecimal 0x12 no registrador R0.
+		;		A instrução MOV permite carregar diretamente valores pequenos.
+		LSL		R1, R0, #8       ; Desloca o conteúdo de R0 8 bits para a esquerda e armazena em R1.
+		;		Esse deslocamento equivale a multiplicar o valor por 2^8 (256).
+		;		Assim, 0x12 torna-se 0x1200.
+		ADD		R1, R1, #0x34    ; Soma o valor imediato 0x34 ao conteúdo de R1.
+		;		Após essa operação, o registrador R1 passa a conter 0x1234.
+		LSL		R2, R1, #8       ; Repete o mesmo procedimento para construir um valor maior.
+		;		O valor 0x1234 é deslocado 8 bits para a esquerda,
+		;		resultando em 0x123400.
+		ADD		R2, R2, #0x56    ; Adiciona o valor 0x56 ao resultado anterior,
+		;		formando assim o número hexadecimal 0x123456 em R2.
+		LSL		R3, R2, #8       ; Novamente deslocamos 8 bits para a esquerda,
+		;		transformando 0x123456 em 0x12345600.
+		ADD		R3, R3, #0x78    ; Soma 0x78 ao valor deslocado.
+		;		O registrador R3 passa a conter o valor final 0x12345678.
+		
+		;		--- CRIAR PONTEIRO PARA OS ENDEREÇOS DE MEMÓRIA
 		LDR		R13, =0X100
 		
-		;		--- SALVAR NA MEM�RIA DE DADOS ATRAV�S DO PONTEIRO (endere�os 0x100 at� 0x10C)
+		;		--- SALVAR NA MEMÓRIA DE DADOS ATRAVÉS DO PONTEIRO (endereços 0x100 até 0x10C)
 		;		STR significa Store Register (Armazenar Registrador)
-		;		Cada n�mero ocupa 32 bits, por isso alocar a cada 4 bytes
+		;		Cada número ocupa 32 bits, por isso alocar a cada 4 bytes
 		STR		R0, [R13,#0]       ; 0x100
 		STR		R1, [R13,#4]       ; 0x104
 		STR		R2, [R13,#8]       ; 0x108
 		STR		R3, [R13,#12]      ; 0x10C
 		
-		;		--- LER NA MEM�RIA OS VALORES SALVOS E COLOCAR EM R8-R11
+		;		--- LER NA MEMÓRIA OS VALORES SALVOS E COLOCAR EM R8-R11
 		LDR		R8,	[R13,#0]
 		LDR		R9,	[R13,#4]
 		LDR		R10,	[R13,#8]
