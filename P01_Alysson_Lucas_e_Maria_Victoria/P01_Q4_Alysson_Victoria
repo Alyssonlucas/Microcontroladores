@@ -1,33 +1,52 @@
 			;		ES422	- MICROCOMPUTADORES - 2026.1
-			;		Pr�tica 1	- Quarta quest�o (Multiplica��o em baixo n�vel).
-			;		Autores:	Alysson Lucas Pontes Cavalcante da Silva e Maria Vict�ria Martins Neves.
+			;		Prática 1	- Quarta questão (Multiplicação em baixo nível).
+			;		Autores:	Alysson Lucas Pontes Cavalcante da Silva e Maria Victória Martins Neves.
 			
+			;		INSTRUÇÕES UTILIZADAS
+			;		'LDR' (Load Register) significa Carregar Registrador
+			;		- É uma função permitida no visUAL para o assembly
+			;		- Entretanto, precisa acessar a memória, que não é o objetivo desta prática
+			;		- Utilizada apenas para armazenar o endereço de memória
+			;		'MOV' (Move) siginifica Mover
+			;		- Permite carregar diretamente valores pequenos nos registradores
+			;		- Executa em 1 ciclo de máquina, pois não precisa acessar a RAM
+			;		'STR' (Store Register) significa Armazenar Registrador
+			;		- Move dados de um registrador para um endereço de memória específico
+			;		'ADD' opera a adição
+			;		- O primeiro termo recebe a soma entre o segundo e o terceiro
+			;		'SUB' opera a subtração
+			;		- O primeiro termo recebe a subtração do terceiro pelo segundo
+			;		'CMP' faz uma comparação
+			;		'BEQ' (Branch if Equal) significa Desvie se Igual
+			;		- Se atendida a condição, desvia o código para o rótulo indicado
+			;		'B' (Branch) siginica Saltar
+			;		- Desvia o código para o rótulo indicado independentemente de condição
 			
-			;		MULTIPLICA��O EM BAIXO N�VEL
-			;		Repitidas somas atrav�s de la�os de repeti��o
+			;		MULTIPLICAÇÃO EM BAIXO NÍVEL
+			;		Repitidas somas através de laços de repetição
 			
-			;		--- DEFINI��O DOS TERMOS
-			;		'MOV' movimenta os valores desejados para os registradores
-			;		'LDR' funciona de forma semelhante ao MOV, mas para valores maiores
-			MOV		R0, #5		; Primeiro termo (Fator)
-			MOV		R1, #4		; Segundo termo (Fator), atuar� como contador
-			MOV		R2, #0		; Acumulador (Resultado), come�a zerado
-			LDR		R13, =0x100	; Endere�o de mem�ria para salvar no final
+			;		--- DEFINIÇÃO DOS TERMOS ---
+			MOV		R0, #65		; Primeiro termo (Fator) da multiplicação
+			MOV		R1, #11		; Segundo termo (Fator) da multiplicação,
+			;		atuará como contador e, consequentemente, não terá valor salvo ao fim
+			MOV		R2, #0		; Acumulador (Resultado), começa zerado
+			LDR		R13, =0x100	; Endereço de memória para salvar no final
 			
-multiplicacao
-			;		--- CONDI��O DE PARADA
-			;		'CMP' faz uma compara��o
-			;		'BEQ' significa Branch if Equal (Desvie se igual)
-			CMP		R1, #0		; Verifica se o contador zerou
-			BEQ		fim			; Se o contador chegou em zero, o c�digo pula para o fim
+multiplicacao	;		Cria um rótulo chamado "multiplicacao"
 			
-			;		--- SOMAS SUCESSIVAS
-			;		'ADD' opera a adi��o, o primeiro termo recebe a soma entre o segundo e o terceiro
-			;		'SUB' opera a subtra��o, o primeiro � a subtra��o do terceiro pelo segundo
+			;		--- CONDIÇÃO DE PARADA ---
+			CMP		R0, #0		; Verifica se o primeiro termo é zero
+			BEQ		fim			; Se R0 = 0, desvia o código para o rótulo "fim"
+			CMP		R1, #0		; Verifica se o segundo termo é zero ou se o contador zerou
+			BEQ		fim			; Se R1 = 0, desvia o código para o rótulo "fim"
+			
+			;		--- SOMAS SUCESSIVAS ---
 			ADD		R2, R2, R0	; Soma o Fator (R0) no Acumulador (R2)
-			SUB		R1, R1, #1	; Tira 1 do Contador (R1)
-			B		multiplicacao	; Volta pro in�cio do la�o
+			SUB		R1, R1, #1	; Diminui "1" do Contador (R1)
+			B		multiplicacao	; Desvia o código para o rótulo "multiplicacao"
+			;		Isso quer dizer continuar com as somas sucessivas
 			
-fim
-			;		--- REGISTRO DO RESULTADO NA MEM�RIA
-			STR		R2, [R13]        ; Salva o resultado (R2) na mem�ria
+fim			;		Cria um rótulo chamado "fim"
+			
+			;		--- REGISTRO DO RESULTADO NA MEMÓRIA ---
+			STR		R2, [R13]        ; R2 lê e salva o valor registrado no enderço 0x100
