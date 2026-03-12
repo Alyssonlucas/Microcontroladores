@@ -6,7 +6,7 @@
 		;		'LDR' (Load Register) significa Carregar Registrador
 		;		- É uma função permitida no visUAL para o assembly
 		;		- Entretanto, precisa acessar a memória, que não é o objetivo desta prática
-		;		- Utilizada apenas no final para obter os valores já registrados
+		;		- Utilizada apenas para armazenar o endereço de memória e os valores finais
 		;		'MOV' (Move) siginifica Mover
 		;		- Permite carregar diretamente valores pequenos nos registradores
 		;		- Executa em 1 ciclo de máquina, pois não precisa acessar a RAM
