@@ -30,7 +30,7 @@
 		MOV		R0, #1		; R0 é o F(n-2), começando com 1
 		MOV		R1, #1		; R1 é o F(n-1), começando com 1
 		MOV		R3, #1		; R3 é o contador do laço
-		LDR		R13, =0x100	; R13 Armazena o endereço de memória 0x100 em R13 (ponteiro)
+		LDR		R13, =0x100	; Armazena o endereço de memória 0x100 em R13 (ponteiro)
 		
 fibonacci	;		Cria um rótulo chamado "fibonacci"
 		
