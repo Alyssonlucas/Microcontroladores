@@ -1,37 +1,50 @@
 		;		ES422	- MICROCOMPUTADORES - 2026.1
-		;		Pr·tica 1	- Segunda quest„o (Usando laÁos).
-		;		Autores:	Alysson Lucas Pontes Cavalcante da Silva e Maria VictÛria Martins Neves.
+		;		Pr√°tica 1	- Segunda quest√£o (Usando la√ßos).
+		;		Autores:	Alysson Lucas Pontes Cavalcante da Silva e Maria Vict√≥ria Martins Neves.
 		
+		;		INSTRU√á√ïES UTILIZADAS
+		;		'LDR' (Load Register) significa Carregar Registrador
+		;		- √â uma fun√ß√£o permitida no visUAL para o assembly
+		;		- Entretanto, precisa acessar a mem√≥ria, que n√£o √© o objetivo desta pr√°tica
+		;		- Utilizada apenas para armazenar o endere√ßo de mem√≥ria
+		;		'MOV' (Move) siginifica Mover
+		;		- Permite carregar diretamente valores pequenos nos registradores
+		;		- Executa em 1 ciclo de m√°quina, pois n√£o precisa acessar a RAM
+		;		'STR' (Store Register) significa Armazenar Registrador
+		;		- Move dados de um registrador para um endere√ßo de mem√≥ria espec√≠fico
+		;		'ADD' opera a adi√ß√£o
+		;		- O primeiro termo recebe a soma entre o segundo e o terceiro
+		;		'SUB' opera a subtra√ß√£o
+		;		- O primeiro termo recebe a subtra√ß√£o do terceiro pelo segundo
+		;		'CMP' faz uma compara√ß√£o
+		;		'BGT' (Branch if Greater Than) significa Desviar se Maior Que
+		;		- Se atendida a condi√ß√£o, desvia o c√≥digo para o r√≥tulo indicado
 		
-		;		SEQU NCIA DE FIBONACCI
+		;		SEQU√äNCIA DE FIBONACCI
 		;		F(0) = 1 e F(1) = 1
 		;		F(n) = F(n-1) + F(n-2)
 		
-		;		'MOV' movimenta os valores desejados para os registradores
-		;		'LDR' funciona de forma semelhante ao MOV, mas para valores maiores
-		MOV		R0, #1          ; R0 È o F(n-2), comeÁando com 1
-		MOV		R1, #1          ; R1 È o F(n-1), comeÁando com 1
-		LDR		R13, =0x100     ; R13 È o apontador de memÛria
-		MOV		R3, #20         ; R3 È o contador do laÁo (para 20 termos)
+		MOV		R0, #1		; R0 √© o F(n-2), come√ßando em 1
+		MOV		R1, #1		; R1 √© o F(n-1), come√ßando em 1
+		MOV		R3, #20		; R3 √© o contador do la√ßo (para 20 termos)
+		LDR		R13, =0x100	; Armazena o endere√ßo de mem√≥ria 0x100 em R13 (ponteiro)
 		
-fibonacci
-		;		--- SALVAR NA MEM”RIA
-		;		'STR' significa Store Register (Armazenar Registrador)
-		;		'ADD' opera a adiÁ„o, o primeiro termo recebe a soma entre o segundo e o terceiro
-		STR		R0, [R13]		; Salva o valor atual de R0 na memÛria
-		ADD		R13, R13, #4	; AvanÁa o apontador de memÛria em 4 bytes (prÛxima posiÁ„o)
+fibonacci	;		Cria um r√≥tulo chamado "fibonacci"
 		
-		;		--- CALCULAR O PR”XIMO TERMO
-		ADD		R2, R0, R1	; Aplica a fÛrmula: R2 = R0 + R1
+		;		--- SALVAR NA MEM√ìRIA ---
+		STR		R0, [R13]		; Armazena o valor atual de R0 no endere√ßo 0x100
+		ADD		R13, R13, #4	; Avan√ßa o ponteiro em 4 bytes (pr√≥xima posi√ß√£o),
+		;		deixando um espa√ßo livre para o armazenamento do pr√≥ximo valor de R0
 		
-		;		--- ATUALIZAR OS VALORES
+		;		--- CALCULAR O PR√ìXIMO TERMO ---
+		ADD		R2, R0, R1	; Aplica a f√≥rmula: R2 = R0 + R1
+		
+		;		--- ATUALIZAR OS VALORES ---
 		MOV		R0, R1		; O antigo F(n-1) vira o novo F(n-2)
-		MOV		R1, R2		; O termo recÈm-calculado vira o novo F(n-1)
+		MOV		R1, R2		; O termo rec√©m-calculado vira o novo F(n-1)
 		
-		;		--- CONTROLAR O LA«O
-		;		'SUB' opera a subtraÁ„o, o primeiro È a subtraÁ„o do terceiro pelo segundo
-		;		'CMP' faz uma comparaÁ„o
-		;		'BGT' significa Branch if Greater Than (Desviar se Maior Que)
+		;		--- CONTROLAR O LA√áO ---
 		SUB		R3, R3, #1	; Diminui 1 do contador
 		CMP		R3, #0		; Compara o contador com zero
-		BGT		fibonacci			; Se for Maior que Zero, volta pro loop
+		BGT		fibonacci		; Se for Maior que Zero, desvia o c√≥digo para o r√≥tulo "fibonacci"
+		;		Isso quer dizer reiniciar o c√≥digo para encontrar mais termos
