@@ -2,41 +2,51 @@
 		;		Prática 1	- Primeira questão (Usando valores imediatos e acesso a memória).
 		;		Autores:	Alysson Lucas Pontes Cavalcante da Silva e Maria Victória Martins Neves.
 		
+		;		INSTRUÇÕES UTILIZADAS
+		;		'LDR' (Load Register) significa Carregar Registrador
+		;		- É uma função permitida no visUAL para o assembly
+		;		- Entretanto, precisa acessar a memória, que não é o objetivo desta prática
+		;		- Utilizada apenas no final para obter os valores já registrados
+		;		'MOV' (Move) siginifica Mover
+		;		- Permite carregar diretamente valores pequenos nos registradores
+		;		- Executa em 1 ciclo de máquina, pois não precisa acessar a RAM
+		;		'LSL' (Logical Shift Left) significa Deslocamento Lógico à Esquerda
+		;		- Move os bits de um registrador para a esquerda
+		;		- Preenche as posições vazias à direita com zeros
+		;		- Descarta os bits que saem pela esquerda
+		;		'STR' (Store Register) significa Armazenar Registrador
+		;		- Move dados de um registrador para um endereço de memória específico
 		
-		;		--- CARREGAR VALORES NOS REGISTRADORES R0–R3
-		;		LDR significa Load Register (Carregar Registrador) é uma função permitida no visUAL para o assembly.
-		;Porém	neste caso utilizamos MOV para carregar valores imediatos pequenos diretamente no registrador.
 		
-		MOV		R0, #0x12        ; Carrega o valor imediato hexadecimal 0x12 no registrador R0.
-		;		A instrução MOV permite carregar diretamente valores pequenos.
-		LSL		R1, R0, #8       ; Desloca o conteúdo de R0 8 bits para a esquerda e armazena em R1.
-		;		Esse deslocamento equivale a multiplicar o valor por 2^8 (256).
-		;		Assim, 0x12 torna-se 0x1200.
-		ADD		R1, R1, #0x34    ; Soma o valor imediato 0x34 ao conteúdo de R1.
-		;		Após essa operação, o registrador R1 passa a conter 0x1234.
-		LSL		R2, R1, #8       ; Repete o mesmo procedimento para construir um valor maior.
-		;		O valor 0x1234 é deslocado 8 bits para a esquerda,
-		;		resultando em 0x123400.
-		ADD		R2, R2, #0x56    ; Adiciona o valor 0x56 ao resultado anterior,
-		;		formando assim o número hexadecimal 0x123456 em R2.
-		LSL		R3, R2, #8       ; Novamente deslocamos 8 bits para a esquerda,
-		;		transformando 0x123456 em 0x12345600.
-		ADD		R3, R3, #0x78    ; Soma 0x78 ao valor deslocado.
-		;		O registrador R3 passa a conter o valor final 0x12345678.
+		;		--- CARREGAR OS VALORES NOS REGISTRADORES R0–R3 ---
+		MOV		R0, #0x12		; Carrega o valor imediato hexadecimal 0x12 no registrador R0
+		LSL		R1, R0, #8	; Desloca o conteúdo de R0 8 bits para a esquerda e armazena em R1
+		;		Esse deslocamento equivale a multiplicar o valor por 2^8 (256)
+		;		Assim, 0x12 torna-se 0x1200
+		ADD		R1, R1, #0x34	; Soma o valor imediato 0x34 ao conteúdo de R1
+		;		Após essa operação, o registrador R1 passa a conter 0x1234
+		LSL		R2, R1, #8	; Repete o mesmo procedimento para construir um valor maior
+		;		O valor 0x1234 é deslocado 8 bits para a esquerda, resultando em 0x123400
+		ADD		R2, R2, #0x56	; Adiciona o valor 0x56 ao resultado anterior,
+		;		formando assim o número hexadecimal 0x123456 em R2
+		LSL		R3, R2, #8	; Novamente, 8 bits são deslocados para a esquerda,
+		;		transformando 0x123456 em 0x12345600
+		ADD		R3, R3, #0x78	; Soma 0x78 ao valor deslocado
+		;		O registrador R3 passa a conter o valor final 0x12345678
 		
-		;		--- CRIAR PONTEIRO PARA OS ENDEREÇOS DE MEMÓRIA
-		LDR		R13, =0X100
+		;		--- CRIAR PONTEIRO PARA OS ENDEREÇOS DE MEMÓRIA ---
+		LDR		R13, =0X100	; Armazena o endereço de memória 0x100 em R13
 		
-		;		--- SALVAR NA MEMÓRIA DE DADOS ATRAVÉS DO PONTEIRO (endereços 0x100 até 0x10C)
-		;		STR significa Store Register (Armazenar Registrador)
-		;		Cada número ocupa 32 bits, por isso alocar a cada 4 bytes
-		STR		R0, [R13,#0]       ; 0x100
-		STR		R1, [R13,#4]       ; 0x104
-		STR		R2, [R13,#8]       ; 0x108
-		STR		R3, [R13,#12]      ; 0x10C
+		;		--- SALVAR NA MEMÓRIA DE DADOS ATRAVÉS DO PONTEIRO ---
+		;		Cada número ocupa 32 bits = 4 bytes
+		;		Cada registrador é armazenado a cada 4 bytes, a partir do endereço 0x100
+		STR		R0, [R13,#0]	; R0 é armazenado no endereço 0x100
+		STR		R1, [R13,#4]	; R1 é armazenado no endereço 0x104
+		STR		R2, [R13,#8]	; R2 é armazenado no endereço 0x108
+		STR		R3, [R13,#12]	; R3 é armazenado no endereço 0x10C
 		
 		;		--- LER NA MEMÓRIA OS VALORES SALVOS E COLOCAR EM R8-R11
-		LDR		R8,	[R13,#0]
-		LDR		R9,	[R13,#4]
-		LDR		R10,	[R13,#8]
-		LDR		R11,	[R13,#12]
+		LDR		R8,	[R13,#0]	; R8 lê o valor registrado no enderço 0x100
+		LDR		R9,	[R13,#4]	; R9 lê o valor registrado no enderço 0x104
+		LDR		R10,	[R13,#8]	; R10 lê o valor registrado no enderço 0x108
+		LDR		R11,	[R13,#12]	; R11 lê o valor registrado no enderço 0x10C
