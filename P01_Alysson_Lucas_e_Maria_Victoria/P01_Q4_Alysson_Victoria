@@ -30,7 +30,7 @@
 			MOV		R1, #11		; Segundo termo (Fator) da multiplicação,
 			;		atuará como contador e, consequentemente, não terá valor salvo ao fim
 			MOV		R2, #0		; Acumulador (Resultado), começa zerado
-			LDR		R13, =0x100	; Endereço de memória para salvar no final
+			LDR		R13, =0x100	; Armazena o endereço de memória 0x100 em R13 (ponteiro)
 			
 multiplicacao	;		Cria um rótulo chamado "multiplicacao"
 			
