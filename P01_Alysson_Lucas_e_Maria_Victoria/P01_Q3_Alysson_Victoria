@@ -1,38 +1,56 @@
 		;		ES422	- MICROCOMPUTADORES - 2026.1
-		;		Pr·tica 1	- Terceira quest„o (Usando as flags).
-		;		Autores:	Alysson Lucas Pontes Cavalcante da Silva e Maria VictÛria Martins Neves.
+		;		Pr√°tica 1	- Terceira quest√£o (Usando as flags).
+		;		Autores:	Alysson Lucas Pontes Cavalcante da Silva e Maria Vict√≥ria Martins Neves.
 		
+		;		INSTRU√á√ïES UTILIZADAS
+		;		'LDR' (Load Register) significa Carregar Registrador
+		;		- √â uma fun√ß√£o permitida no visUAL para o assembly
+		;		- Entretanto, precisa acessar a mem√≥ria, que n√£o √© o objetivo desta pr√°tica
+		;		- Utilizada apenas para armazenar o endere√ßo de mem√≥ria
+		;		'MOV' (Move) siginifica Mover
+		;		- Permite carregar diretamente valores pequenos nos registradores
+		;		- Executa em 1 ciclo de m√°quina, pois n√£o precisa acessar a RAM
+		;		'STR' (Store Register) significa Armazenar Registrador
+		;		- Move dados de um registrador para um endere√ßo de mem√≥ria espec√≠fico
+		;		'ADD' opera a adi√ß√£o
+		;		- O primeiro termo recebe a soma entre o segundo e o terceiro
+		;		'ADDS' (Add and Set Flags) significa Adicionar e Definir Sinalizadores
+		;		- Verifica so resultado √© zero ou se houve estouro de capacidade
+		;		- Caso a adi√ß√£o ultrapasse 32 bits, a Flag C (Carry Flag) vira 1
+		;		'BCS' (Branch if Carry Set) significa Salte se o Carry for 1
+		;		- Se atendida a condi√ß√£o, desvia o c√≥digo para o r√≥tulo indicado
+		;		'B' (Branch) siginica Saltar
+		;		- Desvia o c√≥digo para o r√≥tulo indicado independentemente de condi√ß√£o
 		
 		;		OVERFLOW DOS REGISTRADORES
 		;		Tamanho dos registradores: 32 bits = 8 bytes
 		;		Maior inteiro positivo: 2^{32} - 1 = 4.294.967.295
 		
-		;		'MOV' movimenta os valores desejados para os registradores
-		;		'LDR' funciona de forma semelhante ao MOV, mas para valores maiores
-		MOV		R0, #1		; R0 È o F(n-2), comeÁando com 1
-		MOV		R1, #1		; R1 È o F(n-1), comeÁando com 1
-		LDR		R13, =0x100	; R13 È o apontador de memÛria
-		MOV		R3, #1		; R3 È o contador do laÁo
+		;		--- CARREGAR OS VALORES NOS REGISTRADORES ---
+		MOV		R0, #1		; R0 √© o F(n-2), come√ßando com 1
+		MOV		R1, #1		; R1 √© o F(n-1), come√ßando com 1
+		MOV		R3, #1		; R3 √© o contador do la√ßo
+		LDR		R13, =0x100	; R13 Armazena o endere√ßo de mem√≥ria 0x100 em R13 (ponteiro)
 		
-fibonacci
-		;		--- SALVAR NA MEM”RIA
-		;		'STR' significa Store Register (Armazenar Registrador)
-		;		'ADD' opera a adiÁ„o, o primeiro termo recebe a soma entre o segundo e o terceiro
-		STR		R0, [R13]		; Salva o valor atual de R0 na memÛria
-		ADD		R13, R13, #4	; AvanÁa o apontador de memÛria em 4 bytes (prÛxima posiÁ„o)
+fibonacci	;		Cria um r√≥tulo chamado "fibonacci"
 		
-		;		--- CALCULAR O PR”XIMO TERMO
-		;		'ADDS' opera a adiÁ„o, mas caso ultrapasse 32 bits, a Flag C vira 1 (Carry Flag, ou flag C)
-		;		'BCS' significa Branch if Carry Set (Salte se o Carry for 1)
-		ADDS		R2, R0, R1	; Aplica a fÛrmula: R2 = R0 + R1
-		BCS		fim				; Se R2 de overflow, o cÛdigo sai do laÁo e pula para o final
+		;		--- SALVAR NA MEM√ìRIA ---
+		STR		R0, [R13]		; Armazena o valor atual de R0 no endere√ßo 0x100
+		ADD		R13, R13, #4	; Avan√ßa o ponteiro em 4 bytes (pr√≥xima posi√ß√£o),
+		;		deixando um espa√ßo livre para o armazenamento do pr√≥ximo valor de R0
 		
-		;		--- ATUALIZAR OS VALORES
+		;		--- CALCULAR O PR√ìXIMO TERMO ---
+		ADDS		R2, R0, R1	; Aplica a f√≥rmula: R2 = R0 + R1
+		BCS		fim			; Se R2 der overflow, desvia o c√≥digo para o r√≥tulo "fim"
+		
+		;		--- ATUALIZAR OS VALORES ---
 		MOV		R0, R1		; O antigo F(n-1) vira o novo F(n-2)
-		MOV		R1, R2		; O termo recÈm-calculado vira o novo F(n-1)
-		ADD		R3, R3, #1	; Contabiliza quantos termos j· foram encontrados
-		B		fibonacci			; Volta para o comeÁo do laÁo para calcular o prÛximo n˙mero
-fim
+		MOV		R1, R2		; O termo rec√©m-calculado vira o novo F(n-1)
+		ADD		R3, R3, #1	; R3 contabiliza quantos termos j√° foram encontrados
+		B		fibonacci		; Desvia o c√≥digo para o r√≥tulo "fibonacci"
+		;		Isso quer dizer reiniciar o c√≥digo para encontrar mais termos
 		
-		;		--- REGISTRAR O RESULTADO NA MEM”RIA
-		STR		R3, [R2]
+fim		;		Cria um r√≥tulo chamado "fim"
+		
+		;		--- REGISTRAR O RESULTADO NA MEM√ìRIA ---
+		STR		R3, [R2]		; R3 l√™ e salva o valor registrado no ender√ßo 0x100
