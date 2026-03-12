@@ -45,7 +45,7 @@
 		STR		R2, [R13,#8]	; R2 é armazenado no endereço 0x108
 		STR		R3, [R13,#12]	; R3 é armazenado no endereço 0x10C
 		
-		;		--- LER NA MEMÓRIA OS VALORES SALVOS E COLOCAR EM R8-R11
+		;		--- LER NA MEMÓRIA OS VALORES SALVOS E COLOCAR EM R8-R11 ---
 		LDR		R8,	[R13,#0]	; R8 lê o valor registrado no enderço 0x100
 		LDR		R9,	[R13,#4]	; R9 lê o valor registrado no enderço 0x104
 		LDR		R10,	[R13,#8]	; R10 lê o valor registrado no enderço 0x108
