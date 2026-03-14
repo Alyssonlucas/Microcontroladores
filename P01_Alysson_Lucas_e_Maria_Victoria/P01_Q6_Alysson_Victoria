@@ -1,37 +1,49 @@
 		;		ES422	- MICROCOMPUTADORES - 2026.1
-		;		Prática 1	- Sexta questão (Uso de algoritmos clássicos).
-		;		Autores:	Alysson Lucas Pontes Cavalcante da Silva e Maria Victória Martins Neves.
+		;		Prï¿½tica 1	- Sexta questï¿½o (Uso de algoritmos clï¿½ssicos).
+		;		Autores:	Alysson Lucas Pontes Cavalcante da Silva e Maria Victï¿½ria Martins Neves.
 		
+		;		INSTRUÃ‡Ã•ES UTILIZADAS
+		;		'LDR' (Load Register) significa Carregar Registrador
+		;		- Ã‰ uma funÃ§Ã£o permitida no visUAL para o assembly
+		;		- Entretanto, precisa acessar a memÃ³ria, que nÃ£o Ã© o objetivo desta prÃ¡tica
+		;		- Utilizada apenas para armazenar o endereÃ§o de memÃ³ria
+		;		'MOV' (Move) siginifica Mover
+		;		- Permite carregar diretamente valores pequenos nos registradores
+		;		- Executa em 1 ciclo de mÃ¡quina, pois nÃ£o precisa acessar a RAM
+		;		'STR' (Store Register) significa Armazenar Registrador
+		;		- Move dados de um registrador para um endereÃ§o de memÃ³ria especÃ­fico
+		;		'ADD' opera a adiÃ§Ã£o
+		;		- O primeiro termo recebe a soma entre o segundo e o terceiro
+		;		'SUB' opera a subtraÃ§Ã£o
+		;		- O primeiro termo recebe a subtraÃ§Ã£o do terceiro pelo segundo
+		;		'CMP' faz uma comparaÃ§Ã£o
+		;		'BLT' (Branch if Less Than) significa Desvie se Menor Que
+		;		- Se atendida a condiÃ§Ã£o, desvia o cÃ³digo para o rÃ³tulo indicado
 		
-		;		DIVISÃO EUCLIDIANA
+		;		DIVISï¿½O EUCLIDIANA
 		;		d(i) = d(v) * q + r
-		;		Divisão por subtrações sucessivas
+		;		Divisï¿½o por subtraï¿½ï¿½es sucessivas
 		
-		;		--- DEFINIÇÃO DOS TERMOS
-		;		'MOV' movimenta os valores desejados para os registradores
-		;		'LDR' funciona de forma semelhante ao MOV, mas para valores maiores
+		;		--- DEFINIï¿½ï¿½O DOS TERMOS ---
 		MOV		R0, #17		; Dividendo
 		MOV		R1, #5		; Divisor
-		MOV		R2, #0		; Quociente (contador de divisões, começa zerado)
-		LDR		R13, =0x100	; Endereço base de memória
+		MOV		R2, #0		; Quociente (contador de divisï¿½es, comeï¿½a zerado)
+		LDR		R13, =0x100	; Endereï¿½o base de memï¿½ria
 		
-divisao
-		;		--- CONDIÇÃO DE PARADA
-		;		'CMP' faz uma comparação
-		;		'BLT' significa "Se for menor que" (Branch if Less Than)
-		CMP		R0, R1		; Verifica se o Dividendo atual é menor que o Divisor
-		BLT		fim			; Se for menor, encerra a divisão
+divisao	;		Cria um rÃ³tulo chamado "divisao"
 		
-		;		--- SUBTRAÇÕES SUCESSIVAS
-		;		'SUB' opera a subtração, o primeiro recebe a subtração do terceiro pelo segundo
-		;		'ADD' opera a adição, o primeiro termo recebe a soma entre o segundo e o terceiro
+		;		--- CONDIï¿½ï¿½O DE PARADA ---
+		CMP		R0, R1		; Verifica se o Dividendo atual ï¿½ menor que o Divisor
+		BLT		fim			; Se for menor, encerra a divisï¿½o
+		
+		;		--- SUBTRAï¿½ï¿½ES SUCESSIVAS ---
 		SUB		R0, R0, R1	; Subtrai o Divisor do Dividendo
 		ADD		R2, R2, #1	; Aumenta 1 nosso Quociente (contador)
-		B		divisao		; Reinicia a divisão
+		B		divisao		; Reinicia a divisï¿½o
 		
-fim
-		;		--- REGISTRO DO RESULTADO NA MEMÓRIA
-		;		'STR' significa Store Register (Armazenar Registrador)
-		STR		R2, [R13]	; Salva o Quociente (R2) no endereço 0x100
-		ADD		R13, R13, #4	; Avança o ponteiro da memória em 4 bytes (0x104)
-		STR		R0, [R13]	; Salva o Resto (R0) no endereço 0x104
+fim		;		Cria um rÃ³tulo chamado "fim"
+		
+		;		--- REGISTRO DO RESULTADO NA MEMï¿½RIA ---
+		STR		R2, [R13]		; Salva o Quociente (R2) no endereï¿½o 0x100
+		ADD		R13, R13, #4	; Avanï¿½a o ponteiro da memï¿½ria em 4 bytes (0x104)
+		STR		R0, [R13]		; Salva o Resto (R0) no endereï¿½o 0x104
