@@ -1,6 +1,6 @@
 		;		ES422	- MICROCOMPUTADORES - 2026.1
-		;		Pr�tica 1	- Sexta quest�o (Uso de algoritmos cl�ssicos).
-		;		Autores:	Alysson Lucas Pontes Cavalcante da Silva e Maria Vict�ria Martins Neves.
+		;		Prática 1	- Sexta questão (Uso de algoritmos clássicos).
+		;		Autores:	Alysson Lucas Pontes Cavalcante da Silva e Maria Victória Martins Neves.
 		
 		;		INSTRUÇÕES UTILIZADAS
 		;		'LDR' (Load Register) significa Carregar Registrador
@@ -20,30 +20,30 @@
 		;		'BLT' (Branch if Less Than) significa Desvie se Menor Que
 		;		- Se atendida a condição, desvia o código para o rótulo indicado
 		
-		;		DIVIS�O EUCLIDIANA
+		;		DIVISÃO EUCLIDIANA
 		;		d(i) = d(v) * q + r
-		;		Divis�o por subtra��es sucessivas
+		;		Divisão por subtrações sucessivas
 		
-		;		--- DEFINI��O DOS TERMOS ---
+		;		--- DEFINIÇÃO DOS TERMOS ---
 		MOV		R0, #17		; Dividendo
 		MOV		R1, #5		; Divisor
-		MOV		R2, #0		; Quociente (contador de divis�es, come�a zerado)
-		LDR		R13, =0x100	; Endere�o base de mem�ria
+		MOV		R2, #0		; Quociente (contador de divisões, começa zerado)
+		LDR		R13, =0x100	; Endereço base de memória
 		
 divisao	;		Cria um rótulo chamado "divisao"
 		
-		;		--- CONDI��O DE PARADA ---
-		CMP		R0, R1		; Verifica se o Dividendo atual � menor que o Divisor
-		BLT		fim			; Se for menor, encerra a divis�o
+		;		--- CONDIÇÃO DE PARADA ---
+		CMP		R0, R1		; Verifica se o Dividendo atual é menor que o Divisor
+		BLT		fim			; Se for menor, encerra a divisão
 		
-		;		--- SUBTRA��ES SUCESSIVAS ---
+		;		--- SUBTRAÇÕES SUCESSIVAS ---
 		SUB		R0, R0, R1	; Subtrai o Divisor do Dividendo
 		ADD		R2, R2, #1	; Aumenta 1 nosso Quociente (contador)
-		B		divisao		; Reinicia a divis�o
+		B		divisao		; Reinicia a divisão
 		
 fim		;		Cria um rótulo chamado "fim"
 		
-		;		--- REGISTRO DO RESULTADO NA MEM�RIA ---
-		STR		R2, [R13]		; Salva o Quociente (R2) no endere�o 0x100
-		ADD		R13, R13, #4	; Avan�a o ponteiro da mem�ria em 4 bytes (0x104)
-		STR		R0, [R13]		; Salva o Resto (R0) no endere�o 0x104
+		;		--- REGISTRO DO RESULTADO NA MEMÓRIA ---
+		STR		R2, [R13]		; Salva o Quociente (R2) no endereço 0x100
+		ADD		R13, R13, #4	; Avança o ponteiro da memória em 4 bytes (0x104)
+		STR		R0, [R13]		; Salva o Resto (R0) no endereço 0x104
