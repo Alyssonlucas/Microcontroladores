@@ -47,7 +47,7 @@
 			SUB		R1, R0, #1	; R1 é o multiplicador (R1 = R0 - 1)
 			MOV		R4, R0		; R4 é o acumulador, recebe o resultado
 			
-fatorial
+fatorial	;		Cria um rótulo chamado "fatorial"
 			;		--- LAÇO EXTERNO (multiplicações sucessivas) ---
 			CMP		R1, #1		; Verifica se todos os termos já foram multiplicados
 			BEQ		fim_fat		; Se sim (R1 = 1), encerra o fatorial
@@ -56,7 +56,7 @@ fatorial
 			MOV		R2, R1		; R2 é o contador de somas = multiplicador atual
 			MOV		R3, #0		; R3 é o acumulador temporário da soma (zera a cada ciclo)
 			
-multiplicacao
+multiplicacao	;		Cria um rótulo chamado "multiplicacao"
 			;		--- LAÇO INTERNO (somas sucessivas) ---
 			CMP		R2, #0		; Verifica se todos os termos já foram somados
 			BEQ		fim_mult		; Se sim (R2 = 0), encerra a multiplicação
@@ -64,12 +64,12 @@ multiplicacao
 			SUB		R2, R2, #1	; Decrementa 1 do contador
 			B		multiplicacao	; Reinicia a multiplicação
 			
-fim_mult
+fim_mult	;		Cria um rótulo chamado "fim_mult"
 			;		--- ATUALIZAÇÃO DO FATORIAL ---
 			MOV		R4, R3		; O Acumulador Final (R4) recebe o resultado das somas (R3)
 			SUB		R1, R1, #1	; Diminui o multiplicador principal (R1)
 			B		fatorial		; Retorna ao início para continuar a contagem do fatorial
 			
-fim_fat
+fim_fat		;		Cria um rótulo chamado "fim_fat"
 			;		--- SALVAR NA MEMÓRIA ---
 			STR		R4, [R13]		; Salva o resultado final do fatorial (R4) na memória
