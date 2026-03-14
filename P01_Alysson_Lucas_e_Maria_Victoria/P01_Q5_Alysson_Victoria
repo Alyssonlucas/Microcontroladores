@@ -1,46 +1,75 @@
 			;		ES422	- MICROCOMPUTADORES - 2026.1
-			;		Pr·tica 1	- Quinta quest„o (Reutilizando cÛdigo).
-			;		Autores:	Alysson Lucas Pontes Cavalcante da Silva e Maria VictÛria Martins Neves.
-
+			;		Pr√°tica 1	- Quinta quest√£o (Reutilizando c√≥digo).
+			;		Autores:	Alysson Lucas Pontes Cavalcante da Silva e Maria Vict√≥ria Martins Neves.
+			
+			;		INSTRU√á√ïES UTILIZADAS
+			;		'LDR' (Load Register) significa Carregar Registrador
+			;		- √â uma fun√ß√£o permitida no visUAL para o assembly
+			;		- Entretanto, precisa acessar a mem√≥ria, que n√£o √© o objetivo desta pr√°tica
+			;		- Utilizada apenas para armazenar o endere√ßo de mem√≥ria
+			;		'MOV' (Move) siginifica Mover
+			;		- Permite carregar diretamente valores pequenos nos registradores
+			;		- Executa em 1 ciclo de m√°quina, pois n√£o precisa acessar a RAM
+			;		'MOVLE' (Move If Less or Equal) siginifica Mover Se Menor ou Igual
+			;		- Carrega valores apenas se a condi√ß√£o anterior for atendida
+			;		'STR' (Store Register) significa Armazenar Registrador
+			;		- Move dados de um registrador para um endere√ßo de mem√≥ria espec√≠fico
+			;		'ADD' opera a adi√ß√£o
+			;		- O primeiro termo recebe a soma entre o segundo e o terceiro
+			;		'SUB' opera a subtra√ß√£o
+			;		- O primeiro termo recebe a subtra√ß√£o do terceiro pelo segundo
+			;		'CMP' faz uma compara√ß√£o
+			;		'BEQ' (Branch if Equal) significa Desvie se Igual
+			;		- Se atendida a condi√ß√£o, desvia o c√≥digo para o r√≥tulo indicado
+			;		'BLE' (Branch if Less or Equal) significa Desviar se Menor ou Igual a
+			;		- Se atendida a condi√ß√£o, desvia o c√≥digo para o r√≥tulo indicado
+			;		'B' (Branch) siginica Saltar
+			;		- Desvia o c√≥digo para o r√≥tulo indicado independentemente de condi√ß√£o
 			
 			;		FATORIAL
-			;		Repitidas multiplicaÁıes atravÈs de somas
-						
-			;		--- DEFINI«√O DOS TERMOS DO FATORIAL
-			;		'MOV' movimenta os valores desejados para os registradores
-			;		'LDR' funciona de forma semelhante ao MOV, mas para valores maiores
-			MOV		R0, #5		; O n˙mero atual do fatorial (ComeÁa valendo 5)
-			MOV		R1, #4		; O multiplicador regressivo (ComeÁa valendo 4)
-			LDR		R13, =0x100	; EndereÁo de memÛria para salvar no final
+			;		Repitidas multiplica√ß√µes atrav√©s de somas
+			;		Cada registrador possui 32 bits = 4 bytes
+			;		Haver√° Overflow do resultado para valores que ocupem mais que 32 bits
+			;		Maior valor poss√≠vel de ser registrado: 2^{32} = 4.294.967.296
+			;		12! = 479.001.600 (Cabe com folga, √© menor que 4 bilh√µes)
+			;		13! = 6.227.020.800 (Estouro o limite, o resultado apresentar√° erro)
+			
+			;		--- DEFINI√á√ÉO DO FATORIAL E ENDERE√áAMENTO  ---
+			MOV		R0, #12		; O n√∫mero que se deseja obter o fatorial (R0)
+			LDR		R13, =0x200	; Armazena o endere√ßo de mem√≥ria 0x100 em R13 (ponteiro)
+			
+			;		--- CASOS ESPECIAIS ---
+			CMP		R0, #1		; Verifica se o n√∫mero (R0) √© 0 ou 1
+			MOVLE	R4, #1		; Se R0 for menor ou igual a 1, O resultado (R4) √© 1
+			BLE		fim_fat		; Se R0 for menor ou igual a 1, encerra o fatorial
+			
+			;		--- DEFINI√á√ÉO DOS TERMOS DO FATORIAL ---
+			SUB		R1, R0, #1	; R1 √© o multiplicador (R1 = R0 - 1)
+			MOV		R4, R0		; R4 √© o acumulador, recebe o resultado
 			
 fatorial
-			;		--- CONTROLE DO LA«O EXTERNO (fatorial)
-			;		'CMP' faz uma comparaÁ„o
-			;		'BLE' significa "Se Menor ou Igual a" (Branch if Less or Equal)
-			CMP		R1, #1		; Verifica se todos os termos j· foram multiplicados
-			BLE		fim_fat		; Se for menor ou igual a 1 (termos j· multiplicados), encerra o laÁo do fatorial
+			;		--- LA√áO EXTERNO (multiplica√ß√µes sucessivas) ---
+			CMP		R1, #1		; Verifica se todos os termos j√° foram multiplicados
+			BEQ		fim_fat		; Se sim (R1 = 1), encerra o fatorial
 			
-			;		--- DEFINI«√O DOS TERMOS DA MULTIPLICA«√O
-			MOV		R2, R1		; Copia o multiplicador atual (R1) para o contador da multiplicaÁ„o (R2)
-			MOV		R3, #0		; Acumulador da multiplicaÁ„o, comeÁa zerado
+			;		--- DEFINI√á√ÉO DOS TERMOS DA MULTIPLICA√á√ÉO ---
+			MOV		R2, R1		; R2 √© o contador de somas = multiplicador atual
+			MOV		R3, #0		; R3 √© o acumulador tempor√°rio da soma (zera a cada ciclo)
 			
 multiplicacao
-			;		--- CONTROLE DO LA«O INTERNO (multiplicaÁ„o)
-			;		'BEQ' significa Branch if Equal (Desvie se igual)
-			;		'ADD' opera a adiÁ„o, o primeiro termo recebe a soma entre o segundo e o terceiro
-			;		'SUB' opera a subtraÁ„o, o primeiro recebe a subtraÁ„o do terceiro pelo segundo
-			CMP		R2, #0		; Verifica se todos os termos j· foram somados
-			BEQ		fim_mult		; Se for menor ou igual a 0 (termos j· somados), encerra o laÁo da multiplicaÁ„o
-			ADD		R3, R3, R0	; Realiza a soma termo a termo
-			SUB		R2, R2, #1	; Decrementa 1 do  contador
-			B		multiplicacao
+			;		--- LA√áO INTERNO (somas sucessivas) ---
+			CMP		R2, #0		; Verifica se todos os termos j√° foram somados
+			BEQ		fim_mult		; Se sim (R2 = 0), encerra a multiplica√ß√£o
+			ADD		R3, R3, R4	; Soma o valor atual do acumulador (R4) no tempor√°rio (R3)
+			SUB		R2, R2, #1	; Decrementa 1 do contador
+			B		multiplicacao	; Reinicia a multiplica√ß√£o
 			
 fim_mult
-			;		--- ATUALIZA«√O PARA A PR”XIMA VOLTA DO FATORIAL
-			MOV		R0, R3		; O resultado da multiplicaÁ„o vira o novo n˙mero atual do fatorial
-			SUB		R1, R1, #1	; Diminui o multiplicador regressivo
-			B		fatorial		; Volta para o inÌcio do laÁo do fatorial
+			;		--- ATUALIZA√á√ÉO DO FATORIAL ---
+			MOV		R4, R3		; O Acumulador Final (R4) recebe o resultado das somas (R3)
+			SUB		R1, R1, #1	; Diminui o multiplicador principal (R1)
+			B		fatorial		; Retorna ao in√≠cio para continuar a contagem do fatorial
 			
 fim_fat
-			;		--- REGISTRO DO RESULTADO NA MEM”RIA
-			STR		R0, [R13]        ; Salva o resultado final do fatorial na memÛria
+			;		--- SALVAR NA MEM√ìRIA ---
+			STR		R4, [R13]		; Salva o resultado final do fatorial (R4) na mem√≥ria
