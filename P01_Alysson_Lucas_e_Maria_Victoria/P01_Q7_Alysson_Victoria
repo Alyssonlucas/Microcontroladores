@@ -2,40 +2,53 @@
 			;		Prática 1	- Sétima questão (Algoritmo de Euclides - MDC).
 			;		Autores:	Alysson Lucas Pontes Cavalcante da Silva e Maria Victória Martins Neves.
 			
-			
-			;		--- DEFINIÇÕES DOS TERMOS
-			;		'MOV' movimenta os valores desejados para os registradores
-			;		'LDR' funciona de forma semelhante ao MOV, mas para valores maiores
-			
-			MOV		R0, #20		; Primeiro termo 'm'
-			MOV		R1, #8		; Segundo termo 'n'
-			
-			LDR		R13, =0x100	; Endereçamento de memória para salvar o MDC no final
-			
-MDC
-			;		--- VERIFICAÇÃO DA BASE (if n == 0)
+			;		INSTRUÇÕES UTILIZADAS
+			;		'LDR' (Load Register) significa Carregar Registrador
+			;		- É uma função permitida no visUAL para o assembly
+			;		- Entretanto, precisa acessar a memória, que não é o objetivo desta prática
+			;		- Utilizada apenas para armazenar o endereço de memória
+			;		'MOV' (Move) siginifica Mover
+			;		- Permite carregar diretamente valores pequenos nos registradores
+			;		- Executa em 1 ciclo de máquina, pois não precisa acessar a RAM
+			;		'STR' (Store Register) significa Armazenar Registrador
+			;		- Move dados de um registrador para um endereço de memória específico
+			;		'SUB' opera a subtração
+			;		- O primeiro termo recebe a subtração do terceiro pelo segundo
 			;		'CMP' faz uma comparação
-			;		'BEQ' significa Branch if Equal (Se igual)
+			;		'BEQ' (Branch if Equal) significa Desvie se Igual
+			;		- Se atendida a condição, desvia o código para o rótulo indicado
+			;		'BLT' (Branch if Less Than) significa Desvie se Menor Que
+			;		- Se atendida a condição, desvia o código para o rótulo indicado
+			;		'B' (Branch) siginica Saltar
+			;		- Desvia o código para o rótulo indicado independentemente de condição
 			
-			CMP		R1, #0		; Verifica se o segundo termo zerou
-			BEQ		fim_mdc		; Se n=0, o MDC é o 'm' (R0) e o código pula pro fim
+			;		MDC (Máximo Divisor Comum)
+			;		Maior número inteiro que divide dois ou mais números naturais sem deixar resto
 			
-			;		--- CALCULANDO O RESTO (m % n)
-resto	;		'BLT' significa "Salte se menor que" (Branch if Less Than)
+			MOV		R0, #10		; R0: Primeiro termo 'm'
+			MOV		R1, #0		; R1: Segundo termo 'n'
+			LDR		R13, =0x100	; Armazena o endereço de memória 0x100 em R13 (ponteiro)
+			
+MDC			;		Cria um rótulo chamado MDC
+			
+			;		--- VERIFICAÇÃO DE PARADA ---
+			CMP		R1, #0		; Verifica se n=0
+			BEQ		fim_mdc		; Se n=0, o MDC é 'm' (R0), o cálculo é encerrado
+			
+			;		--- CÁLCULO DO RESTO (m % n) ---
+resto
 			CMP		R0, R1		; Compara 'm' com 'n'
-			BLT		atualiza_vars	; Se 'm' ficou menor que 'n', a divisão acabou. O que sobrou em R0 é o Resto!
-			SUB		R0, R0, R1	; Subtrai 'n' de 'm' (m = m - n)
-			B		resto	; Volta para continuar subtraindo
+			BLT		atualizacao	; Se 'm' < 'n', o resto está em R0. Pula pra atualizar.
+			SUB		R0, R0, R1	; Subtrai 'n' de 'm'
+			B		resto		; Retorna a calcular
 			
-atualiza_vars
-			;		--- SIMULANDO A RECURSÃO (euclides_mdc(n, m % n)) ---
-			;		Precisamos que: Novo_m = n_antigo  |  Novo_n = resto
-			MOV		R2, R1		; Salva o 'n' antigo (R1) no R2 para não perde-lo
-			MOV		R1, R0		; O Novo 'n' (R1) recebe o Resto (que estava no R0)
-			MOV		R0, R2		; O Novo 'm' (R0) recebe o 'n' antigo (que guardamos no R2)
-			
-			B		MDC	; Volta para o topo do algoritmo com os novos valores!
+atualizacao
+			;		--- SIMULAÇÃO DA RECURSÃO (euclides_mdc(n, m % n)) ---
+			MOV		R2, R1		; Salva o 'n' antigo no R2
+			MOV		R1, R0		; O Novo 'n' recebe o Resto (R0)
+			MOV		R0, R2		; O Novo 'm' recebe o 'n' antigo (R2)
+			B		MDC			; Reinicia a verificação
 			
 fim_mdc
-			;		--- SALVANDO O RESULTADO ---
+			;		--- SALVAR O RESULTADO ---
 			STR		R0, [R13]	; Salva o MDC final na memória
