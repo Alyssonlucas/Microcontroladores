@@ -1,0 +1,380 @@
+/* USER CODE BEGIN Header */
+/**
+  ******************************************************************************
+  * @file           : main.c
+  * @brief          : Questão 2 - Copiando as Configurações de um Projeto para um Novo Projeto
+  * @authors        : Alysson Lucas Pontes Cavalcante da Silva e Maria Victória Martins Neves
+  * @date           : 25/03/2026
+  * @description    : Projeto a partir do anterior, que apenas copiou as
+  * 					configurações de placa e periféricos.
+  ******************************************************************************
+  */
+/* USER CODE END Header */
+
+/* Includes ------------------------------------------------------------------*/
+#include "main.h"
+/* Private includes ----------------------------------------------------------*/
+/* USER CODE BEGIN Includes */
+
+/* USER CODE END Includes */
+
+/* Private typedef -----------------------------------------------------------*/
+/* USER CODE BEGIN PTD */
+
+/* USER CODE END PTD */
+
+/* Private define ------------------------------------------------------------*/
+/* USER CODE BEGIN PD */
+
+/* USER CODE END PD */
+
+/* Private macro -------------------------------------------------------------*/
+/* USER CODE BEGIN PM */
+
+/* USER CODE END PM */
+
+/* Private variables ---------------------------------------------------------*/
+
+/* USER CODE BEGIN PV */
+
+/* USER CODE END PV */
+
+/* Private function prototypes -----------------------------------------------*/
+void SystemClock_Config(void);
+static void MX_GPIO_Init(void);
+/* USER CODE BEGIN PFP */
+
+/* USER CODE END PFP */
+
+/* Private user code ---------------------------------------------------------*/
+/* USER CODE BEGIN 0 */
+
+/* USER CODE END 0 */
+
+/**
+  * @brief  The application entry point.
+  * @retval int
+  */
+int main(void)
+{
+
+  /* USER CODE BEGIN 1 */
+	// DEFINIÇÃO DE VARIÁVEIS
+	int	contD1=0, contD2=0, contUser=0;							// Contadores para os LEDs
+	int	estado_atual = 0, estado_anterior=0, estado_leds=0;		// Variáveis para salvar os estados
+	int	sequencia=1;											// Auxiliar para o terceiro caso
+  /* USER CODE END 1 */
+
+  /* MCU Configuration--------------------------------------------------------*/
+
+  /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
+  HAL_Init();
+
+  /* USER CODE BEGIN Init */
+
+  /* USER CODE END Init */
+
+  /* Configure the system clock */
+  SystemClock_Config();
+
+  /* USER CODE BEGIN SysInit */
+
+  /* USER CODE END SysInit */
+
+  /* Initialize all configured peripherals */
+  MX_GPIO_Init();
+  /* USER CODE BEGIN 2 */
+
+  /* USER CODE END 2 */
+
+  /* Infinite loop */
+  /* USER CODE BEGIN WHILE */
+
+
+  while (1)
+  {
+	  // Padroniza a contagem de tempo através do MDC entre os intervalos de tempo
+	  HAL_Delay(100);
+
+	  // Incrementa os contadores a cada intervalo de 100ms
+	  contD1++; contD2++; contUser++;
+
+	  // Variáveis locais para ler o valor de cada botão
+	  int SW1 = HAL_GPIO_ReadPin(pino0_GPIO_Port, pino0_Pin);	// Botão 1
+	  int SW2 = HAL_GPIO_ReadPin(pino1_GPIO_Port, pino1_Pin);	// Botão 2
+
+	  // IDENTIFICAÇÃO DO ESTADO
+	  if (SW1==GPIO_PIN_SET && SW2==GPIO_PIN_SET){
+		  estado_atual=0;	// Nenhum botão pressionado: define o estado 0
+
+	  } else if (SW1==GPIO_PIN_RESET && SW2==GPIO_PIN_SET){
+  		  estado_atual=1;	// Apenas botão 1 pressionado: define o estado 1
+
+ 	  } else if (SW1==GPIO_PIN_SET && SW2==GPIO_PIN_RESET){
+	  	  estado_atual=2;	// Apenas botão 2 pressionado: define o estado 2
+
+	  } else if (SW1==GPIO_PIN_RESET && SW2==GPIO_PIN_RESET){
+	  	  estado_atual=3;	// Dois botões pressionados: define o estado 4
+	  }
+
+
+	  // REINÍCIO DO SISTEMA
+	  if (estado_atual != estado_anterior){	// Verifica se o estado mudou
+
+		  contD1 = 0;		// Caso o estado tenha mudado,
+	      contD2 = 0;		// zera todos os contadores
+	      contUser = 0;		// e o novo estado inicia com todos os LEDs desligados
+	      sequencia = 1;
+	      estado_leds = 0;
+
+          HAL_GPIO_WritePin(led1_GPIO_Port, led1_Pin, GPIO_PIN_SET);
+          HAL_GPIO_WritePin(led2_GPIO_Port, led2_Pin, GPIO_PIN_SET);
+          HAL_GPIO_WritePin(led3_GPIO_Port, led3_Pin, GPIO_PIN_SET);
+          HAL_GPIO_WritePin(led4_GPIO_Port, led4_Pin, GPIO_PIN_SET);
+
+          estado_anterior = estado_atual;	// Atualiza o estado
+	   }
+
+	  switch (estado_atual){
+
+	  	  case 0:	// LEDs D1-D4 piscando todos com o mesmo valor a cada 500 ms
+
+	  		  // DEFINIÇÃO DO INTERVALO DE TEMPO
+	  		  // O valor escolhido deve ser múltiplo de 100ms
+	  		  int timeON_0 = 5;// Tempo simétrico para acender e apagar os LEDs
+
+	  		  if (contD1>=timeON_0){		// Verifica se passou o tempo desejado
+	  			  if (estado_leds == 0) {	// Caso esteja apagado, acende
+	  				  estado_leds = 1;		// GPIO_PIN_SET
+	  			  } else {					// Caso esteja aceso, apaga
+	  				  estado_leds = 0;		// GPIO_PIN_RESET
+	  			  }
+	  			  HAL_GPIO_WritePin(led1_GPIO_Port, led1_Pin, estado_leds);	// "Escreve" o estado no D1
+	  			  HAL_GPIO_WritePin(led2_GPIO_Port, led2_Pin, estado_leds);	// "Escreve" o estado no D2
+	  			  HAL_GPIO_WritePin(led3_GPIO_Port, led3_Pin, estado_leds);	// "Escreve" o estado no D3
+	  			  HAL_GPIO_WritePin(led4_GPIO_Port, led4_Pin, estado_leds);	// "Escreve" o estado no D4
+	  			  contD1=0;		// Zera o contador
+	  		  }
+	          break;
+
+	  	case 1:	// LEDs D1 e D3 devem piscar 100 ms acessos, 500 ms apagados; e
+	  			// D2 e D4 devem piscar 300 ms apagados, 300 ms acesos (nessa ordem)
+
+	  		// DEFINIÇÃO DOS INTERVALOS DE TEMPO
+	  		// Os valores escolhidos devem ser múltiplos de 100ms
+	  		int timeON_D1_1 = 1, timeOFF_D1_1 = 5;
+	  		int timeON_D2_1 = 3;	// Tempo simétrico para acender e apagar os LEDs
+
+	  		// LEDs 1 e 3
+	  		if (HAL_GPIO_ReadPin(led1_GPIO_Port, led1_Pin) == GPIO_PIN_SET){ // Se D1 apagado
+                  if (contD1 >= timeOFF_D1_1) {	// Verifica se passou o tempo desejado
+  	                      HAL_GPIO_WritePin(led1_GPIO_Port, led1_Pin, GPIO_PIN_RESET);	// Acende D1
+  	                      HAL_GPIO_WritePin(led3_GPIO_Port, led3_Pin, GPIO_PIN_RESET);	// Acende D3
+  	                      contD1 = 0;		// Zera o contador
+                  }
+            } else { 	// Se D1 aceso
+                  if (contD1 >= timeON_D1_1) {	// Verifica se passou o tempo desejado
+  	                      HAL_GPIO_WritePin(led1_GPIO_Port, led1_Pin, GPIO_PIN_SET);	// Apaga D1
+  	                      HAL_GPIO_WritePin(led3_GPIO_Port, led3_Pin, GPIO_PIN_SET);	// Apaga D3
+  	                      contD1 = 0;		// Zera o contador
+                  }
+            }
+
+	  		// LEDs 2 e 4
+	        if (contD2 >= timeON_D2_1) {	// Verifica se passou o tempo desejado
+	  	          HAL_GPIO_TogglePin(led2_GPIO_Port, led2_Pin);		// Inverte o valor do D2
+	  	          HAL_GPIO_TogglePin(led4_GPIO_Port, led4_Pin);		// Inverte o valor do D4
+	  	          contD2 = 0;		// Zera o contador
+	        }
+	  	    break;
+
+	  	  case 2:	// Apenas um led deve ficar acesso a cada 500 milissegundos,
+	  		  	  	// seguindo a ordem: D1 → D2 → D3 → D4 → D1 ...
+
+	  		  // DEFINIÇÃO DO INTERVALO DE TEMPO
+	  		  // O valor escolhido deve ser múltiplo de 100ms
+	   		  int timeON_2 = 5;// Tempo simétrico para acender e apagar os LEDs
+
+	  		  if (contD1 >= timeON_2) {	// Verifica se passou o tempo desejado
+
+	  		        // DEFINE A SEQUÊNCIA DE ACENDIMENTO DOS LEDs
+	  		        if (sequencia==1) {	// A sequência foi definida como 1, então começa aqui
+	  		        	HAL_GPIO_WritePin(led1_GPIO_Port, led1_Pin, GPIO_PIN_RESET); // Acende D1
+	  		            sequencia=2;	// A sequência prossegue
+
+	  		        } else if (sequencia==2) {
+	  		            HAL_GPIO_WritePin(led2_GPIO_Port, led2_Pin, GPIO_PIN_RESET); // Acende D2
+	  		            sequencia=3;
+
+	  		        } else if (sequencia==3) {
+	  		            HAL_GPIO_WritePin(led3_GPIO_Port, led3_Pin, GPIO_PIN_RESET); // Acende D3
+	  		            sequencia=4;
+
+	  		        } else if (sequencia==4) {
+	  		            HAL_GPIO_WritePin(led4_GPIO_Port, led4_Pin, GPIO_PIN_RESET); // Acende D4
+	  		            sequencia=1;	// Reinicia a sequência
+	  		        }
+
+	  		        contD1 = 0;		// Zera o contador
+	  		  }
+	  		  break;
+
+	  	  case 3:	// Caso não pré-definido, a escolha foi acender todos os LEDs
+	  		  HAL_GPIO_WritePin(led1_GPIO_Port, led1_Pin, GPIO_PIN_RESET); // Acende D1
+	  	      HAL_GPIO_WritePin(led2_GPIO_Port, led2_Pin, GPIO_PIN_RESET); // Acende D2
+	  	      HAL_GPIO_WritePin(led3_GPIO_Port, led3_Pin, GPIO_PIN_RESET); // Acende D3
+	  	      HAL_GPIO_WritePin(led4_GPIO_Port, led4_Pin, GPIO_PIN_RESET); // Acende D4
+	  	      break;
+
+	  	  default:	// Caso ocorra algum erro
+	  	      estado_atual = 0;		// Retorna ao estado inicial
+	  	      break;
+	  } // Fim do switch
+
+
+	  // CONTROLE DA USERLED DA BLUEPILL
+	  // Definição dos intervalos de tempo
+	  // Os valores escolhidos devem ser múltiplos de 100ms
+	  int timeON_UserLed = 1, timeOFF_UserLed = 19;
+
+  	  if (HAL_GPIO_ReadPin(UserLed_GPIO_Port, UserLed_Pin)==GPIO_PIN_SET){	// Se UserLed apagado
+  		  if (contUser>=timeOFF_UserLed){	// Verifica se passou o tempo desejado
+  			  HAL_GPIO_WritePin(UserLed_GPIO_Port, UserLed_Pin, GPIO_PIN_RESET);	// Acende UserLed
+  			  contUser=0;		// Zera o contador
+  		  }
+  	  } else{
+  		  if (contUser>=timeON_UserLed){		// Verifica se passou o tempo desejado
+  			  HAL_GPIO_WritePin(UserLed_GPIO_Port, UserLed_Pin, GPIO_PIN_SET);	// Apaga UserLed
+  			  contUser=0;		// Zera o contador
+  		  }
+  	  }
+
+    /* USER CODE END WHILE */
+
+    /* USER CODE BEGIN 3 */
+  }
+  /* USER CODE END 3 */
+}
+
+/**
+  * @brief System Clock Configuration
+  * @retval None
+  */
+void SystemClock_Config(void)
+{
+  RCC_OscInitTypeDef RCC_OscInitStruct = {0};
+  RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
+
+  /** Initializes the RCC Oscillators according to the specified parameters
+  * in the RCC_OscInitTypeDef structure.
+  */
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
+  RCC_OscInitStruct.HSEState = RCC_HSE_ON;
+  RCC_OscInitStruct.HSEPredivValue = RCC_HSE_PREDIV_DIV1;
+  RCC_OscInitStruct.HSIState = RCC_HSI_ON;
+  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
+  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
+  RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL9;
+  if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Initializes the CPU, AHB and APB buses clocks
+  */
+  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
+                              |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
+  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
+  RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
+  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
+  RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
+
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+}
+
+/**
+  * @brief GPIO Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_GPIO_Init(void)
+{
+  GPIO_InitTypeDef GPIO_InitStruct = {0};
+  /* USER CODE BEGIN MX_GPIO_Init_1 */
+
+  /* USER CODE END MX_GPIO_Init_1 */
+
+  /* GPIO Ports Clock Enable */
+  __HAL_RCC_GPIOC_CLK_ENABLE();
+  __HAL_RCC_GPIOD_CLK_ENABLE();
+  __HAL_RCC_GPIOB_CLK_ENABLE();
+  __HAL_RCC_GPIOA_CLK_ENABLE();
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(UserLed_GPIO_Port, UserLed_Pin, GPIO_PIN_SET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOB, led1_Pin|led2_Pin|led3_Pin|led4_Pin, GPIO_PIN_SET);
+
+  /*Configure GPIO pin : UserLed_Pin */
+  GPIO_InitStruct.Pin = UserLed_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(UserLed_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : pino0_Pin pino1_Pin */
+  GPIO_InitStruct.Pin = pino0_Pin|pino1_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : led1_Pin led2_Pin led3_Pin led4_Pin */
+  GPIO_InitStruct.Pin = led1_Pin|led2_Pin|led3_Pin|led4_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+  /* USER CODE BEGIN MX_GPIO_Init_2 */
+
+  /* USER CODE END MX_GPIO_Init_2 */
+}
+
+/* USER CODE BEGIN 4 */
+
+/* USER CODE END 4 */
+
+/**
+  * @brief  This function is executed in case of error occurrence.
+  * @retval None
+  */
+void Error_Handler(void)
+{
+  /* USER CODE BEGIN Error_Handler_Debug */
+  /* User can add his own implementation to report the HAL error return state */
+  __disable_irq();
+  while (1)
+  {
+  }
+  /* USER CODE END Error_Handler_Debug */
+}
+#ifdef USE_FULL_ASSERT
+/**
+  * @brief  Reports the name of the source file and the source line number
+  *         where the assert_param error has occurred.
+  * @param  file: pointer to the source file name
+  * @param  line: assert_param error line source number
+  * @retval None
+  */
+void assert_failed(uint8_t *file, uint32_t line)
+{
+  /* USER CODE BEGIN 6 */
+  /* User can add his own implementation to report the file name and line number,
+     ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
+  /* USER CODE END 6 */
+}
+#endif /* USE_FULL_ASSERT */
