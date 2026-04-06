@@ -6,7 +6,7 @@
 
 ## Descriptions: 
 
-Repositorio criado para armazenar soluções das práticas da disciplina de microcontoladores ministrada pelo professor Jose Neto.
+Repositório criado para armazenar soluções das práticas da disciplina de microcontoladores ministrada pelo professor José Neto.
 
 ## Práticas:
   - Prática 01 - Assembler utilizando o VisUAL ARMEmulator

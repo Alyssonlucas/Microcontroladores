@@ -60,21 +60,17 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-
 	// DEFINIÇÃO DE VARIÁVEIS
 	uint32_t tempo_atual = HAL_GetTick();
-
-	// Variáveis para salvar os tempos
 	uint32_t tempo_anterior = tempo_atual;
 	uint32_t timeON_0 = tempo_atual;
 	uint32_t timeD1_1 = tempo_atual, timeON_D2_1 = tempo_atual;
 	uint32_t tempo500 = tempo_atual;
 	uint32_t time_UserLed = tempo_atual;
 
-	// Variáveis para salvar os estados
-	int	estado_atual = 0, estado_anterior=0, estado_leds=0;
+	// Variável para salvar o tempo
+	int	estado_atual = 0, estado_anterior=0, estado_leds=0;		// Variáveis para salvar os estados
 	int	sequencia=1;											// Auxiliar para o terceiro caso
-
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -135,7 +131,6 @@ int main(void)
    	      sequencia = 1;
   	      estado_leds = 0;
 
-  	      // Caso o estado tenha mudado, força todos os LEDs a reiniciarem (apagarem)
           HAL_GPIO_WritePin(led1_GPIO_Port, led1_Pin, GPIO_PIN_SET);
           HAL_GPIO_WritePin(led2_GPIO_Port, led2_Pin, GPIO_PIN_SET);
           HAL_GPIO_WritePin(led3_GPIO_Port, led3_Pin, GPIO_PIN_SET);
@@ -145,7 +140,7 @@ int main(void)
   	   }
 
  	  // DELAY NÃO BLOCANTE
- 	  	 // Não contém contadores, é utilizada lógica de comparação entre o tempo atual e anterior
+ 	  	 //não contém contadores, é utilizado lógicas de comparação do tempo atual e anterior.
        	  switch (estado_atual){
 
        	  	  case 0:	// LEDs D1-D4 piscando todos com o mesmo valor a cada 500 ms
@@ -206,7 +201,7 @@ int main(void)
 
        	  		if (tempo_atual-tempo500 >= 500) {	// Verifica se passou o tempo desejado
 
-       	  			// DEFINE A SEQUÊNCIA DE ACENDIMENTO DOS LEDs
+       	  		  		        // DEFINE A SEQUÊNCIA DE ACENDIMENTO DOS LEDs
 					if (sequencia==1) {	// A sequência foi definida como 1, então começa aqui
 						HAL_GPIO_WritePin(led1_GPIO_Port, led1_Pin, GPIO_PIN_RESET); // Acende D1
 						HAL_GPIO_WritePin(led2_GPIO_Port, led2_Pin, GPIO_PIN_SET);
@@ -251,14 +246,12 @@ int main(void)
        	  	      estado_atual = 0;		// Retorna ao estado inicial
        	  	      break;
        	  } // Fim do switch
-
-
        	  // CONTROLE DA USERLED DA BLUEPILL
        	  // Definição dos intervalos de tempo
        	  	  if (HAL_GPIO_ReadPin(UserLed_GPIO_Port, UserLed_Pin)==GPIO_PIN_SET){	// Se apagado
        	  		  if ((tempo_atual-time_UserLed)>=1900){	// Verifica se passou o tempo desejado
        	  			  HAL_GPIO_WritePin(UserLed_GPIO_Port, UserLed_Pin, GPIO_PIN_RESET);	// Acende UserLed
-       	  			  time_UserLed = tempo_atual;		// Reseta o tempo anterior
+       	  			  time_UserLed = tempo_atual;		// reseta o tempo anterior
        	  		  }
        	  	  } else{
        	  		  if ((tempo_atual-time_UserLed)>=100){		// Verifica se passou o tempo desejado
