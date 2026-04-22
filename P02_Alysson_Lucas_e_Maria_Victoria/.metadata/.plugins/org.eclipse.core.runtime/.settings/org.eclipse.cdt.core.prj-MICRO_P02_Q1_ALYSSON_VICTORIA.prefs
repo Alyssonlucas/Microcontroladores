@@ -4,7 +4,11 @@ indexer/indexAllHeaderVersions=false
 indexer/indexImportLocation=.settings/cdt-index.zip
 indexer/indexOnOpen=false
 indexer/indexUnusedHeadersWithAlternateLang=false
+<<<<<<< HEAD
+indexer/indexUnusedHeadersWithDefaultLang=true
+=======
 indexer/indexUnusedHeadersWithDefaultLang=false
+>>>>>>> 8ca8918162c44037b1d9bb9206f23faac4e8c0d1
 indexer/indexerId=org.eclipse.cdt.core.fastIndexer
 indexer/preferenceScope=1
 indexer/skipFilesLargerThanMB=8

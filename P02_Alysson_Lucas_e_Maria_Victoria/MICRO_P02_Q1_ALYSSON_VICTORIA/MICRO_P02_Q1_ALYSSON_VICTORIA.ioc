@@ -55,6 +55,25 @@ PB1.GPIO_Label=pino1
 PB1.GPIO_PuPd=GPIO_PULLUP
 PB1.Locked=true
 PB1.Signal=GPIO_Input
+<<<<<<< HEAD
+PB12.GPIOParameters=PinState,GPIO_Label
+PB12.GPIO_Label=led1
+PB12.Locked=true
+PB12.PinState=GPIO_PIN_SET
+PB12.Signal=GPIO_Output
+PB13.GPIOParameters=PinState,GPIO_Label
+PB13.GPIO_Label=led2
+PB13.Locked=true
+PB13.PinState=GPIO_PIN_SET
+PB13.Signal=GPIO_Output
+PB14.GPIOParameters=PinState,GPIO_Label
+PB14.GPIO_Label=led3
+PB14.Locked=true
+PB14.PinState=GPIO_PIN_SET
+PB14.Signal=GPIO_Output
+PB15.GPIOParameters=PinState,GPIO_Label
+PB15.GPIO_Label=led4
+=======
 PB12.GPIOParameters=GPIO_Speed,PinState,GPIO_Label
 PB12.GPIO_Label=led1
 PB12.GPIO_Speed=GPIO_SPEED_FREQ_LOW
@@ -76,11 +95,16 @@ PB14.Signal=GPIO_Output
 PB15.GPIOParameters=GPIO_Speed,PinState,GPIO_Label
 PB15.GPIO_Label=led4
 PB15.GPIO_Speed=GPIO_SPEED_FREQ_LOW
+>>>>>>> 8ca8918162c44037b1d9bb9206f23faac4e8c0d1
 PB15.Locked=true
 PB15.PinState=GPIO_PIN_SET
 PB15.Signal=GPIO_Output
 PC13-TAMPER-RTC.GPIOParameters=PinState,GPIO_Label
+<<<<<<< HEAD
+PC13-TAMPER-RTC.GPIO_Label=led_placa
+=======
 PC13-TAMPER-RTC.GPIO_Label=UserLed
+>>>>>>> 8ca8918162c44037b1d9bb9206f23faac4e8c0d1
 PC13-TAMPER-RTC.Locked=true
 PC13-TAMPER-RTC.PinState=GPIO_PIN_SET
 PC13-TAMPER-RTC.Signal=GPIO_Output

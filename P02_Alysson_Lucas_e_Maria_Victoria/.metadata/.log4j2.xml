@@ -2,7 +2,11 @@
 <Configuration status="info">
     <ThresholdFilter level="INFO"/>
     <Appenders>
+<<<<<<< HEAD
+        <RollingFile name="DEBUGFILE" fileName="C:/Users/lucas/Desktop/Disciplinas/2026.1 (atual)/microcontroladores/Microcontroladores/P02_Alysson_Lucas_e_Maria_Victoria/.metadata/.ide.log" filePattern="C:/Users/lucas/Desktop/Disciplinas/2026.1 (atual)/microcontroladores/Microcontroladores/P02_Alysson_Lucas_e_Maria_Victoria/.metadata/.ide.log-%d{yyyy-MM-dd}.log">
+=======
         <RollingFile name="DEBUGFILE" fileName="C:/Users/mvict/OneDrive/Documentos/UFPE/Microcomputadores/.metadata/.ide.log" filePattern="C:/Users/mvict/OneDrive/Documentos/UFPE/Microcomputadores/.metadata/.ide.log-%d{yyyy-MM-dd}.log">
+>>>>>>> 8ca8918162c44037b1d9bb9206f23faac4e8c0d1
             <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss,SSS} [%p] %c{1}:%L - %m%n" />
             <Policies>
                 <TimeBasedTriggeringPolicy interval="1" modulate="true" />

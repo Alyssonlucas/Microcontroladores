@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<item key="hasShownOverlayPopupBefore" value="true"/>
+	<item key="replaceBarOpen" value="false"/>
+	<list key="searchhistory">
+		<item value="SET"/>
+		<item value="callback"/>
+		<item value="exti"/>
+		<item value="handler"/>
+		<item value="HAL_GPIO"/>
+		<item value="HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_1);"/>
+		<item value="exit"/>
+	</list>
+</section>

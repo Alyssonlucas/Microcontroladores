@@ -1,3 +1,6 @@
+<<<<<<< HEAD
+DeviceConfigurationTool.AskToSwitchToCubeMxPerspective=false
+=======
 DeviceConfigurationTool.AskToDoCodeGenerationOnIocSave=false
 DeviceConfigurationTool.AskToSwitchToCPerspectiveOnCodeGeneration=false
 DeviceConfigurationTool.AskToSwitchToCdtPerspective=false
@@ -5,5 +8,6 @@ DeviceConfigurationTool.AskToSwitchToCubeMxPerspective=false
 DeviceConfigurationTool.DoCodeGenerationOnIocSave=true
 DeviceConfigurationTool.SwitchToCPerspectiveOnCodeGeneration=true
 DeviceConfigurationTool.SwitchToCdtPerspective=true
+>>>>>>> 8ca8918162c44037b1d9bb9206f23faac4e8c0d1
 DeviceConfigurationTool.SwitchToCubeMxPerspective=true
 eclipse.preferences.version=1

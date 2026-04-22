@@ -1,0 +1,11 @@
+../Core/Src/main.c:67:5:main	5
+../Core/Src/main.c:164:6:SystemClock_Config	3
+../Core/Src/main.c:204:13:MX_GPIO_Init	1
+../Core/Src/main.c:254:6:Ler_Botoes	9
+../Core/Src/main.c:277:6:Verificar_Mudanca_Estado	2
+../Core/Src/main.c:296:6:Estado_0	3
+../Core/Src/main.c:317:6:Estado_1	5
+../Core/Src/main.c:345:6:Estado_2	6
+../Core/Src/main.c:380:6:Estado_3	1
+../Core/Src/main.c:391:6:UserLed	4
+../Core/Src/main.c:412:6:Error_Handler	1

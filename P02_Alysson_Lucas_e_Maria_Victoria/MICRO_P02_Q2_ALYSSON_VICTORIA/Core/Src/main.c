@@ -2,6 +2,22 @@
 /**
   ******************************************************************************
   * @file           : main.c
+<<<<<<< HEAD
+  * @brief          : Main program body
+  ******************************************************************************
+  * @attention
+  *
+  * Copyright (c) 2026 STMicroelectronics.
+  * All rights reserved.
+  *
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
+  *
+  ******************************************************************************
+  */
+/* USER CODE END Header */
+=======
   * @brief          : Questão 2 - Copiando as Configurações de um Projeto para um Novo Projeto
   * @authors        : Alysson Lucas Pontes Cavalcante da Silva e Maria Victória Martins Neves
   * @date           : 25/03/2026
@@ -11,6 +27,7 @@
   */
 /* USER CODE END Header */
 
+>>>>>>> 8ca8918162c44037b1d9bb9206f23faac4e8c0d1
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 
@@ -60,8 +77,12 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
+<<<<<<< HEAD
+
+=======
 	// DEFINIÇÃO DAS VARIÁVEIS LOCAIS (CONTADORES)
 	int	contD1=0, contD2=0, contD3=0, contD4=0, contUser=0, faseD4=0;
+>>>>>>> 8ca8918162c44037b1d9bb9206f23faac4e8c0d1
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -88,6 +109,10 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+<<<<<<< HEAD
+  while (1)
+  {
+=======
 
   while (1)
   {
@@ -180,6 +205,7 @@ int main(void)
 		  }
 	  }
 
+>>>>>>> 8ca8918162c44037b1d9bb9206f23faac4e8c0d1
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -245,17 +271,30 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOA_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
+<<<<<<< HEAD
+  HAL_GPIO_WritePin(led_placa_GPIO_Port, led_placa_Pin, GPIO_PIN_SET);
+=======
   HAL_GPIO_WritePin(UserLed_GPIO_Port, UserLed_Pin, GPIO_PIN_SET);
+>>>>>>> 8ca8918162c44037b1d9bb9206f23faac4e8c0d1
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, led1_Pin|led2_Pin|led3_Pin|led4_Pin, GPIO_PIN_SET);
 
+<<<<<<< HEAD
+  /*Configure GPIO pin : led_placa_Pin */
+  GPIO_InitStruct.Pin = led_placa_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(led_placa_GPIO_Port, &GPIO_InitStruct);
+=======
   /*Configure GPIO pin : UserLed_Pin */
   GPIO_InitStruct.Pin = UserLed_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(UserLed_GPIO_Port, &GPIO_InitStruct);
+>>>>>>> 8ca8918162c44037b1d9bb9206f23faac4e8c0d1
 
   /*Configure GPIO pins : pino0_Pin pino1_Pin */
   GPIO_InitStruct.Pin = pino0_Pin|pino1_Pin;

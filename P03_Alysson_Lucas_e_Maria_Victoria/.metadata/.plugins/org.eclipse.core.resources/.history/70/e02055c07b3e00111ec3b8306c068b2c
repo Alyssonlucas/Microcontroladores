@@ -1,0 +1,396 @@
+/* USER CODE BEGIN Header */
+/**
+  ******************************************************************************
+  * @file           : main.c
+  * @brief          : Questão 3 - Construindo Conditions Flags
+  * @author         : Alysson Lucas Pontes Cavalcante da Silva e Maria Victória Martins Neves
+  * @date           : 21/04/2026
+  * @details        : Utilização de funções e interrupção para acionamento de Flags.
+  ******************************************************************************
+  */
+/* USER CODE END Header */
+
+/* Includes ------------------------------------------------------------------*/
+#include "main.h"
+
+/* Private includes ----------------------------------------------------------*/
+/* USER CODE BEGIN Includes */
+
+#include "condition_flag.h"
+
+/* USER CODE END Includes */
+
+/* Private typedef -----------------------------------------------------------*/
+/* USER CODE BEGIN PTD */
+
+/* USER CODE END PTD */
+
+/* Private define ------------------------------------------------------------*/
+/* USER CODE BEGIN PD */
+
+/* USER CODE END PD */
+
+/* Private macro -------------------------------------------------------------*/
+/* USER CODE BEGIN PM */
+
+/* USER CODE END PM */
+
+/* Private variables ---------------------------------------------------------*/
+
+/* USER CODE BEGIN PV */
+
+/* USER CODE END PV */
+
+/* Private function prototypes -----------------------------------------------*/
+void SystemClock_Config(void);
+static void MX_GPIO_Init(void);
+/* USER CODE BEGIN PFP */
+
+
+/* Prototipação das funções criadas */
+void UserLed(uint32_t tempo_atual, uint32_t *time_UserLed);
+void Estado_LED3(uint32_t tempo_atual, uint32_t *time3, uint32_t *time3seg);
+void Estado_LED4(uint32_t tempo_atual, uint32_t *time4, uint32_t *time6seg);
+
+
+/* USER CODE END PFP */
+
+/* Private user code ---------------------------------------------------------*/
+/* USER CODE BEGIN 0 */
+
+/* USER CODE END 0 */
+
+/**
+  * @brief  The application entry point.
+  * @retval int
+  */
+int main(void)
+{
+
+  /* USER CODE BEGIN 1 */
+
+  uint32_t tempo_atual = HAL_GetTick(); // Atualiza o tempo atual em milissegundos
+
+  uint32_t time3 = 0, time3seg = 0; //Controlar o tempo Led3
+
+  uint32_t time4 = 0, time6seg = 0; //Controlar o tempo Led4
+
+  uint32_t time_UserLed = tempo_atual; //Controlar o tempo do Userled.
+
+  uint8_t executando_flag1 = 0, executando_flag2 = 0; // Variaveis para travar a captura do tempo
+
+
+  /* USER CODE END 1 */
+
+  /* MCU Configuration--------------------------------------------------------*/
+
+  /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
+  HAL_Init();
+
+  /* USER CODE BEGIN Init */
+
+  /* USER CODE END Init */
+
+  /* Configure the system clock */
+  SystemClock_Config();
+
+  /* USER CODE BEGIN SysInit */
+
+  /* USER CODE END SysInit */
+
+  /* Initialize all configured peripherals */
+  MX_GPIO_Init();
+  /* USER CODE BEGIN 2 */
+
+  /* USER CODE END 2 */
+
+  /* Infinite loop */
+  /* USER CODE BEGIN WHILE */
+  while (1)
+  {
+	  tempo_atual = HAL_GetTick(); // Atualiza o tempo atual em milisegundos.
+
+	  //Função Userled. Pisca periodicamente 50ms acesso e 1950ms apagado.
+	  UserLed(tempo_atual, &time_UserLed);
+
+	  // Check da flag do botão 1
+	  if(condition_check_key1() == START) //Se o botão 1 foi pressionado FLAG1 = 1.
+	  {
+
+		  // Captura o tempo inicial apenas na primeira vez que entra aqui
+		  if(executando_flag1 == 0)
+		  {
+              time3seg = tempo_atual;
+		      time3 = tempo_atual;
+		      executando_flag1 = 1; // Trava para não atualizar mais
+		  }
+		  //Código de tratamento da interrupção
+		   //Pisca o LED D3 com o padrão 50 ms acesso, 150 ms apagado por 3 segundos;
+		   //Quando passar os 3 segundos a Flag1 é resetada.
+		  	Estado_LED3(tempo_atual, &time3, &time3seg);
+		  //Fim do código de tratamento da interrupção
+	  } else
+	  {
+		  executando_flag1 = 0; // Prepara para a próxima vez que apertar o botão
+	  }
+
+
+	  // Check da flag do botão 2
+	  if(condition_check_key2() == START)
+	  {
+
+		  // Captura o tempo inicial apenas na primeira vez que entra aqui
+		  if(executando_flag2 == 0)
+		  {
+              time6seg = tempo_atual;
+		      time4 = tempo_atual;
+		      executando_flag2 = 1; // Trava para não atualizar mais
+		  }
+		  //Código de tratamento da interrupção
+		  //Pisca o LED D4 com o padrão 100 ms acesso, 500 ms apagado por 6 segundos;
+	  	  //Quando passar os 6 segundos a Flag2 é resetada.
+		  Estado_LED4(tempo_atual, &time4, &time6seg);
+		  //Fim do código de tratamento da interrupção
+	  } else
+	  {
+		  executando_flag2 = 0; // Prepara para a próxima vez que apertar o botão
+	  }
+
+    /* USER CODE END WHILE */
+
+    /* USER CODE BEGIN 3 */
+  }
+  /* USER CODE END 3 */
+}
+
+/**
+  * @brief System Clock Configuration
+  * @retval None
+  */
+void SystemClock_Config(void)
+{
+  RCC_OscInitTypeDef RCC_OscInitStruct = {0};
+  RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
+
+  /** Initializes the RCC Oscillators according to the specified parameters
+  * in the RCC_OscInitTypeDef structure.
+  */
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
+  RCC_OscInitStruct.HSEState = RCC_HSE_ON;
+  RCC_OscInitStruct.HSEPredivValue = RCC_HSE_PREDIV_DIV1;
+  RCC_OscInitStruct.HSIState = RCC_HSI_ON;
+  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
+  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
+  RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL9;
+  if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Initializes the CPU, AHB and APB buses clocks
+  */
+  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
+                              |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
+  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
+  RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
+  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
+  RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
+
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+}
+
+/**
+  * @brief GPIO Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_GPIO_Init(void)
+{
+  GPIO_InitTypeDef GPIO_InitStruct = {0};
+  /* USER CODE BEGIN MX_GPIO_Init_1 */
+
+  /* USER CODE END MX_GPIO_Init_1 */
+
+  /* GPIO Ports Clock Enable */
+  __HAL_RCC_GPIOC_CLK_ENABLE();
+  __HAL_RCC_GPIOD_CLK_ENABLE();
+  __HAL_RCC_GPIOB_CLK_ENABLE();
+  __HAL_RCC_GPIOA_CLK_ENABLE();
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(UserLed_GPIO_Port, UserLed_Pin, GPIO_PIN_SET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOB, led1_Pin|led2_Pin|led3_Pin|led4_Pin, GPIO_PIN_SET);
+
+  /*Configure GPIO pin : UserLed_Pin */
+  GPIO_InitStruct.Pin = UserLed_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(UserLed_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : pino0_Pin pino1_Pin */
+  GPIO_InitStruct.Pin = pino0_Pin|pino1_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : led1_Pin led2_Pin led3_Pin led4_Pin */
+  GPIO_InitStruct.Pin = led1_Pin|led2_Pin|led3_Pin|led4_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+  /* EXTI interrupt init*/
+  HAL_NVIC_SetPriority(EXTI0_IRQn, 5, 0);
+  HAL_NVIC_EnableIRQ(EXTI0_IRQn);
+
+  HAL_NVIC_SetPriority(EXTI1_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI1_IRQn);
+
+  /* USER CODE BEGIN MX_GPIO_Init_2 */
+
+  /* USER CODE END MX_GPIO_Init_2 */
+}
+
+/* USER CODE BEGIN 4 */
+
+//Função Callback: Serve para chamar uma interrupção externa
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{
+
+	/* Verifica se a interrupção foi gerada pelo pino do SW01 */
+	//interrupção do botão 1 (pressionado) -> Inverte led1 e Seta Flag1
+
+	  if (GPIO_Pin == pino0_Pin)
+	  {
+		/* Inverte o estado do LED D1 */
+	    HAL_GPIO_TogglePin(led1_GPIO_Port, led1_Pin);
+	   //Seta a Flag1.
+	    Set_Flag_key1();
+	  }
+
+	  /* Verifica se a interrupção foi gerada pelo pino do SW02 */
+	  //interrupção do botão 2 (pressionado) -> Inverte led2 e Seta Flag2
+	  if (GPIO_Pin == pino1_Pin)
+	  {
+	    /* Inverte o estado do LED D2 */
+	    HAL_GPIO_TogglePin(led2_GPIO_Port, led2_Pin);
+	    //Seta a Flag2.
+	    Set_Flag_key2();
+	  }
+
+}
+
+void Estado_LED3(uint32_t tempo_atual, uint32_t *time3, uint32_t *time3seg)
+{
+	if ((tempo_atual - *time3seg) <=3000) //Pisca o Led3 por 3 segundos.
+	{
+		// LED 3: 50 ms aceso, 150 ms apagado por 3 segundos
+		if (HAL_GPIO_ReadPin(led3_GPIO_Port, led3_Pin) == GPIO_PIN_SET)
+		{ // Se apagado
+			if ((tempo_atual - *time3) >= 150)
+			{ //Espera 150ms apagado para acender.
+				HAL_GPIO_WritePin(led3_GPIO_Port, led3_Pin, GPIO_PIN_RESET);
+				*time3 = tempo_atual; //reseta a contagem do time3
+			}
+		} else
+		{ // Se aceso
+			if ((tempo_atual - *time3) >= 50)
+			{ //espera 50ms aceso para apagar.
+				HAL_GPIO_WritePin(led3_GPIO_Port, led3_Pin, GPIO_PIN_SET);
+				*time3 = tempo_atual; //reseta a contagem do time3
+			}
+		}
+	} else 	//Quando passar os 3 segundos reseta a flag1
+	{
+		HAL_GPIO_WritePin(led3_GPIO_Port, led3_Pin, GPIO_PIN_SET); // Garante que o led3 termine apagado
+		Reset_Flag_key1();
+	}
+}
+
+void Estado_LED4(uint32_t tempo_atual, uint32_t *time4, uint32_t *time6seg)
+{
+	if ((tempo_atual - *time6seg) <=6000) //Pisca o Led3 por 6 segundos.
+	{
+		// LED 4: 100 ms aceso, 500 ms apagado por 6 segundos
+		if (HAL_GPIO_ReadPin(led4_GPIO_Port, led4_Pin) == GPIO_PIN_SET)
+		{ // Se apagado
+			if ((tempo_atual - *time4) >= 500)
+			{ //Espera 500ms apagado para acender.
+				HAL_GPIO_WritePin(led4_GPIO_Port, led4_Pin, GPIO_PIN_RESET);
+				*time4 = tempo_atual; //reseta a contagem do time4
+			}
+		} else
+		{ // Se aceso
+			if ((tempo_atual - *time4) >= 100)
+			{ //espera 100ms aceso para apagar.
+				HAL_GPIO_WritePin(led4_GPIO_Port, led4_Pin, GPIO_PIN_SET);
+				*time4 = tempo_atual; //reseta a contagem do time4
+			}
+		}
+	} else //Quando passar os 6 segundos reseta a flag2
+	{
+		Reset_Flag_key2();
+		HAL_GPIO_WritePin(led4_GPIO_Port, led4_Pin, GPIO_PIN_SET); // Garante que o led4 termine apagado
+	}
+}
+
+
+void UserLed(uint32_t tempo_atual, uint32_t *time_UserLed)
+{
+    if (HAL_GPIO_ReadPin(UserLed_GPIO_Port, UserLed_Pin) == GPIO_PIN_SET) // Se apagado
+    {
+        if ((tempo_atual - *time_UserLed) >= 1950)
+        {
+            HAL_GPIO_WritePin(UserLed_GPIO_Port, UserLed_Pin, GPIO_PIN_RESET);
+            *time_UserLed = tempo_atual;
+        }
+    } else // Se aceso
+    {
+        if ((tempo_atual - *time_UserLed) >= 50)
+        {
+            HAL_GPIO_WritePin(UserLed_GPIO_Port, UserLed_Pin, GPIO_PIN_SET);
+            *time_UserLed = tempo_atual;
+        }
+    }
+}
+
+
+/* USER CODE END 4 */
+
+/**
+  * @brief  This function is executed in case of error occurrence.
+  * @retval None
+  */
+void Error_Handler(void)
+{
+  /* USER CODE BEGIN Error_Handler_Debug */
+  /* User can add his own implementation to report the HAL error return state */
+  __disable_irq();
+  while (1)
+  {
+  }
+  /* USER CODE END Error_Handler_Debug */
+}
+#ifdef USE_FULL_ASSERT
+/**
+  * @brief  Reports the name of the source file and the source line number
+  *         where the assert_param error has occurred.
+  * @param  file: pointer to the source file name
+  * @param  line: assert_param error line source number
+  * @retval None
+  */
+void assert_failed(uint8_t *file, uint32_t line)
+{
+  /* USER CODE BEGIN 6 */
+  /* User can add his own implementation to report the file name and line number,
+     ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
+  /* USER CODE END 6 */
+}
+#endif /* USE_FULL_ASSERT */

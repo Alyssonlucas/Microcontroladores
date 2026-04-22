@@ -3,7 +3,10 @@
     <launchGroup id="org.eclipse.debug.ui.launchGroup.debug">
         <mruHistory>
             <launch memento="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;launchConfiguration local=&quot;false&quot; path=&quot;/MICRO_P02_Q1_ALYSSON_VICTORIA/MICRO_P02_Q1_ALYSSON_VICTORIA Debug.launch&quot;/&gt;&#13;&#10;"/>
+<<<<<<< HEAD
+=======
             <launch memento="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;launchConfiguration local=&quot;false&quot; path=&quot;/projeto1/projeto1 Debug.launch&quot;/&gt;&#13;&#10;"/>
+>>>>>>> 8ca8918162c44037b1d9bb9206f23faac4e8c0d1
         </mruHistory>
         <favorites/>
     </launchGroup>
@@ -18,7 +21,10 @@
     <launchGroup id="org.eclipse.debug.ui.launchGroup.run">
         <mruHistory>
             <launch memento="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;launchConfiguration local=&quot;false&quot; path=&quot;/MICRO_P02_Q1_ALYSSON_VICTORIA/MICRO_P02_Q1_ALYSSON_VICTORIA Debug.launch&quot;/&gt;&#13;&#10;"/>
+<<<<<<< HEAD
+=======
             <launch memento="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;launchConfiguration local=&quot;false&quot; path=&quot;/projeto1/projeto1 Debug.launch&quot;/&gt;&#13;&#10;"/>
+>>>>>>> 8ca8918162c44037b1d9bb9206f23faac4e8c0d1
         </mruHistory>
         <favorites/>
     </launchGroup>

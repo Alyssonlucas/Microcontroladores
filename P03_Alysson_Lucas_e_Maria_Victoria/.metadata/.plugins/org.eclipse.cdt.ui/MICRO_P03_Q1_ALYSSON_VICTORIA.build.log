@@ -1,0 +1,17 @@
+15:25:02 **** Build of configuration Debug for project MICRO_P03_Q1_ALYSSON_VICTORIA ****
+make -j16 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "MICRO_P03_Q1_ALYSSON_VICTORIA.elf" @"objects.list"   -mcpu=cortex-m3 -T"C:\Users\lucas\Desktop\Disciplinas\2026.1 (atual)\microcontroladores\Microcontroladores\P03_Alysson_Lucas_e_Maria_Victoria\MICRO_P03_Q1_ALYSSON_VICTORIA\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MICRO_P03_Q1_ALYSSON_VICTORIA.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: MICRO_P03_Q1_ALYSSON_VICTORIA.elf
+ 
+arm-none-eabi-size  MICRO_P03_Q1_ALYSSON_VICTORIA.elf 
+arm-none-eabi-objdump -h -S MICRO_P03_Q1_ALYSSON_VICTORIA.elf  > "MICRO_P03_Q1_ALYSSON_VICTORIA.list"
+   text	   data	    bss	    dec	    hex	filename
+   5908	     12	   1572	   7492	   1d44	MICRO_P03_Q1_ALYSSON_VICTORIA.elf
+Finished building: default.size.stdout
+ 
+Finished building: MICRO_P03_Q1_ALYSSON_VICTORIA.list
+ 
+
+15:25:05 Build Finished. 0 errors, 0 warnings. (took 2s.865ms)
+

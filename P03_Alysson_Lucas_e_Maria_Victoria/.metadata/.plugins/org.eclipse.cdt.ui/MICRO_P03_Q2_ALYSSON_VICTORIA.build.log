@@ -1,0 +1,10 @@
+15:25:05 **** Build of configuration Debug for project MICRO_P03_Q2_ALYSSON_VICTORIA ****
+make -j16 all 
+arm-none-eabi-size  MICRO_P03_Q2_ALYSSON_VICTORIA.elf 
+   text	   data	    bss	    dec	    hex	filename
+   4940	     12	   1572	   6524	   197c	MICRO_P03_Q2_ALYSSON_VICTORIA.elf
+Finished building: default.size.stdout
+ 
+
+15:25:06 Build Finished. 0 errors, 0 warnings. (took 675ms)
+

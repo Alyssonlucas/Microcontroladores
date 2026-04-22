@@ -60,8 +60,13 @@ all: main-build
 main-build: MICRO_P02_Q2_ALYSSON_VICTORIA.elf secondary-outputs
 
 # Tool invocations
+<<<<<<< HEAD
+MICRO_P02_Q2_ALYSSON_VICTORIA.elf MICRO_P02_Q2_ALYSSON_VICTORIA.map: $(OBJS) $(USER_OBJS) C:\Users\lucas\Desktop\Disciplinas\2026.1\ (atual)\microcontroladores\Microcontroladores\P02_Alysson_Lucas_e_Maria_Victoria\MICRO_P02_Q2_ALYSSON_VICTORIA\STM32F103C8TX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "MICRO_P02_Q2_ALYSSON_VICTORIA.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"C:\Users\lucas\Desktop\Disciplinas\2026.1 (atual)\microcontroladores\Microcontroladores\P02_Alysson_Lucas_e_Maria_Victoria\MICRO_P02_Q2_ALYSSON_VICTORIA\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MICRO_P02_Q2_ALYSSON_VICTORIA.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+=======
 MICRO_P02_Q2_ALYSSON_VICTORIA.elf MICRO_P02_Q2_ALYSSON_VICTORIA.map: $(OBJS) $(USER_OBJS) C:\Users\mvict\OneDrive\Documentos\UFPE\Microcomputadores\Microcontroladores\P02_Alysson_Lucas_e_Maria_Victoria\MICRO_P02_Q2_ALYSSON_VICTORIA\STM32F103C8TX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
 	arm-none-eabi-gcc -o "MICRO_P02_Q2_ALYSSON_VICTORIA.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"C:\Users\mvict\OneDrive\Documentos\UFPE\Microcomputadores\Microcontroladores\P02_Alysson_Lucas_e_Maria_Victoria\MICRO_P02_Q2_ALYSSON_VICTORIA\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MICRO_P02_Q2_ALYSSON_VICTORIA.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+>>>>>>> 8ca8918162c44037b1d9bb9206f23faac4e8c0d1
 	@echo 'Finished building target: $@'
 	@echo ' '
 

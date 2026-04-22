@@ -57,8 +57,13 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+<<<<<<< HEAD
+#define led_placa_Pin GPIO_PIN_13
+#define led_placa_GPIO_Port GPIOC
+=======
 #define UserLed_Pin GPIO_PIN_13
 #define UserLed_GPIO_Port GPIOC
+>>>>>>> 8ca8918162c44037b1d9bb9206f23faac4e8c0d1
 #define pino0_Pin GPIO_PIN_0
 #define pino0_GPIO_Port GPIOB
 #define pino1_Pin GPIO_PIN_1

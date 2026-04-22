@@ -2,6 +2,22 @@
 /**
   ******************************************************************************
   * @file           : main.c
+<<<<<<< HEAD
+  * @brief          : Main program body
+  ******************************************************************************
+  * @attention
+  *
+  * Copyright (c) 2026 STMicroelectronics.
+  * All rights reserved.
+  *
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
+  *
+  ******************************************************************************
+  */
+/* USER CODE END Header */
+=======
   * @brief          : Questão 1 - Configurações Iniciais da Blue Pill
   * @authors        : Alysson Lucas Pontes Cavalcante da Silva e Maria Victória Martins Neves
   * @date           : 25/03/2026
@@ -11,6 +27,7 @@
   */
 /* USER CODE END Header */
 
+>>>>>>> 8ca8918162c44037b1d9bb9206f23faac4e8c0d1
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 
@@ -35,12 +52,21 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
+<<<<<<< HEAD
+
+/* USER CODE BEGIN PV */
+
+/* USER CODE END PV */
+
+/* Private function prototypes -----------------------------------------------*/
+=======
 /* USER CODE BEGIN PV */
 // (Espaço reservado para declaração de variáveis globais do usuário)
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 // Declaração prévia das funções geradas pela IDE para que possam ser usadas na main()
+>>>>>>> 8ca8918162c44037b1d9bb9206f23faac4e8c0d1
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 /* USER CODE BEGIN PFP */
@@ -60,14 +86,21 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
+<<<<<<< HEAD
+
+=======
 	// Espaço para declarar variáveis locais específicas da função main, se necessário
+>>>>>>> 8ca8918162c44037b1d9bb9206f23faac4e8c0d1
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
 
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
+<<<<<<< HEAD
+=======
 	// 1. INICIALIZAÇÃO DA HAL:
 	// Reseta os periféricos e liga o cronômetro interno (SysTick) de 1ms base
+>>>>>>> 8ca8918162c44037b1d9bb9206f23faac4e8c0d1
   HAL_Init();
 
   /* USER CODE BEGIN Init */
@@ -75,8 +108,11 @@ int main(void)
   /* USER CODE END Init */
 
   /* Configure the system clock */
+<<<<<<< HEAD
+=======
     // 2. CONFIGURAÇÃO DE CLOCK:
     // Define a frequência de operação do microcontrolador
+>>>>>>> 8ca8918162c44037b1d9bb9206f23faac4e8c0d1
   SystemClock_Config();
 
   /* USER CODE BEGIN SysInit */
@@ -84,9 +120,12 @@ int main(void)
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
+<<<<<<< HEAD
+=======
     // 3. INICIALIZAÇÃO DOS PINOS:
     // Chama a função que configura os pinos como Entradas (Botões) ou Saídas (LEDs),
     // conforme definido na interface gráfica (CubeMX)
+>>>>>>> 8ca8918162c44037b1d9bb9206f23faac4e8c0d1
   MX_GPIO_Init();
   /* USER CODE BEGIN 2 */
 
@@ -94,11 +133,24 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+<<<<<<< HEAD
+  while (1)
+  {
+	  HAL_GPIO_TogglePin(led1_GPIO_Port, led1_Pin);
+	  HAL_Delay(500);
+	  HAL_GPIO_TogglePin(led2_GPIO_Port, led2_Pin);
+	  HAL_Delay(1000);
+	  HAL_GPIO_TogglePin(led3_GPIO_Port, led3_Pin);
+	  HAL_Delay(1000);
+	  HAL_GPIO_TogglePin(led4_GPIO_Port, led4_Pin);
+	  HAL_Delay(1000);
+=======
     // 4. LOOP PRINCIPAL:
     // Como é a Questão 1 (apenas configuração de hardware), o loop fica vazio
     // O microcontrolador ficará preso aqui para que o sistema não encerre
   while (1)
   {
+>>>>>>> 8ca8918162c44037b1d9bb9206f23faac4e8c0d1
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -118,6 +170,15 @@ void SystemClock_Config(void)
   /** Initializes the RCC Oscillators according to the specified parameters
   * in the RCC_OscInitTypeDef structure.
   */
+<<<<<<< HEAD
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
+  RCC_OscInitStruct.HSEState = RCC_HSE_ON;
+  RCC_OscInitStruct.HSEPredivValue = RCC_HSE_PREDIV_DIV1;
+  RCC_OscInitStruct.HSIState = RCC_HSI_ON;
+  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
+  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
+  RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL9;
+=======
   // 1. CONFIGURAÇÃO DA FONTE DE CLOCK (CRISTAL E MULTIPLICADOR)
   // Define o uso do oscilador externo de alta velocidade (HSE), que é o cristal da placa (geralmente 8MHz).
   RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
@@ -132,6 +193,7 @@ void SystemClock_Config(void)
   RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL9;
 
   // Aplica as configurações e verifica se houve erro no hardware
+>>>>>>> 8ca8918162c44037b1d9bb9206f23faac4e8c0d1
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
   {
     Error_Handler();
@@ -139,6 +201,15 @@ void SystemClock_Config(void)
 
   /** Initializes the CPU, AHB and APB buses clocks
   */
+<<<<<<< HEAD
+  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
+                              |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
+  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
+  RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
+  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
+  RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
+
+=======
   // 2. DISTRIBUIÇÃO DO CLOCK PELOS BARRAMENTOS DO SISTEMA
   RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
                               |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
@@ -154,6 +225,7 @@ void SystemClock_Config(void)
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
 
   // Aplica a distribuição de clock e configura a latência da memória Flash (necessário para altas velocidades)
+>>>>>>> 8ca8918162c44037b1d9bb9206f23faac4e8c0d1
   if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
   {
     Error_Handler();
@@ -168,6 +240,13 @@ void SystemClock_Config(void)
 static void MX_GPIO_Init(void)
 {
   GPIO_InitTypeDef GPIO_InitStruct = {0};
+<<<<<<< HEAD
+  /* USER CODE BEGIN MX_GPIO_Init_1 */
+
+  /* USER CODE END MX_GPIO_Init_1 */
+
+  /* GPIO Ports Clock Enable */
+=======
 
   /* USER CODE BEGIN MX_GPIO_Init_1 */
   // (Espaço para código de usuário antes da inicialização dos pinos)
@@ -176,12 +255,28 @@ static void MX_GPIO_Init(void)
   /* GPIO Ports Clock Enable */
   // 1. ATIVAÇÃO DO CLOCK DAS PORTAS:
   // Liga o clock interno para as portas C, D, B e A. Se isso não for feito, os pinos ficam inativos.
+>>>>>>> 8ca8918162c44037b1d9bb9206f23faac4e8c0d1
   __HAL_RCC_GPIOC_CLK_ENABLE();
   __HAL_RCC_GPIOD_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
+<<<<<<< HEAD
+  HAL_GPIO_WritePin(led_placa_GPIO_Port, led_placa_Pin, GPIO_PIN_SET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOB, led1_Pin|led2_Pin|led3_Pin|led4_Pin, GPIO_PIN_SET);
+
+  /*Configure GPIO pin : led_placa_Pin */
+  GPIO_InitStruct.Pin = led_placa_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(led_placa_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : pino0_Pin pino1_Pin */
+=======
   // 2. ESTADO INICIAL DOS PINOS DE SAÍDA:
   // Define que o pino do LED do usuário (UserLed) comece em nível ALTO (SET).
   // Na placa Blue Pill, o LED embutido trabalha com lógica invertida, portanto o estado ALTO o mantém apagado.
@@ -205,14 +300,18 @@ static void MX_GPIO_Init(void)
   // Modo Input (Entrada) com o resistor interno de PULL-UP ativado.
   // Isso força o pino a ler nível ALTO quando o botão não está sendo pressionado,
   // evitando flutuação de sinal (ruído elétrico).
+>>>>>>> 8ca8918162c44037b1d9bb9206f23faac4e8c0d1
   GPIO_InitStruct.Pin = pino0_Pin|pino1_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
   /*Configure GPIO pins : led1_Pin led2_Pin led3_Pin led4_Pin */
+<<<<<<< HEAD
+=======
   // 5. CONFIGURAÇÃO DOS LEDs EXTERNOS (SAÍDAS):
   // Modo Output Push-Pull para acionar os circuitos dos LEDs conectados na porta B.
+>>>>>>> 8ca8918162c44037b1d9bb9206f23faac4e8c0d1
   GPIO_InitStruct.Pin = led1_Pin|led2_Pin|led3_Pin|led4_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
@@ -220,12 +319,20 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
   /* USER CODE BEGIN MX_GPIO_Init_2 */
+<<<<<<< HEAD
+
+=======
   // (Espaço para código extra do usuário após a configuração dos pinos)
+>>>>>>> 8ca8918162c44037b1d9bb9206f23faac4e8c0d1
   /* USER CODE END MX_GPIO_Init_2 */
 }
 
 /* USER CODE BEGIN 4 */
+<<<<<<< HEAD
+
+=======
 // (Espaço final reservado para criação de funções auxiliares do usuário)
+>>>>>>> 8ca8918162c44037b1d9bb9206f23faac4e8c0d1
 /* USER CODE END 4 */
 
 /**
@@ -236,6 +343,9 @@ void Error_Handler(void)
 {
   /* USER CODE BEGIN Error_Handler_Debug */
   /* User can add his own implementation to report the HAL error return state */
+<<<<<<< HEAD
+  __disable_irq();
+=======
 
   // FREIO DE EMERGÊNCIA:
   // Desativa todas as interrupções (o microcontrolador para de responder a eventos externos).
@@ -243,16 +353,24 @@ void Error_Handler(void)
 
   // Prende o processador em um loop infinito. A placa "trava" intencionalmente
   // para proteger o sistema caso uma configuração crítica de hardware falhe.
+>>>>>>> 8ca8918162c44037b1d9bb9206f23faac4e8c0d1
   while (1)
   {
   }
   /* USER CODE END Error_Handler_Debug */
 }
+<<<<<<< HEAD
+#ifdef USE_FULL_ASSERT
+/**
+  * @brief  Reports the name of the source file and the source line number
+  *         where the assert_param error has occurred.
+=======
 
 #ifdef USE_FULL_ASSERT
 /**
   * @brief  Reports the name of the source file and the source line number
   * where the assert_param error has occurred.
+>>>>>>> 8ca8918162c44037b1d9bb9206f23faac4e8c0d1
   * @param  file: pointer to the source file name
   * @param  line: assert_param error line source number
   * @retval None
@@ -262,11 +380,14 @@ void assert_failed(uint8_t *file, uint32_t line)
   /* USER CODE BEGIN 6 */
   /* User can add his own implementation to report the file name and line number,
      ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
+<<<<<<< HEAD
+=======
 
   // FERRAMENTA DE DEBUG:
   // Se a verificação de parâmetros (ASSERT) estiver ativada e um erro ocorrer
   // em alguma função da HAL, o sistema cairá aqui.
   // Ideal para imprimir (via UART/Serial) qual arquivo e linha causaram o erro.
+>>>>>>> 8ca8918162c44037b1d9bb9206f23faac4e8c0d1
   /* USER CODE END 6 */
 }
 #endif /* USE_FULL_ASSERT */
