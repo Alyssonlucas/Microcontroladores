@@ -37,11 +37,11 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING, OCTETS
  16 .debug_macro  000159cb  00000000  00000000  0000707b  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 17 .debug_line   000054b6  00000000  00000000  0001ca46  2**0
+ 17 .debug_line   000054b5  00000000  00000000  0001ca46  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_str    0007be7b  00000000  00000000  00021efc  2**0
+ 18 .debug_str    0007be7b  00000000  00000000  00021efb  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .comment      00000043  00000000  00000000  0009dd77  2**0
+ 19 .comment      00000043  00000000  00000000  0009dd76  2**0
                   CONTENTS, READONLY
  20 .debug_frame  00000d88  00000000  00000000  0009ddbc  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
@@ -384,8 +384,10 @@ static void MX_GPIO_Init(void)
  8000300:	10210000 	.word	0x10210000
 
 08000304 <HAL_GPIO_EXTI_Callback>:
-
-/* USER CODE BEGIN 4 */
+  * Inverte o estado dos LEDs 1 e 2.
+  * @param  GPIO_Pin Especifica o pino que gerou a interrupção.
+  * @retval None
+  */
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
  8000304:	b580      	push	{r7, lr}

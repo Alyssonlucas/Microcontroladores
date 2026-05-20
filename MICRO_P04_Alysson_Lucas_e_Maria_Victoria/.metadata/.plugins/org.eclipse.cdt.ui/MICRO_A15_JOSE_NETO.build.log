@@ -1,0 +1,10 @@
+15:18:46 **** Build of configuration Debug for project MICRO_A15_JOSE_NETO ****
+make -j16 all 
+arm-none-eabi-size  MICRO_A15_JOSE_NETO.elf 
+   text	   data	    bss	    dec	    hex	filename
+  11916	     12	   1692	  13620	   3534	MICRO_A15_JOSE_NETO.elf
+Finished building: default.size.stdout
+ 
+
+15:18:47 Build Finished. 0 errors, 0 warnings. (took 1s.794ms)
+

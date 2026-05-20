@@ -1,0 +1,10 @@
+../Core/Src/main.c:73:5:main	1
+../Core/Src/main.c:133:6:SystemClock_Config	4
+../Core/Src/main.c:180:13:MX_ADC2_Init	3
+../Core/Src/main.c:227:13:MX_GPIO_Init	1
+../Core/Src/main.c:285:6:Funcao_Start_ADC	2
+../Core/Src/main.c:299:6:Funcao_CheckFlags	2
+../Core/Src/main.c:322:6:HAL_ADC_ConvCpltCallback	2
+../Core/Src/main.c:339:6:UserLed	4
+../Core/Src/main.c:357:6:LedComportamento	5
+../Core/Src/main.c:394:6:Error_Handler	1

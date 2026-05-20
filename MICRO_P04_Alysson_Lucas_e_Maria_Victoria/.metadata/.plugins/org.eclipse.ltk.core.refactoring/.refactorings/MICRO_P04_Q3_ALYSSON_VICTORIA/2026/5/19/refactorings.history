@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;MICRO_P04_Q3_ALYSSON_VICTORIA/Core/Inc/Condition_Flags.h&apos; to &apos;condition_flag.h&apos;" description="Rename resource &apos;Condition_Flags.h&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="Core/Inc/Condition_Flags.h" name="condition_flag.h" stamp="1777917478297" updateReferences="true"/>
+</session>

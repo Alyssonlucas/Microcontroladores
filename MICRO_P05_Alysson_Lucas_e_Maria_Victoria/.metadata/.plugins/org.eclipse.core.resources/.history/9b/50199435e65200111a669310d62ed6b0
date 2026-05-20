@@ -1,0 +1,21 @@
+/*
+ * usb_flags.h
+ *
+ *  Created on: May 18, 2026
+ *      Author: lucas
+ */
+
+#ifndef INC_USB_FLAGS_H_
+#define INC_USB_FLAGS_H_
+
+#include <stdint.h>
+
+/* Flag global que indica se há novos dados para serem tratados.
+ * O 'extern' avisa que ela foi criada fisicamente no .c */
+extern volatile uint8_t flag_usb_rx;
+
+/* Protótipos das funções */
+void USB_Salva_Dados_ISR(uint8_t* Buf, uint32_t Len);
+void USB_Trata_Comandos(uint32_t valor_adc);
+
+#endif /* USB_FLAGS_H */
