@@ -4,7 +4,7 @@
   * @file           : main.c
   * @brief          : Prática 5 - Configuração e utilização da comunicação USB
   * @author         : Alysson Lucas Pontes Cavalcante da Silva e Maria Victória Martins Neves
-  * @date           : 18/05/2026
+  * @date           : 20/05/2026
   * @details        : Aprendendo a realizar a configuração e a utilização da comunicação USB
   * entre o computador e placa BluePill.
   ******************************************************************************
@@ -31,7 +31,7 @@
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 
-#define ADC_MAX_VAL 4095 // Resolução de 12 bits do ADC do STM32
+#define ADC_MAX_VAL 4040 // Resolução de 12 bits do ADC do STM32 (ajustada)
 #define ADC_BUF_LEN 1    // Tamanho do buffer do DMA
 
 /* USER CODE END PD */
@@ -59,16 +59,13 @@ static void MX_DMA_Init(void);
 static void MX_ADC1_Init(void);
 static void MX_TIM3_Init(void);
 static void MX_TIM1_Init(void);
-
 /* USER CODE BEGIN PFP */
 void UserLed(uint32_t tempo_atual, uint32_t *time_UserLed);
 uint32_t Duty_Conversion(uint32_t valor_adc);
 
-// Função Mestre de Dupla Ação (Interrupção e Processamento)
+// Função de Processamento dos dados recebidos do USB
 void Process_USB_Commands(uint32_t *adc_val, uint8_t *Buf, uint32_t Len);
 
-// Função nativa da ST mantida no arquivo principal conforme exigido
-void USB_CDC_RxHandler(uint8_t* Buf, uint32_t Len);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -82,6 +79,7 @@ void USB_CDC_RxHandler(uint8_t* Buf, uint32_t Len);
   */
 int main(void)
 {
+
   /* USER CODE BEGIN 1 */
 	uint32_t tempo_atual = HAL_GetTick(); // Atualiza o tempo atual em milissegundos
 	uint32_t time_UserLed = tempo_atual;  // Controlar o tempo do Userled.
@@ -91,18 +89,30 @@ int main(void)
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
+
+  /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
   HAL_Init();
+
+  /* USER CODE BEGIN Init */
+
+  /* USER CODE END Init */
+
+  /* Configure the system clock */
   SystemClock_Config();
 
+  /* USER CODE BEGIN SysInit */
+
+  /* USER CODE END SysInit */
+
+  /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_DMA_Init();
   MX_ADC1_Init();
   MX_TIM3_Init();
   MX_TIM1_Init();
   MX_USB_DEVICE_Init();
-
   /* USER CODE BEGIN 2 */
-  HAL_TIM_Base_Start(&htim3); // Inicializa o TIM3 que está definido para 100ms
+  HAL_TIM_Base_Start(&htim3); // Inicializa o TIM3 que está definido para 200ms
 
   //Estamos utilizando o canal N, Inicialização do PWM temporizador 1 e canais 3,2 e 1.
   HAL_TIMEx_PWMN_Start(&htim1,TIM_CHANNEL_3);
@@ -126,21 +136,26 @@ int main(void)
 	 // Chama a máquina de estados Mestre. Ela mesma verifica a flag e o timeout internamente!
 	 Process_USB_Commands(&adc_buffer[0], NULL, 0);
 
-	 /* USER CODE END WHILE */
-	 /* USER CODE BEGIN 3 */
+    /* USER CODE END WHILE */
+
+    /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
 }
 
-// ==============================================================================
-// FUNÇÕES DE CONFIGURAÇÃO DO CUBEMX MANTIDAS INTACTAS
-// ==============================================================================
+/**
+  * @brief System Clock Configuration
+  * @retval None
+  */
 void SystemClock_Config(void)
 {
   RCC_OscInitTypeDef RCC_OscInitStruct = {0};
   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
   RCC_PeriphCLKInitTypeDef PeriphClkInit = {0};
 
+  /** Initializes the RCC Oscillators according to the specified parameters
+  * in the RCC_OscInitTypeDef structure.
+  */
   RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
   RCC_OscInitStruct.HSEState = RCC_HSE_ON;
   RCC_OscInitStruct.HSEPredivValue = RCC_HSE_PREDIV_DIV1;
@@ -153,6 +168,8 @@ void SystemClock_Config(void)
     Error_Handler();
   }
 
+  /** Initializes the CPU, AHB and APB buses clocks
+  */
   RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
                               |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
   RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
@@ -173,9 +190,26 @@ void SystemClock_Config(void)
   }
 }
 
+/**
+  * @brief ADC1 Initialization Function
+  * @param None
+  * @retval None
+  */
 static void MX_ADC1_Init(void)
 {
+
+  /* USER CODE BEGIN ADC1_Init 0 */
+
+  /* USER CODE END ADC1_Init 0 */
+
   ADC_ChannelConfTypeDef sConfig = {0};
+
+  /* USER CODE BEGIN ADC1_Init 1 */
+
+  /* USER CODE END ADC1_Init 1 */
+
+  /** Common config
+  */
   hadc1.Instance = ADC1;
   hadc1.Init.ScanConvMode = ADC_SCAN_DISABLE;
   hadc1.Init.ContinuousConvMode = DISABLE;
@@ -183,20 +217,45 @@ static void MX_ADC1_Init(void)
   hadc1.Init.ExternalTrigConv = ADC_EXTERNALTRIGCONV_T3_TRGO;
   hadc1.Init.DataAlign = ADC_DATAALIGN_RIGHT;
   hadc1.Init.NbrOfConversion = 1;
-  if (HAL_ADC_Init(&hadc1) != HAL_OK) { Error_Handler(); }
+  if (HAL_ADC_Init(&hadc1) != HAL_OK)
+  {
+    Error_Handler();
+  }
 
+  /** Configure Regular Channel
+  */
   sConfig.Channel = ADC_CHANNEL_0;
   sConfig.Rank = ADC_REGULAR_RANK_1;
   sConfig.SamplingTime = ADC_SAMPLETIME_1CYCLE_5;
-  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK) { Error_Handler(); }
+  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN ADC1_Init 2 */
+
+  /* USER CODE END ADC1_Init 2 */
+
 }
 
+/**
+  * @brief TIM1 Initialization Function
+  * @param None
+  * @retval None
+  */
 static void MX_TIM1_Init(void)
 {
+
+  /* USER CODE BEGIN TIM1_Init 0 */
+
+  /* USER CODE END TIM1_Init 0 */
+
   TIM_MasterConfigTypeDef sMasterConfig = {0};
   TIM_OC_InitTypeDef sConfigOC = {0};
   TIM_BreakDeadTimeConfigTypeDef sBreakDeadTimeConfig = {0};
 
+  /* USER CODE BEGIN TIM1_Init 1 */
+
+  /* USER CODE END TIM1_Init 1 */
   htim1.Instance = TIM1;
   htim1.Init.Prescaler = 71;
   htim1.Init.CounterMode = TIM_COUNTERMODE_UP;
@@ -204,12 +263,16 @@ static void MX_TIM1_Init(void)
   htim1.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim1.Init.RepetitionCounter = 0;
   htim1.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
-  if (HAL_TIM_PWM_Init(&htim1) != HAL_OK) { Error_Handler(); }
-
+  if (HAL_TIM_PWM_Init(&htim1) != HAL_OK)
+  {
+    Error_Handler();
+  }
   sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
   sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
-  if (HAL_TIMEx_MasterConfigSynchronization(&htim1, &sMasterConfig) != HAL_OK) { Error_Handler(); }
-
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim1, &sMasterConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
   sConfigOC.OCMode = TIM_OCMODE_PWM1;
   sConfigOC.Pulse = 0;
   sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
@@ -217,10 +280,18 @@ static void MX_TIM1_Init(void)
   sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
   sConfigOC.OCIdleState = TIM_OCIDLESTATE_RESET;
   sConfigOC.OCNIdleState = TIM_OCNIDLESTATE_RESET;
-  if (HAL_TIM_PWM_ConfigChannel(&htim1, &sConfigOC, TIM_CHANNEL_1) != HAL_OK) { Error_Handler(); }
-  if (HAL_TIM_PWM_ConfigChannel(&htim1, &sConfigOC, TIM_CHANNEL_2) != HAL_OK) { Error_Handler(); }
-  if (HAL_TIM_PWM_ConfigChannel(&htim1, &sConfigOC, TIM_CHANNEL_3) != HAL_OK) { Error_Handler(); }
-
+  if (HAL_TIM_PWM_ConfigChannel(&htim1, &sConfigOC, TIM_CHANNEL_1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_TIM_PWM_ConfigChannel(&htim1, &sConfigOC, TIM_CHANNEL_2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_TIM_PWM_ConfigChannel(&htim1, &sConfigOC, TIM_CHANNEL_3) != HAL_OK)
+  {
+    Error_Handler();
+  }
   sBreakDeadTimeConfig.OffStateRunMode = TIM_OSSR_DISABLE;
   sBreakDeadTimeConfig.OffStateIDLEMode = TIM_OSSI_DISABLE;
   sBreakDeadTimeConfig.LockLevel = TIM_LOCKLEVEL_OFF;
@@ -228,72 +299,132 @@ static void MX_TIM1_Init(void)
   sBreakDeadTimeConfig.BreakState = TIM_BREAK_DISABLE;
   sBreakDeadTimeConfig.BreakPolarity = TIM_BREAKPOLARITY_HIGH;
   sBreakDeadTimeConfig.AutomaticOutput = TIM_AUTOMATICOUTPUT_DISABLE;
-  if (HAL_TIMEx_ConfigBreakDeadTime(&htim1, &sBreakDeadTimeConfig) != HAL_OK) { Error_Handler(); }
+  if (HAL_TIMEx_ConfigBreakDeadTime(&htim1, &sBreakDeadTimeConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM1_Init 2 */
 
+  /* USER CODE END TIM1_Init 2 */
   HAL_TIM_MspPostInit(&htim1);
+
 }
 
+/**
+  * @brief TIM3 Initialization Function
+  * @param None
+  * @retval None
+  */
 static void MX_TIM3_Init(void)
 {
+
+  /* USER CODE BEGIN TIM3_Init 0 */
+
+  /* USER CODE END TIM3_Init 0 */
+
   TIM_ClockConfigTypeDef sClockSourceConfig = {0};
   TIM_MasterConfigTypeDef sMasterConfig = {0};
 
+  /* USER CODE BEGIN TIM3_Init 1 */
+
+  /* USER CODE END TIM3_Init 1 */
   htim3.Instance = TIM3;
   htim3.Init.Prescaler = 7199;
   htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim3.Init.Period = 999;
+  htim3.Init.Period = 1999;
   htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim3.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
-  if (HAL_TIM_Base_Init(&htim3) != HAL_OK) { Error_Handler(); }
-
+  if (HAL_TIM_Base_Init(&htim3) != HAL_OK)
+  {
+    Error_Handler();
+  }
   sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
-  if (HAL_TIM_ConfigClockSource(&htim3, &sClockSourceConfig) != HAL_OK) { Error_Handler(); }
-
+  if (HAL_TIM_ConfigClockSource(&htim3, &sClockSourceConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
   sMasterConfig.MasterOutputTrigger = TIM_TRGO_UPDATE;
   sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
-  if (HAL_TIMEx_MasterConfigSynchronization(&htim3, &sMasterConfig) != HAL_OK) { Error_Handler(); }
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim3, &sMasterConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM3_Init 2 */
+
+  /* USER CODE END TIM3_Init 2 */
+
 }
 
+/**
+  * Enable DMA controller clock
+  */
 static void MX_DMA_Init(void)
 {
+
+  /* DMA controller clock enable */
   __HAL_RCC_DMA1_CLK_ENABLE();
+
+  /* DMA interrupt init */
+  /* DMA1_Channel1_IRQn interrupt configuration */
   HAL_NVIC_SetPriority(DMA1_Channel1_IRQn, 0, 0);
   HAL_NVIC_EnableIRQ(DMA1_Channel1_IRQn);
+
 }
 
+/**
+  * @brief GPIO Initialization Function
+  * @param None
+  * @retval None
+  */
 static void MX_GPIO_Init(void)
 {
   GPIO_InitTypeDef GPIO_InitStruct = {0};
+  /* USER CODE BEGIN MX_GPIO_Init_1 */
 
+  /* USER CODE END MX_GPIO_Init_1 */
+
+  /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOC_CLK_ENABLE();
   __HAL_RCC_GPIOD_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
+  /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(UserLed_GPIO_Port, UserLed_Pin, GPIO_PIN_SET);
+
+  /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(led4_GPIO_Port, led4_Pin, GPIO_PIN_SET);
 
+  /*Configure GPIO pin : UserLed_Pin */
   GPIO_InitStruct.Pin = UserLed_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(UserLed_GPIO_Port, &GPIO_InitStruct);
 
+  /*Configure GPIO pins : pino0_Pin pino1_Pin */
   GPIO_InitStruct.Pin = pino0_Pin|pino1_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
+  /*Configure GPIO pin : led4_Pin */
   GPIO_InitStruct.Pin = led4_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(led4_GPIO_Port, &GPIO_InitStruct);
 
+  /* EXTI interrupt init*/
   HAL_NVIC_SetPriority(EXTI0_IRQn, 0, 0);
   HAL_NVIC_EnableIRQ(EXTI0_IRQn);
+
   HAL_NVIC_SetPriority(EXTI1_IRQn, 0, 0);
   HAL_NVIC_EnableIRQ(EXTI1_IRQn);
+
+  /* USER CODE BEGIN MX_GPIO_Init_2 */
+
+  /* USER CODE END MX_GPIO_Init_2 */
 }
 
 /* USER CODE BEGIN 4 */
@@ -311,24 +442,21 @@ void USB_CDC_RxHandler(uint8_t* Buf, uint32_t Len)
 
 /**
   * @brief Função de tratamento de comandos MESTRE.
-  * Encapsula todo o buffer e lógica de flags internamente com static,
-  * eliminando a necessidade de qualquer variável global!
+  * Encapsula o buffer e lógica de flags internamente,
   */
 void Process_USB_Commands(uint32_t *adc_val, uint8_t *Buf, uint32_t Len)
 {
-    // === ESTADOS DA MÁQUINA DE PROTOCOLO ===
+
     static uint8_t cmd_buf[32];
     static uint16_t cmd_idx = 0;
     static uint8_t inicio = 0;
     static uint32_t inicio_timeout = 0;
 
-    // === BUFFER DE RECEPÇÃO ENCAPSULADO ===
     static uint8_t rx_buffer_interno[128];
     static uint32_t rx_len_interno = 0;
 
-    // ==========================================================
-    // MODO 1: EXECUÇÃO NA INTERRUPÇÃO (Salva os dados rápidos)
-    // ==========================================================
+    //
+    // EXECUÇÃO NA INTERRUPÇÃO (Salva os dados rápidos)
     // Se o Buf não for nulo e tiver dados, quem chamou foi a USB_CDC_RxHandler!
     if (Buf != NULL && Len > 0) {
         if (Len < sizeof(rx_buffer_interno)) {
@@ -341,9 +469,7 @@ void Process_USB_Commands(uint32_t *adc_val, uint8_t *Buf, uint32_t Len)
         return; // Sai instantaneamente da interrupção
     }
 
-    // ==========================================================
-    // MODO 2: EXECUÇÃO NO WHILE(1) (Avalia timeout e processa)
-    // ==========================================================
+    // Avalia timeout e processa
     // 1. Verificação Contínua de Timeout (Janela de 500 ms)
     if (inicio && (HAL_GetTick() - inicio_timeout >= 500)) {
         char timeout_msg[] = "ITNACKF";
@@ -370,7 +496,7 @@ void Process_USB_Commands(uint32_t *adc_val, uint8_t *Buf, uint32_t Len)
                 if (cmd_idx < 32) {
                     cmd_buf[cmd_idx++] = c;
                 } else {
-                    char nack_msg[] = "INACKF";
+                    char nack_msg[] = "INACKF"; //Houve erro no comando escrito
                     CDC_Transmit_FS((uint8_t*)nack_msg, strlen(nack_msg));
                     inicio = 0;
                     cmd_idx = 0;
@@ -389,33 +515,36 @@ void Process_USB_Commands(uint32_t *adc_val, uint8_t *Buf, uint32_t Len)
                     }
 
                     // --- Caso B: PWM LED D2
-                    else if (cmd_idx == 7 && cmd_buf[1] == 'P' && cmd_buf[2] == '2') {
-                        if (cmd_buf[3] >= '0' && cmd_buf[3] <= '9' && cmd_buf[4] >= '0' && cmd_buf[4] <= '9' && cmd_buf[5] >= '0' && cmd_buf[5] <= '9') {
+                    else if (cmd_idx == 7 && cmd_buf[1] == 'P' && cmd_buf[2] == '2')  //Verifica se o comando para led 2
+                    {
+                        if (cmd_buf[3] >= '0' && cmd_buf[3] <= '9' && cmd_buf[4] >= '0' && cmd_buf[4] <= '9' && cmd_buf[5] >= '0' && cmd_buf[5] <= '9')
+                        { //Condições para só haver inteiros positivos
                             uint32_t pwm_val = (cmd_buf[3] - '0') * 100 + (cmd_buf[4] - '0') * 10 + (cmd_buf[5] - '0');
                             __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_2, pwm_val);
-                            char resp[] = "IP2ACKF";
+                            char resp[] = "IP2ACKF";//Se der certo
                             CDC_Transmit_FS((uint8_t*)resp, strlen(resp));
                         } else {
-                            char resp[] = "IP2NACKF";
+                            char resp[] = "IP2NACKF";//Se houver algum erro
                             CDC_Transmit_FS((uint8_t*)resp, strlen(resp));
                         }
                     }
 
                     // --- Caso C: PWM LED D3
-                    else if (cmd_idx == 7 && cmd_buf[1] == 'P' && cmd_buf[2] == '3') {
+                    else if (cmd_idx == 7 && cmd_buf[1] == 'P' && cmd_buf[2] == '3') //Verifica se o comando para led 3
+                    {//Condições para só haver inteiros positivos
                         if (cmd_buf[3] >= '0' && cmd_buf[3] <= '9' && cmd_buf[4] >= '0' && cmd_buf[4] <= '9' && cmd_buf[5] >= '0' && cmd_buf[5] <= '9') {
                             uint32_t pwm_val = (cmd_buf[3] - '0') * 100 + (cmd_buf[4] - '0') * 10 + (cmd_buf[5] - '0');
                             __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_3, pwm_val);
-                            char resp[] = "IP3ACKF";
+                            char resp[] = "IP3ACKF"; //Se der certo
                             CDC_Transmit_FS((uint8_t*)resp, strlen(resp));
                         } else {
-                            char resp[] = "IP3NACKF";
+                            char resp[] = "IP3NACKF"; //Se houver algum erro
                             CDC_Transmit_FS((uint8_t*)resp, strlen(resp));
                         }
                     }
                     // --- Caso D: Comando não reconhecido
                     else {
-                        char resp[] = "INACKF";
+                        char resp[] = "INACKF"; //Houve erro no comando escrito
                         CDC_Transmit_FS((uint8_t*)resp, strlen(resp));
                     }
                     cmd_idx = 0;
@@ -423,7 +552,7 @@ void Process_USB_Commands(uint32_t *adc_val, uint8_t *Buf, uint32_t Len)
             }
         }
 
-        // Terminou de processar todo o buffer? Abaixa a flag do seu módulo usb_flags.c
+        // Terminou de processar o buffer, abaixa a flag.
         Reset_Flag_USB();
     }
 }
@@ -457,15 +586,33 @@ uint32_t Duty_Conversion(uint32_t valor_adc)
 
 /* USER CODE END 4 */
 
+/**
+  * @brief  This function is executed in case of error occurrence.
+  * @retval None
+  */
 void Error_Handler(void)
 {
+  /* USER CODE BEGIN Error_Handler_Debug */
+  /* User can add his own implementation to report the HAL error return state */
   __disable_irq();
   while (1)
   {
   }
+  /* USER CODE END Error_Handler_Debug */
 }
 #ifdef USE_FULL_ASSERT
+/**
+  * @brief  Reports the name of the source file and the source line number
+  *         where the assert_param error has occurred.
+  * @param  file: pointer to the source file name
+  * @param  line: assert_param error line source number
+  * @retval None
+  */
 void assert_failed(uint8_t *file, uint32_t line)
 {
+  /* USER CODE BEGIN 6 */
+  /* User can add his own implementation to report the file name and line number,
+     ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
+  /* USER CODE END 6 */
 }
 #endif /* USE_FULL_ASSERT */

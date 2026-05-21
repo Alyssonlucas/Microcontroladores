@@ -10,10 +10,10 @@ Repositório criado para armazenar soluções das práticas da disciplina de mic
 
 ## Práticas:
   - Prática 01 - Assembler utilizando o VisUAL ARMEmulator
-  - Prática 02 -
-  - Prática 03 -
-  - Prática 04 -
-  - Prática 05 -  
+  - Prática 02 - Configuração de entradas e saídas da placa BluePill
+  - Prática 03 - Foregroung-Background + Superloop (Configuração de interrupções)
+  - Prática 04 - Configuração de entradas analógicas e saídas PWM
+  - Prática 05 - Configuração e utilização da comunicação USB entre o computador e placa BluePill
 
 ## Materiais utilizados:
 
