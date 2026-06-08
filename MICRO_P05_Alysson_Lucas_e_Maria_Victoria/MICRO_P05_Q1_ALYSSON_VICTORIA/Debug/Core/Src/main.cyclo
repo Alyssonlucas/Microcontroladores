@@ -7,6 +7,6 @@
 ../Core/Src/main.c:379:13:MX_GPIO_Init	1
 ../Core/Src/main.c:437:6:USB_CDC_RxHandler	1
 ../Core/Src/main.c:447:6:Process_USB_Commands	33
-../Core/Src/main.c:560:6:UserLed	4
-../Core/Src/main.c:579:10:Duty_Conversion	1
-../Core/Src/main.c:590:6:Error_Handler	1
+../Core/Src/main.c:563:6:UserLed	4
+../Core/Src/main.c:582:10:Duty_Conversion	1
+../Core/Src/main.c:593:6:Error_Handler	1

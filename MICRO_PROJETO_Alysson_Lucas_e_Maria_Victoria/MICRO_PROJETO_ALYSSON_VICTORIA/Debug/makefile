@@ -60,8 +60,8 @@ all: main-build
 main-build: MICRO_PROJETO_ALYSSON_VICTORIA.elf secondary-outputs
 
 # Tool invocations
-MICRO_PROJETO_ALYSSON_VICTORIA.elf MICRO_PROJETO_ALYSSON_VICTORIA.map: $(OBJS) $(USER_OBJS) C:\Users\mvict\OneDrive\Documentos\UFPE\Microcomputadores\Microcontroladores\MICRO_PROJETO_Alysson_Lucas_e_Maria_Victoria\MICRO_PROJETO_ALYSSON_VICTORIA\STM32F103C8TX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "MICRO_PROJETO_ALYSSON_VICTORIA.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"C:\Users\mvict\OneDrive\Documentos\UFPE\Microcomputadores\Microcontroladores\MICRO_PROJETO_Alysson_Lucas_e_Maria_Victoria\MICRO_PROJETO_ALYSSON_VICTORIA\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MICRO_PROJETO_ALYSSON_VICTORIA.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+MICRO_PROJETO_ALYSSON_VICTORIA.elf MICRO_PROJETO_ALYSSON_VICTORIA.map: $(OBJS) $(USER_OBJS) C:\Users\lucas\Desktop\Disciplinas\2026.1\ (atual)\microcontroladores\Microcontroladores\MICRO_PROJETO_Alysson_Lucas_e_Maria_Victoria\MICRO_PROJETO_ALYSSON_VICTORIA\STM32F103C8TX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "MICRO_PROJETO_ALYSSON_VICTORIA.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"C:\Users\lucas\Desktop\Disciplinas\2026.1 (atual)\microcontroladores\Microcontroladores\MICRO_PROJETO_Alysson_Lucas_e_Maria_Victoria\MICRO_PROJETO_ALYSSON_VICTORIA\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MICRO_PROJETO_ALYSSON_VICTORIA.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

@@ -1145,7 +1145,7 @@ void Process_USB_Commands(uint32_t *adc_val, uint8_t *Buf, uint32_t Len)
  800077c:	2b46      	cmp	r3, #70	@ 0x46
  800077e:	f040 8140 	bne.w	8000a02 <Process_USB_Commands+0x392>
  8000782:	e01e      	b.n	80007c2 <Process_USB_Commands+0x152>
-                    char nack_msg[] = "INACKF";
+                    char nack_msg[] = "INACKF"; //Houve erro no comando escrito
  8000784:	4a59      	ldr	r2, [pc, #356]	@ (80008ec <Process_USB_Commands+0x27c>)
  8000786:	f107 0350 	add.w	r3, r7, #80	@ 0x50
  800078a:	e892 0003 	ldmia.w	r2, {r0, r1}
@@ -1214,7 +1214,7 @@ void Process_USB_Commands(uint32_t *adc_val, uint8_t *Buf, uint32_t Len)
                     }
 
                     // --- Caso B: PWM LED D2
-                    else if (cmd_idx == 7 && cmd_buf[1] == 'P' && cmd_buf[2] == '2') {
+                    else if (cmd_idx == 7 && cmd_buf[1] == 'P' && cmd_buf[2] == '2')  //Verifica se o comando para led 2
  8000804:	4b37      	ldr	r3, [pc, #220]	@ (80008e4 <Process_USB_Commands+0x274>)
  8000806:	881b      	ldrh	r3, [r3, #0]
  8000808:	2b07      	cmp	r3, #7
@@ -1227,7 +1227,8 @@ void Process_USB_Commands(uint32_t *adc_val, uint8_t *Buf, uint32_t Len)
  8000816:	789b      	ldrb	r3, [r3, #2]
  8000818:	2b32      	cmp	r3, #50	@ 0x32
  800081a:	d171      	bne.n	8000900 <Process_USB_Commands+0x290>
-                        if (cmd_buf[3] >= '0' && cmd_buf[3] <= '9' && cmd_buf[4] >= '0' && cmd_buf[4] <= '9' && cmd_buf[5] >= '0' && cmd_buf[5] <= '9') {
+                    {
+                        if (cmd_buf[3] >= '0' && cmd_buf[3] <= '9' && cmd_buf[4] >= '0' && cmd_buf[4] <= '9' && cmd_buf[5] >= '0' && cmd_buf[5] <= '9')
  800081c:	4b32      	ldr	r3, [pc, #200]	@ (80008e8 <Process_USB_Commands+0x278>)
  800081e:	78db      	ldrb	r3, [r3, #3]
  8000820:	2b2f      	cmp	r3, #47	@ 0x2f
@@ -1252,6 +1253,7 @@ void Process_USB_Commands(uint32_t *adc_val, uint8_t *Buf, uint32_t Len)
  8000846:	795b      	ldrb	r3, [r3, #5]
  8000848:	2b39      	cmp	r3, #57	@ 0x39
  800084a:	d82d      	bhi.n	80008a8 <Process_USB_Commands+0x238>
+                        { //Condições para só haver inteiros positivos
                             uint32_t pwm_val = (cmd_buf[3] - '0') * 100 + (cmd_buf[4] - '0') * 10 + (cmd_buf[5] - '0');
  800084c:	4b26      	ldr	r3, [pc, #152]	@ (80008e8 <Process_USB_Commands+0x278>)
  800084e:	78db      	ldrb	r3, [r3, #3]
@@ -1276,7 +1278,7 @@ void Process_USB_Commands(uint32_t *adc_val, uint8_t *Buf, uint32_t Len)
  8000876:	681b      	ldr	r3, [r3, #0]
  8000878:	6e7a      	ldr	r2, [r7, #100]	@ 0x64
  800087a:	639a      	str	r2, [r3, #56]	@ 0x38
-                            char resp[] = "IP2ACKF";
+                            char resp[] = "IP2ACKF";//Se der certo
  800087c:	4a1e      	ldr	r2, [pc, #120]	@ (80008f8 <Process_USB_Commands+0x288>)
  800087e:	f107 0338 	add.w	r3, r7, #56	@ 0x38
  8000882:	e892 0003 	ldmia.w	r2, {r0, r1}
@@ -1291,11 +1293,12 @@ void Process_USB_Commands(uint32_t *adc_val, uint8_t *Buf, uint32_t Len)
  800089c:	4611      	mov	r1, r2
  800089e:	4618      	mov	r0, r3
  80008a0:	f008 fd10 	bl	80092c4 <CDC_Transmit_FS>
-                        if (cmd_buf[3] >= '0' && cmd_buf[3] <= '9' && cmd_buf[4] >= '0' && cmd_buf[4] <= '9' && cmd_buf[5] >= '0' && cmd_buf[5] <= '9') {
+                        { //Condições para só haver inteiros positivos
  80008a4:	bf00      	nop
+                        if (cmd_buf[3] >= '0' && cmd_buf[3] <= '9' && cmd_buf[4] >= '0' && cmd_buf[4] <= '9' && cmd_buf[5] >= '0' && cmd_buf[5] <= '9')
  80008a6:	e0a9      	b.n	80009fc <Process_USB_Commands+0x38c>
                         } else {
-                            char resp[] = "IP2NACKF";
+                            char resp[] = "IP2NACKF";//Se houver algum erro
  80008a8:	4a14      	ldr	r2, [pc, #80]	@ (80008fc <Process_USB_Commands+0x28c>)
  80008aa:	f107 032c 	add.w	r3, r7, #44	@ 0x2c
  80008ae:	ca07      	ldmia	r2, {r0, r1, r2}
@@ -1311,7 +1314,7 @@ void Process_USB_Commands(uint32_t *adc_val, uint8_t *Buf, uint32_t Len)
  80008c6:	4611      	mov	r1, r2
  80008c8:	4618      	mov	r0, r3
  80008ca:	f008 fcfb 	bl	80092c4 <CDC_Transmit_FS>
-                        if (cmd_buf[3] >= '0' && cmd_buf[3] <= '9' && cmd_buf[4] >= '0' && cmd_buf[4] <= '9' && cmd_buf[5] >= '0' && cmd_buf[5] <= '9') {
+                        if (cmd_buf[3] >= '0' && cmd_buf[3] <= '9' && cmd_buf[4] >= '0' && cmd_buf[4] <= '9' && cmd_buf[5] >= '0' && cmd_buf[5] <= '9')
  80008ce:	e095      	b.n	80009fc <Process_USB_Commands+0x38c>
  80008d0:	200002f0 	.word	0x200002f0
  80008d4:	20000370 	.word	0x20000370
@@ -1329,7 +1332,7 @@ void Process_USB_Commands(uint32_t *adc_val, uint8_t *Buf, uint32_t Len)
                     }
 
                     // --- Caso C: PWM LED D3
-                    else if (cmd_idx == 7 && cmd_buf[1] == 'P' && cmd_buf[2] == '3') {
+                    else if (cmd_idx == 7 && cmd_buf[1] == 'P' && cmd_buf[2] == '3') //Verifica se o comando para led 3
  8000900:	4b48      	ldr	r3, [pc, #288]	@ (8000a24 <Process_USB_Commands+0x3b4>)
  8000902:	881b      	ldrh	r3, [r3, #0]
  8000904:	2b07      	cmp	r3, #7
@@ -1342,6 +1345,7 @@ void Process_USB_Commands(uint32_t *adc_val, uint8_t *Buf, uint32_t Len)
  8000912:	789b      	ldrb	r3, [r3, #2]
  8000914:	2b33      	cmp	r3, #51	@ 0x33
  8000916:	d159      	bne.n	80009cc <Process_USB_Commands+0x35c>
+                    {//Condições para só haver inteiros positivos
                         if (cmd_buf[3] >= '0' && cmd_buf[3] <= '9' && cmd_buf[4] >= '0' && cmd_buf[4] <= '9' && cmd_buf[5] >= '0' && cmd_buf[5] <= '9') {
  8000918:	4b43      	ldr	r3, [pc, #268]	@ (8000a28 <Process_USB_Commands+0x3b8>)
  800091a:	78db      	ldrb	r3, [r3, #3]
@@ -1391,7 +1395,7 @@ void Process_USB_Commands(uint32_t *adc_val, uint8_t *Buf, uint32_t Len)
  8000972:	681b      	ldr	r3, [r3, #0]
  8000974:	6e3a      	ldr	r2, [r7, #96]	@ 0x60
  8000976:	63da      	str	r2, [r3, #60]	@ 0x3c
-                            char resp[] = "IP3ACKF";
+                            char resp[] = "IP3ACKF"; //Se der certo
  8000978:	4a2d      	ldr	r2, [pc, #180]	@ (8000a30 <Process_USB_Commands+0x3c0>)
  800097a:	f107 0324 	add.w	r3, r7, #36	@ 0x24
  800097e:	e892 0003 	ldmia.w	r2, {r0, r1}
@@ -1410,7 +1414,7 @@ void Process_USB_Commands(uint32_t *adc_val, uint8_t *Buf, uint32_t Len)
  80009a0:	bf00      	nop
  80009a2:	e02b      	b.n	80009fc <Process_USB_Commands+0x38c>
                         } else {
-                            char resp[] = "IP3NACKF";
+                            char resp[] = "IP3NACKF"; //Se houver algum erro
  80009a4:	4a23      	ldr	r2, [pc, #140]	@ (8000a34 <Process_USB_Commands+0x3c4>)
  80009a6:	f107 0318 	add.w	r3, r7, #24
  80009aa:	ca07      	ldmia	r2, {r0, r1, r2}
@@ -1432,7 +1436,7 @@ void Process_USB_Commands(uint32_t *adc_val, uint8_t *Buf, uint32_t Len)
                     }
                     // --- Caso D: Comando não reconhecido
                     else {
-                        char resp[] = "INACKF";
+                        char resp[] = "INACKF"; //Houve erro no comando escrito
  80009cc:	4a1a      	ldr	r2, [pc, #104]	@ (8000a38 <Process_USB_Commands+0x3c8>)
  80009ce:	f107 0310 	add.w	r3, r7, #16
  80009d2:	e892 0003 	ldmia.w	r2, {r0, r1}

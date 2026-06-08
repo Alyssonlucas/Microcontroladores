@@ -1,0 +1,10 @@
+15:57:00 **** Incremental Build of configuration Debug for project MICRO_P05_Q1_ALYSSON_VICTORIA ****
+make -j16 all 
+arm-none-eabi-size  MICRO_P05_Q1_ALYSSON_VICTORIA.elf 
+   text	   data	    bss	    dec	    hex	filename
+  42260	    464	   6880	  49604	   c1c4	MICRO_P05_Q1_ALYSSON_VICTORIA.elf
+Finished building: default.size.stdout
+ 
+
+15:57:01 Build Finished. 0 errors, 0 warnings. (took 722ms)
+

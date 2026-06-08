@@ -67,6 +67,7 @@ void Error_Handler(void);
 #define ADC1_IN1_GPIO_Port GPIOA
 #define button_Pin GPIO_PIN_2
 #define button_GPIO_Port GPIOA
+#define button_EXTI_IRQn EXTI2_IRQn
 
 /* USER CODE BEGIN Private defines */
 

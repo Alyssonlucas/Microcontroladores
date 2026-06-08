@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<item key="hasShownOverlayPopupBefore" value="true"/>
+	<item key="replaceBarOpen" value="true"/>
+	<list key="searchhistory">
+		<item value="tim2"/>
+		<item value="Test_Joystick_diretions"/>
+		<item value="color"/>
+		<item value="set_color"/>
+		<item value="vermelh"/>
+		<item value="Flagkey1"/>
+		<item value="buzzer"/>
+		<item value="delay"/>
+		<item value="ADC_SOFTWARE_START"/>
+		<item value="i2c"/>
+		<item value="ch1n"/>
+	</list>
+	<list key="replacehistory">
+		<item value="Joystick_diretions"/>
+		<item value="Flagkey"/>
+	</list>
+</section>

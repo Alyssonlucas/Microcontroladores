@@ -1,5 +1,6 @@
 "./Core/Src/buzzer.o"
 "./Core/Src/display_oled.o"
+"./Core/Src/flag.o"
 "./Core/Src/fonts.o"
 "./Core/Src/joystick.o"
 "./Core/Src/main.o"

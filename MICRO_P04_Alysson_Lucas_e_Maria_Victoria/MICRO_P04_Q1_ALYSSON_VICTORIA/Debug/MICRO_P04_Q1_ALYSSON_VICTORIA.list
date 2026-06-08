@@ -136,7 +136,6 @@ int main(void)
  8000176:	f000 faf9 	bl	800076c <HAL_GetTick>
  800017a:	60f8      	str	r0, [r7, #12]
 
-      // Correção: Passagem de parâmetro por referência usando '&'
       UserLed(tempo_atual, &time_UserLed);
  800017c:	1d3b      	adds	r3, r7, #4
  800017e:	4619      	mov	r1, r3
@@ -627,6 +626,10 @@ void UserLed(uint32_t tempo_atual, uint32_t *time_UserLed)
  8000460:	40011000 	.word	0x40011000
 
 08000464 <LedComportamento>:
+  * Atua como um "barra de progresso", ligando os LEDs conforme faixas de tensão (20%, 40%, 60% e 80% do VCC).
+  * @param  valor_adc Valor atual lido do buffer do ADC para comparação.
+  * @retval None
+  */
 void LedComportamento(uint32_t valor_adc)
 {
  8000464:	b580      	push	{r7, lr}

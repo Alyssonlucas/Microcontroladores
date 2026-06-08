@@ -1,0 +1,18 @@
+15:00:04 **** Incremental Build of configuration Debug for project MICRO_PROJETO_ALYSSON_VICTORIA ****
+make -j16 all 
+arm-none-eabi-gcc "../Core/Src/buzzer.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/buzzer.d" -MT"Core/Src/buzzer.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/buzzer.o"
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "MICRO_PROJETO_ALYSSON_VICTORIA.elf" @"objects.list"   -mcpu=cortex-m3 -T"C:\Users\lucas\Desktop\Disciplinas\2026.1 (atual)\microcontroladores\Microcontroladores\MICRO_PROJETO_Alysson_Lucas_e_Maria_Victoria\MICRO_PROJETO_ALYSSON_VICTORIA\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MICRO_PROJETO_ALYSSON_VICTORIA.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: MICRO_PROJETO_ALYSSON_VICTORIA.elf
+ 
+arm-none-eabi-size  MICRO_PROJETO_ALYSSON_VICTORIA.elf 
+arm-none-eabi-objdump -h -S MICRO_PROJETO_ALYSSON_VICTORIA.elf  > "MICRO_PROJETO_ALYSSON_VICTORIA.list"
+   text	   data	    bss	    dec	    hex	filename
+  33484	    108	   3436	  37028	   90a4	MICRO_PROJETO_ALYSSON_VICTORIA.elf
+Finished building: default.size.stdout
+ 
+Finished building: MICRO_PROJETO_ALYSSON_VICTORIA.list
+ 
+
+15:00:14 Build Finished. 0 errors, 0 warnings. (took 10s.189ms)
+

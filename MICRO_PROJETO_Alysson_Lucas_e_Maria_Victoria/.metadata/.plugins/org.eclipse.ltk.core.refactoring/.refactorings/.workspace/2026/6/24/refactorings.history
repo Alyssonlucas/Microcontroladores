@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Delete resource &apos;MICRO_P04_Q1_ALYSSON_VICTORIA&apos;" deleteContents="false" description="Delete resource &apos;MICRO_P04_Q1_ALYSSON_VICTORIA&apos;" element1="/MICRO_P04_Q1_ALYSSON_VICTORIA" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1780929643547"/>
+</session>
