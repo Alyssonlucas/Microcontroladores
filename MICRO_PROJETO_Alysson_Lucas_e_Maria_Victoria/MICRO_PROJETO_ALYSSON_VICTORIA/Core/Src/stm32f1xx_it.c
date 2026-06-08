@@ -55,9 +55,9 @@
 /* USER CODE END 0 */
 
 /* External variables --------------------------------------------------------*/
-extern PCD_HandleTypeDef hpcd_USB_FS;
 extern DMA_HandleTypeDef hdma_adc1;
-extern ADC_HandleTypeDef hadc1;
+extern DMA_HandleTypeDef hdma_i2c1_tx;
+extern I2C_HandleTypeDef hi2c1;
 /* USER CODE BEGIN EV */
 
 /* USER CODE END EV */
@@ -201,34 +201,6 @@ void SysTick_Handler(void)
 /******************************************************************************/
 
 /**
-  * @brief This function handles EXTI line0 interrupt.
-  */
-void EXTI0_IRQHandler(void)
-{
-  /* USER CODE BEGIN EXTI0_IRQn 0 */
-
-  /* USER CODE END EXTI0_IRQn 0 */
-  HAL_GPIO_EXTI_IRQHandler(pino0_Pin);
-  /* USER CODE BEGIN EXTI0_IRQn 1 */
-
-  /* USER CODE END EXTI0_IRQn 1 */
-}
-
-/**
-  * @brief This function handles EXTI line1 interrupt.
-  */
-void EXTI1_IRQHandler(void)
-{
-  /* USER CODE BEGIN EXTI1_IRQn 0 */
-
-  /* USER CODE END EXTI1_IRQn 0 */
-  HAL_GPIO_EXTI_IRQHandler(pino1_Pin);
-  /* USER CODE BEGIN EXTI1_IRQn 1 */
-
-  /* USER CODE END EXTI1_IRQn 1 */
-}
-
-/**
   * @brief This function handles DMA1 channel1 global interrupt.
   */
 void DMA1_Channel1_IRQHandler(void)
@@ -243,31 +215,31 @@ void DMA1_Channel1_IRQHandler(void)
 }
 
 /**
-  * @brief This function handles ADC1 and ADC2 global interrupts.
+  * @brief This function handles DMA1 channel6 global interrupt.
   */
-void ADC1_2_IRQHandler(void)
+void DMA1_Channel6_IRQHandler(void)
 {
-  /* USER CODE BEGIN ADC1_2_IRQn 0 */
+  /* USER CODE BEGIN DMA1_Channel6_IRQn 0 */
 
-  /* USER CODE END ADC1_2_IRQn 0 */
-  HAL_ADC_IRQHandler(&hadc1);
-  /* USER CODE BEGIN ADC1_2_IRQn 1 */
+  /* USER CODE END DMA1_Channel6_IRQn 0 */
+  HAL_DMA_IRQHandler(&hdma_i2c1_tx);
+  /* USER CODE BEGIN DMA1_Channel6_IRQn 1 */
 
-  /* USER CODE END ADC1_2_IRQn 1 */
+  /* USER CODE END DMA1_Channel6_IRQn 1 */
 }
 
 /**
-  * @brief This function handles USB low priority or CAN RX0 interrupts.
+  * @brief This function handles I2C1 event interrupt.
   */
-void USB_LP_CAN1_RX0_IRQHandler(void)
+void I2C1_EV_IRQHandler(void)
 {
-  /* USER CODE BEGIN USB_LP_CAN1_RX0_IRQn 0 */
+  /* USER CODE BEGIN I2C1_EV_IRQn 0 */
 
-  /* USER CODE END USB_LP_CAN1_RX0_IRQn 0 */
-  HAL_PCD_IRQHandler(&hpcd_USB_FS);
-  /* USER CODE BEGIN USB_LP_CAN1_RX0_IRQn 1 */
+  /* USER CODE END I2C1_EV_IRQn 0 */
+  HAL_I2C_EV_IRQHandler(&hi2c1);
+  /* USER CODE BEGIN I2C1_EV_IRQn 1 */
 
-  /* USER CODE END USB_LP_CAN1_RX0_IRQn 1 */
+  /* USER CODE END I2C1_EV_IRQn 1 */
 }
 
 /* USER CODE BEGIN 1 */

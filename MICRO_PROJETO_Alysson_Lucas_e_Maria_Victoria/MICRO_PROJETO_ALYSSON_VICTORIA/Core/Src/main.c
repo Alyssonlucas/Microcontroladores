@@ -18,16 +18,34 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "usb_device.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "rgb_led.h" // LED RGB
+#include "joystick.h" //JOYSTICK
+#include "display_oled.h" // OLED
+#include "buzzer.h" //BUZZER
+#include <stdio.h> // Operações de entrada e saída
+#include <stdlib.h> // gerador de números aleatórios
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-
+typedef enum {
+    AGUARDANDO_INICIO,
+    MOSTRANDO_SEQUENCIA,
+    JOGADOR_JOGANDO,
+    GAME_OVER
+} Estado_Jogo;
+typedef struct {
+    Estado_Jogo estado;
+    uint8_t nivel;
+    Joystick_Dir sequencia[100]; // 100 é o número máximo de níveis
+    uint8_t passo;
+    uint32_t tempo;
+    uint8_t mostrando_nota;
+    Joystick_Dir ultima_direcao;
+} GeniusGame;
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -44,11 +62,14 @@
 ADC_HandleTypeDef hadc1;
 DMA_HandleTypeDef hdma_adc1;
 
+I2C_HandleTypeDef hi2c1;
+DMA_HandleTypeDef hdma_i2c1_tx;
+
 TIM_HandleTypeDef htim1;
 TIM_HandleTypeDef htim3;
 
 /* USER CODE BEGIN PV */
-
+#define MAX_NIVEIS 100 //número máx de níveis
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -58,8 +79,15 @@ static void MX_DMA_Init(void);
 static void MX_ADC1_Init(void);
 static void MX_TIM3_Init(void);
 static void MX_TIM1_Init(void);
+static void MX_I2C1_Init(void);
 /* USER CODE BEGIN PFP */
-
+//----------------------Prototipação de funções
+//----------------------Prototipação de funções
+void UserLed(uint32_t time_now, uint32_t *time_UserLed);
+void Test_Joystick_diretions(Joystick_Dir direcao);
+void WriteOled(uint32_t time_now, uint32_t *last_oled_update, uint8_t nivel_atual, Joystick_Dir direcao, Estado_Jogo estado);
+Joystick_Dir AdicionarCorNaSequencia(uint8_t nivel);
+void Gerenciar_Genius(uint32_t time_now, Joystick_Dir direcao, GeniusGame *jogo);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -74,8 +102,20 @@ static void MX_TIM1_Init(void);
 int main(void)
 {
 
-  /* USER CODE BEGIN 1 */
+  /* USER CODE BEGIN 1 */  // Desclaração de variáveis do código
+	uint32_t time_now = HAL_GetTick();
+	uint32_t time_UserLed = time_now;
+	uint32_t last_oled_update = 0;
+	Joystick_Dir direcao;
 
+	// Instancia o jogo na memória local do main e inicializa os valores
+	GeniusGame jogo;
+	jogo.estado = AGUARDANDO_INICIO;
+	jogo.nivel = 1;
+	jogo.passo = 0;
+	jogo.tempo = 0;
+	jogo.mostrando_nota = 0;
+	jogo.ultima_direcao = JOY_CENTER;
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -100,17 +140,28 @@ int main(void)
   MX_ADC1_Init();
   MX_TIM3_Init();
   MX_TIM1_Init();
-  MX_USB_DEVICE_Init();
+  MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
 
+
+  RGB_Init(&htim1); // Inicia o PWM em cada canal (Canais 1, 2 e 3)
+  Joystick_Init_DMA(&hadc1); //Inicializa o pino adc1
+  HAL_TIM_Base_Start(&htim3); // Inicializa o Buzzer passando o endereço do Timer 3
+  Buzzer_Init(&htim3); //Inicializa o PWM do buzzer (tim3 canal 3)
+  OLED_Init(&hi2c1); //Inicializa o I2C OLED
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+
   while (1)
   {
-    /* USER CODE END WHILE */
-
+	  time_now = HAL_GetTick();
+	  UserLed(time_now, &time_UserLed);
+	  direcao = Joystick_GetDirection();
+	  Gerenciar_Genius(time_now, direcao, &jogo);// MÁQUINA DE ESTADOS DO GENIUS
+	  WriteOled(time_now, &last_oled_update, jogo.nivel, direcao, jogo.estado); // Gerenciado OLED. Acessamos o nível e o estado atual diretamente da struct local
+	  /* USER CODE END WHILE */
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
@@ -129,12 +180,11 @@ void SystemClock_Config(void)
   /** Initializes the RCC Oscillators according to the specified parameters
   * in the RCC_OscInitTypeDef structure.
   */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
-  RCC_OscInitStruct.HSEState = RCC_HSE_ON;
-  RCC_OscInitStruct.HSEPredivValue = RCC_HSE_PREDIV_DIV1;
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI;
   RCC_OscInitStruct.HSIState = RCC_HSI_ON;
+  RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
-  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
+  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI_DIV2;
   RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL9;
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
   {
@@ -150,13 +200,12 @@ void SystemClock_Config(void)
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
 
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_1) != HAL_OK)
   {
     Error_Handler();
   }
-  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_ADC|RCC_PERIPHCLK_USB;
+  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_ADC;
   PeriphClkInit.AdcClockSelection = RCC_ADCPCLK2_DIV6;
-  PeriphClkInit.UsbClockSelection = RCC_USBCLKSOURCE_PLL_DIV1_5;
   if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
   {
     Error_Handler();
@@ -184,12 +233,12 @@ static void MX_ADC1_Init(void)
   /** Common config
   */
   hadc1.Instance = ADC1;
-  hadc1.Init.ScanConvMode = ADC_SCAN_DISABLE;
+  hadc1.Init.ScanConvMode = ADC_SCAN_ENABLE;
   hadc1.Init.ContinuousConvMode = DISABLE;
   hadc1.Init.DiscontinuousConvMode = DISABLE;
   hadc1.Init.ExternalTrigConv = ADC_EXTERNALTRIGCONV_T3_TRGO;
   hadc1.Init.DataAlign = ADC_DATAALIGN_RIGHT;
-  hadc1.Init.NbrOfConversion = 1;
+  hadc1.Init.NbrOfConversion = 2;
   if (HAL_ADC_Init(&hadc1) != HAL_OK)
   {
     Error_Handler();
@@ -197,9 +246,18 @@ static void MX_ADC1_Init(void)
 
   /** Configure Regular Channel
   */
-  sConfig.Channel = ADC_CHANNEL_1;
+  sConfig.Channel = ADC_CHANNEL_0;
   sConfig.Rank = ADC_REGULAR_RANK_1;
   sConfig.SamplingTime = ADC_SAMPLETIME_1CYCLE_5;
+  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Regular Channel
+  */
+  sConfig.Channel = ADC_CHANNEL_1;
+  sConfig.Rank = ADC_REGULAR_RANK_2;
   if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
   {
     Error_Handler();
@@ -207,6 +265,40 @@ static void MX_ADC1_Init(void)
   /* USER CODE BEGIN ADC1_Init 2 */
 
   /* USER CODE END ADC1_Init 2 */
+
+}
+
+/**
+  * @brief I2C1 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_I2C1_Init(void)
+{
+
+  /* USER CODE BEGIN I2C1_Init 0 */
+
+  /* USER CODE END I2C1_Init 0 */
+
+  /* USER CODE BEGIN I2C1_Init 1 */
+
+  /* USER CODE END I2C1_Init 1 */
+  hi2c1.Instance = I2C1;
+  hi2c1.Init.ClockSpeed = 100000;
+  hi2c1.Init.DutyCycle = I2C_DUTYCYCLE_2;
+  hi2c1.Init.OwnAddress1 = 0;
+  hi2c1.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
+  hi2c1.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
+  hi2c1.Init.OwnAddress2 = 0;
+  hi2c1.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
+  hi2c1.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
+  if (HAL_I2C_Init(&hi2c1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN I2C1_Init 2 */
+
+  /* USER CODE END I2C1_Init 2 */
 
 }
 
@@ -297,14 +389,15 @@ static void MX_TIM3_Init(void)
 
   TIM_ClockConfigTypeDef sClockSourceConfig = {0};
   TIM_MasterConfigTypeDef sMasterConfig = {0};
+  TIM_OC_InitTypeDef sConfigOC = {0};
 
   /* USER CODE BEGIN TIM3_Init 1 */
 
   /* USER CODE END TIM3_Init 1 */
   htim3.Instance = TIM3;
-  htim3.Init.Prescaler = 7199;
+  htim3.Init.Prescaler = 3599;
   htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim3.Init.Period = 1999;
+  htim3.Init.Period = 99;
   htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim3.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
   if (HAL_TIM_Base_Init(&htim3) != HAL_OK)
@@ -316,15 +409,28 @@ static void MX_TIM3_Init(void)
   {
     Error_Handler();
   }
+  if (HAL_TIM_PWM_Init(&htim3) != HAL_OK)
+  {
+    Error_Handler();
+  }
   sMasterConfig.MasterOutputTrigger = TIM_TRGO_UPDATE;
   sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
   if (HAL_TIMEx_MasterConfigSynchronization(&htim3, &sMasterConfig) != HAL_OK)
   {
     Error_Handler();
   }
+  sConfigOC.OCMode = TIM_OCMODE_PWM1;
+  sConfigOC.Pulse = 0;
+  sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
+  sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
+  if (HAL_TIM_PWM_ConfigChannel(&htim3, &sConfigOC, TIM_CHANNEL_3) != HAL_OK)
+  {
+    Error_Handler();
+  }
   /* USER CODE BEGIN TIM3_Init 2 */
 
   /* USER CODE END TIM3_Init 2 */
+  HAL_TIM_MspPostInit(&htim3);
 
 }
 
@@ -341,6 +447,9 @@ static void MX_DMA_Init(void)
   /* DMA1_Channel1_IRQn interrupt configuration */
   HAL_NVIC_SetPriority(DMA1_Channel1_IRQn, 0, 0);
   HAL_NVIC_EnableIRQ(DMA1_Channel1_IRQn);
+  /* DMA1_Channel6_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA1_Channel6_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(DMA1_Channel6_IRQn);
 
 }
 
@@ -365,9 +474,6 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(UserLed_GPIO_Port, UserLed_Pin, GPIO_PIN_SET);
 
-  /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(led4_GPIO_Port, led4_Pin, GPIO_PIN_SET);
-
   /*Configure GPIO pin : UserLed_Pin */
   GPIO_InitStruct.Pin = UserLed_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
@@ -375,31 +481,11 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(UserLed_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : PA2 */
-  GPIO_InitStruct.Pin = GPIO_PIN_2;
+  /*Configure GPIO pin : button_Pin */
+  GPIO_InitStruct.Pin = button_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
-
-  /*Configure GPIO pins : pino0_Pin pino1_Pin */
-  GPIO_InitStruct.Pin = pino0_Pin|pino1_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
-  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
-
-  /*Configure GPIO pin : led4_Pin */
-  GPIO_InitStruct.Pin = led4_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(led4_GPIO_Port, &GPIO_InitStruct);
-
-  /* EXTI interrupt init*/
-  HAL_NVIC_SetPriority(EXTI0_IRQn, 0, 0);
-  HAL_NVIC_EnableIRQ(EXTI0_IRQn);
-
-  HAL_NVIC_SetPriority(EXTI1_IRQn, 0, 0);
-  HAL_NVIC_EnableIRQ(EXTI1_IRQn);
+  HAL_GPIO_Init(button_GPIO_Port, &GPIO_InitStruct);
 
   /* USER CODE BEGIN MX_GPIO_Init_2 */
 
@@ -407,7 +493,264 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+void Gerenciar_Genius(uint32_t time_now, Joystick_Dir direcao, GeniusGame *jogo) {
+    switch (jogo->estado) {
 
+        case AGUARDANDO_INICIO:
+            // Otimização: Só atualiza o hardware se não estiver no centro para evitar chamadas redundantes no loop
+            if (direcao != JOY_CENTER) {
+                Test_Joystick_diretions(JOY_CENTER);
+            }
+
+            if (HAL_GPIO_ReadPin(button_GPIO_Port, button_Pin) == GPIO_PIN_RESET) {
+                srand(HAL_GetTick()); // Inicializa a semente de aleatoriedade
+                jogo->nivel = 1;
+                jogo->sequencia[0] = AdicionarCorNaSequencia(jogo->nivel);
+                jogo->passo = 0;
+                jogo->estado = MOSTRANDO_SEQUENCIA;
+                jogo->mostrando_nota = 0; // Prepara para acender a primeira nota
+            }
+            break;
+
+        case MOSTRANDO_SEQUENCIA:
+            if (jogo->mostrando_nota == 0) {
+                // Etapa 0: Liga a cor atual da sequência
+                Test_Joystick_diretions(jogo->sequencia[jogo->passo]);
+                jogo->tempo = time_now;
+                jogo->mostrando_nota = 1; // Avança para etapa "esperando apagar"
+            }
+            else if (jogo->mostrando_nota == 1) {
+                // Etapa 1: Mantém o LED aceso por 500ms (mais rápido e dinâmico)
+                if (time_now - jogo->tempo >= 1000) {
+                    Test_Joystick_diretions(JOY_CENTER); // Apaga o LED
+                    jogo->tempo = time_now;
+                    jogo->mostrando_nota = 2; // Avança para a etapa de intervalo (gap)
+                }
+            }
+            else if (jogo->mostrando_nota == 2) {
+                // Etapa 2: Mantém apagado por 250ms para o jogador distinguir cores repetidas
+                if (time_now - jogo->tempo >= 250) {
+                    jogo->passo++; // Concluiu uma nota, avança o índice
+
+                    if (jogo->passo >= jogo->nivel) {
+                        // Se já mostrou todas as notas do nível
+                        jogo->passo = 0;
+                        jogo->ultima_direcao = direcao;
+                        jogo->estado = JOGADOR_JOGANDO;
+                        jogo->mostrando_nota = 0; // Reseta para o próximo nível
+                    } else {
+                        // Ainda há notas para mostrar neste nível
+                        jogo->mostrando_nota = 0;
+                    }
+                }
+            }
+            break;
+
+        case JOGADOR_JOGANDO:
+            // Otimização: Apenas processa os LEDs e o Buzzer se a direção realmente mudou,
+            // evitando sobrecarregar o I2C e os Timers do PWM a cada milissegundo.
+            if (direcao != jogo->ultima_direcao) {
+                Test_Joystick_diretions(direcao);
+
+                if (direcao != JOY_CENTER) {
+                    // Avalia a jogada quando sai do centro para uma direção
+                    if (direcao == jogo->sequencia[jogo->passo]) {
+                        jogo->passo++; // Acertou a nota
+
+                        if (jogo->passo >= jogo->nivel) {
+                            // Acertou toda a sequência
+                            jogo->nivel++;
+                            jogo->sequencia[jogo->nivel - 1] = AdicionarCorNaSequencia(jogo->nivel);
+                            jogo->estado = MOSTRANDO_SEQUENCIA;
+                            jogo->passo = 0;
+                            jogo->mostrando_nota = 0;
+                        }
+                    } else {
+                        // Errou a nota
+                        jogo->estado = GAME_OVER;
+                        jogo->tempo = time_now;
+                        RGB_SetColor(1000, 0, 0); // Fica tudo vermelho
+                        Buzzer_PlayTone(100);     // Som de erro grave
+                    }
+                }
+                jogo->ultima_direcao = direcao; // Atualiza o rastreio
+            }
+            break;
+
+        case GAME_OVER:
+            if (time_now - jogo->tempo >= 1000) {
+                Buzzer_Stop();
+                Test_Joystick_diretions(JOY_CENTER);
+                jogo->estado = AGUARDANDO_INICIO;
+            }
+            break;
+    }
+}
+void UserLed(uint32_t time_now, uint32_t *time_UserLed)
+{
+
+    if (HAL_GPIO_ReadPin(UserLed_GPIO_Port, UserLed_Pin) == GPIO_PIN_SET)
+    {
+        if ((time_now - *time_UserLed) >= 1950) {
+            HAL_GPIO_WritePin(UserLed_GPIO_Port, UserLed_Pin, GPIO_PIN_RESET);
+            *time_UserLed = time_now;
+        }
+    } else {
+        if ((time_now - *time_UserLed) >= 50) {
+            HAL_GPIO_WritePin(UserLed_GPIO_Port, UserLed_Pin, GPIO_PIN_SET);
+            *time_UserLed = time_now;
+        }
+    }
+}
+//direcao :
+//buzzer_tocando (1/0): Sim/Não
+//tempo_parar_buzzer :
+void Test_Joystick_diretions(Joystick_Dir direcao){
+
+// ==========================================
+	// Quando mexer no joystick toca o buzzer (em qualquer direcao)
+	if (direcao == JOY_UP) {
+	      RGB_SetColor(0, 1000, 0);         // Verde para CIMA
+	      Buzzer_PlayTone(440); // Toca a nota Lá (440 Hz)
+	  } else if (direcao == JOY_DOWN) {
+	      RGB_SetColor(0, 0, 1000);         // Azul para BAIXO
+	      Buzzer_PlayTone(440);
+	  } else if (direcao == JOY_LEFT) {
+	      RGB_SetColor(1000, 0, 0);         // Vermelho para ESQUERDA
+	      Buzzer_PlayTone(440);
+	  } else if (direcao == JOY_RIGHT) {
+	      RGB_SetColor(1000, 1000, 0);      // Amarelo (Vermelho + Verde) para DIREITA
+	      Buzzer_PlayTone(440);
+	  } else if (direcao == JOY_UP_RIGHT) {
+	      RGB_SetColor(0, 1000, 1000);      // Ciano (Verde + Azul)
+	      Buzzer_PlayTone(440);
+	  } else if (direcao == JOY_UP_LEFT) {
+	      RGB_SetColor(1000, 0, 1000);      // Magenta/Roxo (Vermelho + Azul)
+	      Buzzer_PlayTone(440);
+	  } else if (direcao == JOY_DOWN_RIGHT) {
+	      RGB_SetColor(1000, 1000, 1000);   // Branco (Todos ligados)
+	      Buzzer_PlayTone(440);
+	  } else if (direcao == JOY_DOWN_LEFT) {
+	      RGB_SetColor(1000, 702, 495);      // Branco com metade da intensidade
+	      Buzzer_PlayTone(440);
+	  }
+	  // --- Centro / Repouso ---
+	  else if (direcao == JOY_CENTER) {
+	      RGB_SetColor(0, 0, 0);            // Apaga o LED quando o jogador solta o joystick
+	      Buzzer_Stop();
+	  }
+
+}
+void WriteOled(uint32_t time_now, uint32_t *last_oled_update, uint8_t nivel_atual, Joystick_Dir direcao, Estado_Jogo estado)
+{
+    if (time_now - *last_oled_update >= 50) {
+
+        if (HAL_I2C_GetState(&hi2c1) == HAL_I2C_STATE_READY) {
+            OLED_Clear();
+
+            // 1. Título Fixo no Topo
+            OLED_DrawString(40, 5, "GENIUS");
+
+            // 2. Lógica de Telas por Estado do Jogo
+            switch (estado) {
+
+                case AGUARDANDO_INICIO:
+                    OLED_DrawString(35, 25, "START GAME");
+                    OLED_DrawString(15, 45, "Aperte o Botao");
+                    break;
+
+                case MOSTRANDO_SEQUENCIA:
+                    char buffer_nivel[20];
+                    sprintf(buffer_nivel, "Nivel: %d", nivel_atual);
+                    OLED_DrawString(10, 25, buffer_nivel);
+
+                    OLED_DrawString(10, 45, "PRESTE ATENCAO");
+                    break;
+
+                case JOGADOR_JOGANDO:
+                    char buffer_jogando[20];
+                    sprintf(buffer_jogando, "Nivel: %d", nivel_atual);
+                    OLED_DrawString(10, 25, buffer_jogando);
+
+                    // Mostra o feedback da cor que o jogador está apertando
+                    char* texto_cor = "Sua vez...";
+                    switch (direcao) {
+                                     case JOY_UP:
+                                         texto_cor = "VERDE";
+                                         break;
+                                     case JOY_DOWN:
+                                         texto_cor = "AZUL";
+                                         break;
+                                     case JOY_LEFT:
+                                         texto_cor = "VERMELHO";
+                                         break;
+                                     case JOY_RIGHT:
+                                         texto_cor = "AMARELO";
+                                         break;
+                                     case JOY_UP_RIGHT:
+                                         texto_cor = "CIANO";
+                                         break;
+                                     case JOY_UP_LEFT:
+                                         texto_cor = "MAGENTA";
+                                         break;
+                                     case JOY_DOWN_RIGHT:
+                                         texto_cor = "BRANCO";
+                                         break;
+                                     case JOY_DOWN_LEFT:
+                                         texto_cor = "BRANCO 50%";
+                                         break;
+                                     case JOY_CENTER:
+                                         texto_cor = "Aguardando...";
+                                         break;
+                                     default:
+                                         texto_cor = "Aguardando...";
+                                         break;
+                                 }
+                    OLED_DrawString(10, 45, texto_cor);
+                    break;
+
+                case GAME_OVER:
+                    // Limpa tudo e centraliza a mensagem de fim de jogo
+                    OLED_Clear();
+                    OLED_DrawString(35, 25, "GAME OVER");
+
+                    char buffer_score[20];
+                    sprintf(buffer_score, "Pontos: %d", nivel_atual - 1);
+                    OLED_DrawString(35, 45, buffer_score);
+                    break;
+            }
+
+            OLED_Update();
+            *last_oled_update = time_now;
+        }
+    }
+}
+Joystick_Dir AdicionarCorNaSequencia(uint8_t nivel){
+    // rand() gera um número gigante. O '% 8' restringe o resultado para 0 até 7.
+    uint8_t sorteio = rand() % 8;
+
+    switch(sorteio) {
+        // --- Cores Primárias e Secundárias Básicas (Eixos) ---
+        case 0:
+            return(JOY_UP);         // Verde
+        case 1:
+        	return(JOY_DOWN);       // Azul
+        case 2:
+        	return(JOY_LEFT);       // Vermelho
+        case 3:
+        	return(JOY_RIGHT);      // Amarelo
+        case 4:
+        	return(JOY_UP_RIGHT);   // Ciano
+        case 5:
+        	return(JOY_UP_LEFT);    // Magenta
+        case 6:
+        	return(JOY_DOWN_RIGHT); // Branco 100%
+        case 7:
+        	return(JOY_DOWN_LEFT);  // Branco 50%
+        default: return(JOY_CENTER);
+    }
+
+}
 /* USER CODE END 4 */
 
 /**

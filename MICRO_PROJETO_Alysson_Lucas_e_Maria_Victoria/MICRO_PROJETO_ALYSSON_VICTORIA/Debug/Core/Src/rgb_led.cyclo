@@ -1,0 +1,4 @@
+../Core/Src/rgb_led.c:15:6:RGB_Init	1
+../Core/Src/rgb_led.c:23:6:RGB_SetColor	1
+../Core/Src/rgb_led.c:30:6:RGB_TurnOff	1
+../Core/Src/rgb_led.c:34:6:RGB_Sequence	10
