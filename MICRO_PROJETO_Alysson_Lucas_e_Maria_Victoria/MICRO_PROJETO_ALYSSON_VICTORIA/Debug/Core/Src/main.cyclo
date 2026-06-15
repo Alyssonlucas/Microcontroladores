@@ -8,9 +8,9 @@
 ../Core/Src/main.c:487:13:MX_DMA_Init	1
 ../Core/Src/main.c:508:13:MX_GPIO_Init	1
 ../Core/Src/main.c:554:6:HAL_GPIO_EXTI_Callback	2
-../Core/Src/main.c:571:6:Gerenciar_Genius	40
-../Core/Src/main.c:754:6:UserLed	4
-../Core/Src/main.c:776:6:Joystick_diretions	10
-../Core/Src/main.c:810:6:WriteOled	20
-../Core/Src/main.c:894:14:AdicionarCorNaSequencia	9
-../Core/Src/main.c:915:6:Error_Handler	1
+../Core/Src/main.c:571:6:Gerenciar_Genius	42
+../Core/Src/main.c:761:6:UserLed	4
+../Core/Src/main.c:783:6:Joystick_diretions	10
+../Core/Src/main.c:817:6:WriteOled	20
+../Core/Src/main.c:901:14:AdicionarCorNaSequencia	9
+../Core/Src/main.c:922:6:Error_Handler	1

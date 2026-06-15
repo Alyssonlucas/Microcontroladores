@@ -781,3 +781,215 @@ Finished building: default.size.stdout
  
 Finished building: MICRO_PROJETO_ALYSSON_VICTORIA.list
  
+12:22:49 **** Incremental Build of configuration Debug for project MICRO_PROJETO_ALYSSON_VICTORIA ****
+make -j16 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "MICRO_PROJETO_ALYSSON_VICTORIA.elf" @"objects.list"   -mcpu=cortex-m3 -T"C:\Users\lucas\Desktop\Disciplinas\2026.1 (atual)\microcontroladores\Microcontroladores\MICRO_PROJETO_Alysson_Lucas_e_Maria_Victoria\MICRO_PROJETO_ALYSSON_VICTORIA\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MICRO_PROJETO_ALYSSON_VICTORIA.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: MICRO_PROJETO_ALYSSON_VICTORIA.elf
+ 
+arm-none-eabi-size  MICRO_PROJETO_ALYSSON_VICTORIA.elf 
+arm-none-eabi-objdump -h -S MICRO_PROJETO_ALYSSON_VICTORIA.elf  > "MICRO_PROJETO_ALYSSON_VICTORIA.list"
+   text	   data	    bss	    dec	    hex	filename
+  33468	    108	   3436	  37012	   9094	MICRO_PROJETO_ALYSSON_VICTORIA.elf
+Finished building: default.size.stdout
+ 
+Finished building: MICRO_PROJETO_ALYSSON_VICTORIA.list
+ 
+12:53:40 **** Incremental Build of configuration Debug for project MICRO_PROJETO_ALYSSON_VICTORIA ****
+make -j16 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:120:28: warning: variable 'jogo' set but not used [-Wunused-but-set-variable]
+  120 |                 GeniusGame jogo;
+      |                            ^~~~
+../Core/Src/main.c:117:26: warning: unused variable 'last_oled_update' [-Wunused-variable]
+  117 |                 uint32_t last_oled_update = 0;     // Registrador de tempo para controle de taxa de atualização do OLED
+      |                          ^~~~~~~~~~~~~~~~
+arm-none-eabi-gcc -o "MICRO_PROJETO_ALYSSON_VICTORIA.elf" @"objects.list"   -mcpu=cortex-m3 -T"C:\Users\lucas\Desktop\Disciplinas\2026.1 (atual)\microcontroladores\Microcontroladores\MICRO_PROJETO_Alysson_Lucas_e_Maria_Victoria\MICRO_PROJETO_ALYSSON_VICTORIA\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MICRO_PROJETO_ALYSSON_VICTORIA.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: MICRO_PROJETO_ALYSSON_VICTORIA.elf
+ 
+arm-none-eabi-size  MICRO_PROJETO_ALYSSON_VICTORIA.elf 
+arm-none-eabi-objdump -h -S MICRO_PROJETO_ALYSSON_VICTORIA.elf  > "MICRO_PROJETO_ALYSSON_VICTORIA.list"
+   text	   data	    bss	    dec	    hex	filename
+  24872	     16	   3096	  27984	   6d50	MICRO_PROJETO_ALYSSON_VICTORIA.elf
+Finished building: default.size.stdout
+ 
+Finished building: MICRO_PROJETO_ALYSSON_VICTORIA.list
+ 
+12:57:03 **** Incremental Build of configuration Debug for project MICRO_PROJETO_ALYSSON_VICTORIA ****
+make -j16 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "MICRO_PROJETO_ALYSSON_VICTORIA.elf" @"objects.list"   -mcpu=cortex-m3 -T"C:\Users\lucas\Desktop\Disciplinas\2026.1 (atual)\microcontroladores\Microcontroladores\MICRO_PROJETO_Alysson_Lucas_e_Maria_Victoria\MICRO_PROJETO_ALYSSON_VICTORIA\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MICRO_PROJETO_ALYSSON_VICTORIA.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: MICRO_PROJETO_ALYSSON_VICTORIA.elf
+ 
+arm-none-eabi-size  MICRO_PROJETO_ALYSSON_VICTORIA.elf 
+arm-none-eabi-objdump -h -S MICRO_PROJETO_ALYSSON_VICTORIA.elf  > "MICRO_PROJETO_ALYSSON_VICTORIA.list"
+   text	   data	    bss	    dec	    hex	filename
+  33468	    108	   3436	  37012	   9094	MICRO_PROJETO_ALYSSON_VICTORIA.elf
+Finished building: default.size.stdout
+ 
+Finished building: MICRO_PROJETO_ALYSSON_VICTORIA.list
+ 
+15:22:20 **** Incremental Build of configuration Debug for project MICRO_PROJETO_ALYSSON_VICTORIA ****
+make -j16 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "MICRO_PROJETO_ALYSSON_VICTORIA.elf" @"objects.list"   -mcpu=cortex-m3 -T"C:\Users\lucas\Desktop\Disciplinas\2026.1 (atual)\microcontroladores\Microcontroladores\MICRO_PROJETO_Alysson_Lucas_e_Maria_Victoria\MICRO_PROJETO_ALYSSON_VICTORIA\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MICRO_PROJETO_ALYSSON_VICTORIA.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: MICRO_PROJETO_ALYSSON_VICTORIA.elf
+ 
+arm-none-eabi-size  MICRO_PROJETO_ALYSSON_VICTORIA.elf 
+arm-none-eabi-objdump -h -S MICRO_PROJETO_ALYSSON_VICTORIA.elf  > "MICRO_PROJETO_ALYSSON_VICTORIA.list"
+   text	   data	    bss	    dec	    hex	filename
+  33544	    108	   3436	  37088	   90e0	MICRO_PROJETO_ALYSSON_VICTORIA.elf
+Finished building: default.size.stdout
+ 
+Finished building: MICRO_PROJETO_ALYSSON_VICTORIA.list
+ 
+15:23:44 **** Incremental Build of configuration Debug for project MICRO_PROJETO_ALYSSON_VICTORIA ****
+make -j16 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "MICRO_PROJETO_ALYSSON_VICTORIA.elf" @"objects.list"   -mcpu=cortex-m3 -T"C:\Users\lucas\Desktop\Disciplinas\2026.1 (atual)\microcontroladores\Microcontroladores\MICRO_PROJETO_Alysson_Lucas_e_Maria_Victoria\MICRO_PROJETO_ALYSSON_VICTORIA\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MICRO_PROJETO_ALYSSON_VICTORIA.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: MICRO_PROJETO_ALYSSON_VICTORIA.elf
+ 
+arm-none-eabi-size  MICRO_PROJETO_ALYSSON_VICTORIA.elf 
+arm-none-eabi-objdump -h -S MICRO_PROJETO_ALYSSON_VICTORIA.elf  > "MICRO_PROJETO_ALYSSON_VICTORIA.list"
+   text	   data	    bss	    dec	    hex	filename
+  33544	    108	   3436	  37088	   90e0	MICRO_PROJETO_ALYSSON_VICTORIA.elf
+Finished building: default.size.stdout
+ 
+Finished building: MICRO_PROJETO_ALYSSON_VICTORIA.list
+ 
+15:24:19 **** Incremental Build of configuration Debug for project MICRO_PROJETO_ALYSSON_VICTORIA ****
+make -j16 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "MICRO_PROJETO_ALYSSON_VICTORIA.elf" @"objects.list"   -mcpu=cortex-m3 -T"C:\Users\lucas\Desktop\Disciplinas\2026.1 (atual)\microcontroladores\Microcontroladores\MICRO_PROJETO_Alysson_Lucas_e_Maria_Victoria\MICRO_PROJETO_ALYSSON_VICTORIA\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MICRO_PROJETO_ALYSSON_VICTORIA.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: MICRO_PROJETO_ALYSSON_VICTORIA.elf
+ 
+arm-none-eabi-size  MICRO_PROJETO_ALYSSON_VICTORIA.elf 
+arm-none-eabi-objdump -h -S MICRO_PROJETO_ALYSSON_VICTORIA.elf  > "MICRO_PROJETO_ALYSSON_VICTORIA.list"
+   text	   data	    bss	    dec	    hex	filename
+  33544	    108	   3436	  37088	   90e0	MICRO_PROJETO_ALYSSON_VICTORIA.elf
+Finished building: default.size.stdout
+ 
+Finished building: MICRO_PROJETO_ALYSSON_VICTORIA.list
+ 
+15:26:26 **** Incremental Build of configuration Debug for project MICRO_PROJETO_ALYSSON_VICTORIA ****
+make -j16 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "MICRO_PROJETO_ALYSSON_VICTORIA.elf" @"objects.list"   -mcpu=cortex-m3 -T"C:\Users\lucas\Desktop\Disciplinas\2026.1 (atual)\microcontroladores\Microcontroladores\MICRO_PROJETO_Alysson_Lucas_e_Maria_Victoria\MICRO_PROJETO_ALYSSON_VICTORIA\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MICRO_PROJETO_ALYSSON_VICTORIA.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: MICRO_PROJETO_ALYSSON_VICTORIA.elf
+ 
+arm-none-eabi-size  MICRO_PROJETO_ALYSSON_VICTORIA.elf 
+arm-none-eabi-objdump -h -S MICRO_PROJETO_ALYSSON_VICTORIA.elf  > "MICRO_PROJETO_ALYSSON_VICTORIA.list"
+   text	   data	    bss	    dec	    hex	filename
+  33548	    108	   3436	  37092	   90e4	MICRO_PROJETO_ALYSSON_VICTORIA.elf
+Finished building: default.size.stdout
+ 
+Finished building: MICRO_PROJETO_ALYSSON_VICTORIA.list
+ 
+15:28:21 **** Incremental Build of configuration Debug for project MICRO_PROJETO_ALYSSON_VICTORIA ****
+make -j16 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "MICRO_PROJETO_ALYSSON_VICTORIA.elf" @"objects.list"   -mcpu=cortex-m3 -T"C:\Users\lucas\Desktop\Disciplinas\2026.1 (atual)\microcontroladores\Microcontroladores\MICRO_PROJETO_Alysson_Lucas_e_Maria_Victoria\MICRO_PROJETO_ALYSSON_VICTORIA\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MICRO_PROJETO_ALYSSON_VICTORIA.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: MICRO_PROJETO_ALYSSON_VICTORIA.elf
+ 
+arm-none-eabi-size  MICRO_PROJETO_ALYSSON_VICTORIA.elf 
+arm-none-eabi-objdump -h -S MICRO_PROJETO_ALYSSON_VICTORIA.elf  > "MICRO_PROJETO_ALYSSON_VICTORIA.list"
+   text	   data	    bss	    dec	    hex	filename
+  33568	    108	   3436	  37112	   90f8	MICRO_PROJETO_ALYSSON_VICTORIA.elf
+Finished building: default.size.stdout
+ 
+Finished building: MICRO_PROJETO_ALYSSON_VICTORIA.list
+ 
+15:29:12 **** Incremental Build of configuration Debug for project MICRO_PROJETO_ALYSSON_VICTORIA ****
+make -j16 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "MICRO_PROJETO_ALYSSON_VICTORIA.elf" @"objects.list"   -mcpu=cortex-m3 -T"C:\Users\lucas\Desktop\Disciplinas\2026.1 (atual)\microcontroladores\Microcontroladores\MICRO_PROJETO_Alysson_Lucas_e_Maria_Victoria\MICRO_PROJETO_ALYSSON_VICTORIA\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MICRO_PROJETO_ALYSSON_VICTORIA.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: MICRO_PROJETO_ALYSSON_VICTORIA.elf
+ 
+arm-none-eabi-size  MICRO_PROJETO_ALYSSON_VICTORIA.elf 
+arm-none-eabi-objdump -h -S MICRO_PROJETO_ALYSSON_VICTORIA.elf  > "MICRO_PROJETO_ALYSSON_VICTORIA.list"
+   text	   data	    bss	    dec	    hex	filename
+  33568	    108	   3436	  37112	   90f8	MICRO_PROJETO_ALYSSON_VICTORIA.elf
+Finished building: default.size.stdout
+ 
+Finished building: MICRO_PROJETO_ALYSSON_VICTORIA.list
+ 
+15:32:32 **** Incremental Build of configuration Debug for project MICRO_PROJETO_ALYSSON_VICTORIA ****
+make -j16 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'Gerenciar_Genius':
+../Core/Src/main.c:693:60: error: lvalue required as left operand of assignment
+  693 |                                 if (time_now - jogo->tempo = 500){
+      |                                                            ^
+make: *** [Core/Src/subdir.mk:52: Core/Src/main.o] Error 1
+"make -j16 all" terminated with exit code 2. Build might be incomplete.
+15:33:35 **** Incremental Build of configuration Debug for project MICRO_PROJETO_ALYSSON_VICTORIA ****
+make -j16 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "MICRO_PROJETO_ALYSSON_VICTORIA.elf" @"objects.list"   -mcpu=cortex-m3 -T"C:\Users\lucas\Desktop\Disciplinas\2026.1 (atual)\microcontroladores\Microcontroladores\MICRO_PROJETO_Alysson_Lucas_e_Maria_Victoria\MICRO_PROJETO_ALYSSON_VICTORIA\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MICRO_PROJETO_ALYSSON_VICTORIA.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: MICRO_PROJETO_ALYSSON_VICTORIA.elf
+ 
+arm-none-eabi-size  MICRO_PROJETO_ALYSSON_VICTORIA.elf 
+arm-none-eabi-objdump -h -S MICRO_PROJETO_ALYSSON_VICTORIA.elf  > "MICRO_PROJETO_ALYSSON_VICTORIA.list"
+   text	   data	    bss	    dec	    hex	filename
+  33492	    108	   3436	  37036	   90ac	MICRO_PROJETO_ALYSSON_VICTORIA.elf
+Finished building: default.size.stdout
+ 
+Finished building: MICRO_PROJETO_ALYSSON_VICTORIA.list
+ 
+15:34:34 **** Incremental Build of configuration Debug for project MICRO_PROJETO_ALYSSON_VICTORIA ****
+make -j16 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "MICRO_PROJETO_ALYSSON_VICTORIA.elf" @"objects.list"   -mcpu=cortex-m3 -T"C:\Users\lucas\Desktop\Disciplinas\2026.1 (atual)\microcontroladores\Microcontroladores\MICRO_PROJETO_Alysson_Lucas_e_Maria_Victoria\MICRO_PROJETO_ALYSSON_VICTORIA\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MICRO_PROJETO_ALYSSON_VICTORIA.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: MICRO_PROJETO_ALYSSON_VICTORIA.elf
+ 
+arm-none-eabi-size  MICRO_PROJETO_ALYSSON_VICTORIA.elf 
+arm-none-eabi-objdump -h -S MICRO_PROJETO_ALYSSON_VICTORIA.elf  > "MICRO_PROJETO_ALYSSON_VICTORIA.list"
+   text	   data	    bss	    dec	    hex	filename
+  33492	    108	   3436	  37036	   90ac	MICRO_PROJETO_ALYSSON_VICTORIA.elf
+Finished building: default.size.stdout
+ 
+Finished building: MICRO_PROJETO_ALYSSON_VICTORIA.list
+ 
+15:38:44 **** Incremental Build of configuration Debug for project MICRO_PROJETO_ALYSSON_VICTORIA ****
+make -j16 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "MICRO_PROJETO_ALYSSON_VICTORIA.elf" @"objects.list"   -mcpu=cortex-m3 -T"C:\Users\lucas\Desktop\Disciplinas\2026.1 (atual)\microcontroladores\Microcontroladores\MICRO_PROJETO_Alysson_Lucas_e_Maria_Victoria\MICRO_PROJETO_ALYSSON_VICTORIA\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MICRO_PROJETO_ALYSSON_VICTORIA.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: MICRO_PROJETO_ALYSSON_VICTORIA.elf
+ 
+arm-none-eabi-size  MICRO_PROJETO_ALYSSON_VICTORIA.elf 
+arm-none-eabi-objdump -h -S MICRO_PROJETO_ALYSSON_VICTORIA.elf  > "MICRO_PROJETO_ALYSSON_VICTORIA.list"
+   text	   data	    bss	    dec	    hex	filename
+  33512	    108	   3436	  37056	   90c0	MICRO_PROJETO_ALYSSON_VICTORIA.elf
+Finished building: default.size.stdout
+ 
+Finished building: MICRO_PROJETO_ALYSSON_VICTORIA.list
+ 
+15:40:21 **** Incremental Build of configuration Debug for project MICRO_PROJETO_ALYSSON_VICTORIA ****
+make -j16 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "MICRO_PROJETO_ALYSSON_VICTORIA.elf" @"objects.list"   -mcpu=cortex-m3 -T"C:\Users\lucas\Desktop\Disciplinas\2026.1 (atual)\microcontroladores\Microcontroladores\MICRO_PROJETO_Alysson_Lucas_e_Maria_Victoria\MICRO_PROJETO_ALYSSON_VICTORIA\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MICRO_PROJETO_ALYSSON_VICTORIA.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: MICRO_PROJETO_ALYSSON_VICTORIA.elf
+ 
+arm-none-eabi-size  MICRO_PROJETO_ALYSSON_VICTORIA.elf 
+arm-none-eabi-objdump -h -S MICRO_PROJETO_ALYSSON_VICTORIA.elf  > "MICRO_PROJETO_ALYSSON_VICTORIA.list"
+   text	   data	    bss	    dec	    hex	filename
+  33516	    108	   3436	  37060	   90c4	MICRO_PROJETO_ALYSSON_VICTORIA.elf
+Finished building: default.size.stdout
+ 
+Finished building: MICRO_PROJETO_ALYSSON_VICTORIA.list
+ 
+15:43:16 **** Incremental Build of configuration Debug for project MICRO_PROJETO_ALYSSON_VICTORIA ****
+make -j16 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "MICRO_PROJETO_ALYSSON_VICTORIA.elf" @"objects.list"   -mcpu=cortex-m3 -T"C:\Users\lucas\Desktop\Disciplinas\2026.1 (atual)\microcontroladores\Microcontroladores\MICRO_PROJETO_Alysson_Lucas_e_Maria_Victoria\MICRO_PROJETO_ALYSSON_VICTORIA\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MICRO_PROJETO_ALYSSON_VICTORIA.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: MICRO_PROJETO_ALYSSON_VICTORIA.elf
+ 
+arm-none-eabi-size  MICRO_PROJETO_ALYSSON_VICTORIA.elf 
+arm-none-eabi-objdump -h -S MICRO_PROJETO_ALYSSON_VICTORIA.elf  > "MICRO_PROJETO_ALYSSON_VICTORIA.list"
+   text	   data	    bss	    dec	    hex	filename
+  33532	    108	   3436	  37076	   90d4	MICRO_PROJETO_ALYSSON_VICTORIA.elf
+Finished building: default.size.stdout
+ 
+Finished building: MICRO_PROJETO_ALYSSON_VICTORIA.list
+ 

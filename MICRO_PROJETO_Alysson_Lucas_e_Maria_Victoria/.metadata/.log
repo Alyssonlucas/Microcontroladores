@@ -1791,3 +1791,82 @@ java.net.ConnectException: Connection refused: connect
 	at org.eclipse.debug.internal.ui.DebugUIPlugin.buildAndLaunch(DebugUIPlugin.java:1054)
 	at org.eclipse.debug.internal.ui.DebugUIPlugin$1.run(DebugUIPlugin.java:1257)
 	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+!SESSION 2026-06-10 12:19:58.756 -----------------------------------------------
+eclipse.buildId=Version 1.19.0
+java.version=21.0.3
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=pt_BR
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 4 4 2026-06-10 12:20:12.888
+!MESSAGE CubeMX plugin appears to be active, Log4j initialization might be too late.
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2026-06-10 12:20:12.891
+!MESSAGE Log4j2 initialized with config file C:\Users\lucas\Desktop\Disciplinas\2026.1 (atual)\microcontroladores\Microcontroladores\MICRO_PROJETO_Alysson_Lucas_e_Maria_Victoria\.metadata\.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2026-06-10 12:20:24.712
+!MESSAGE Started RMI Server, listening on port 41337
+
+!ENTRY org.eclipse.cdt.dsf.gdb 4 5012 2026-06-10 12:57:47.228
+!MESSAGE Error in final launch sequence:
+
+Failed to execute MI command:
+load "C:\\Users\\lucas\\Desktop\\Disciplinas\\2026.1 (atual)\\microcontroladores\\Microcontroladores\\MICRO_PROJETO_Alysson_Lucas_e_Maria_Victoria\\MICRO_PROJETO_ALYSSON_VICTORIA\\Debug\\MICRO_PROJETO_ALYSSON_VICTORIA.elf" 
+
+Error message from debugger back end:
+Error finishing flash operation
+!STACK 1
+org.eclipse.core.runtime.CoreException: Failed to execute MI command:
+load "C:\\Users\\lucas\\Desktop\\Disciplinas\\2026.1 (atual)\\microcontroladores\\Microcontroladores\\MICRO_PROJETO_Alysson_Lucas_e_Maria_Victoria\\MICRO_PROJETO_ALYSSON_VICTORIA\\Debug\\MICRO_PROJETO_ALYSSON_VICTORIA.elf" 
+
+Error message from debugger back end:
+Error finishing flash operation
+	at org.eclipse.cdt.dsf.concurrent.Query.get(Query.java:112)
+	at org.eclipse.cdt.dsf.gdb.launching.GdbLaunchDelegate.launchDebugSession(GdbLaunchDelegate.java:252)
+	at org.eclipse.cdt.dsf.gdb.launching.GdbLaunchDelegate.launchDebugger(GdbLaunchDelegate.java:109)
+	at org.eclipse.cdt.dsf.gdb.launching.GdbLaunchDelegate.launch(GdbLaunchDelegate.java:97)
+	at com.st.stm32cube.ide.mcu.debug.launch.DSFDelegate.launch(DSFDelegate.java:334)
+	at org.eclipse.debug.internal.core.LaunchConfiguration.launch(LaunchConfiguration.java:805)
+	at org.eclipse.debug.internal.core.LaunchConfiguration.launch(LaunchConfiguration.java:716)
+	at org.eclipse.debug.internal.ui.DebugUIPlugin.buildAndLaunch(DebugUIPlugin.java:1054)
+	at org.eclipse.debug.internal.ui.DebugUIPlugin$1.run(DebugUIPlugin.java:1257)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+Contains: Failed to execute MI command:
+load "C:\\Users\\lucas\\Desktop\\Disciplinas\\2026.1 (atual)\\microcontroladores\\Microcontroladores\\MICRO_PROJETO_Alysson_Lucas_e_Maria_Victoria\\MICRO_PROJETO_ALYSSON_VICTORIA\\Debug\\MICRO_PROJETO_ALYSSON_VICTORIA.elf" 
+
+Error message from debugger back end:
+Error finishing flash operation
+java.lang.Exception: Error finishing flash operation
+	at org.eclipse.cdt.dsf.mi.service.command.AbstractMIControl$RxThread.processMIOutput(AbstractMIControl.java:1024)
+	at org.eclipse.cdt.dsf.mi.service.command.AbstractMIControl$RxThread.run(AbstractMIControl.java:853)
+!SUBENTRY 1 org.eclipse.cdt.dsf 4 10004 2026-06-10 12:57:47.234
+!MESSAGE Failed to execute MI command:
+load "C:\\Users\\lucas\\Desktop\\Disciplinas\\2026.1 (atual)\\microcontroladores\\Microcontroladores\\MICRO_PROJETO_Alysson_Lucas_e_Maria_Victoria\\MICRO_PROJETO_ALYSSON_VICTORIA\\Debug\\MICRO_PROJETO_ALYSSON_VICTORIA.elf" 
+
+Error message from debugger back end:
+Error finishing flash operation
+!SUBENTRY 2 org.eclipse.cdt.dsf.gdb 4 10004 2026-06-10 12:57:47.234
+!MESSAGE Failed to execute MI command:
+load "C:\\Users\\lucas\\Desktop\\Disciplinas\\2026.1 (atual)\\microcontroladores\\Microcontroladores\\MICRO_PROJETO_Alysson_Lucas_e_Maria_Victoria\\MICRO_PROJETO_ALYSSON_VICTORIA\\Debug\\MICRO_PROJETO_ALYSSON_VICTORIA.elf" 
+
+Error message from debugger back end:
+Error finishing flash operation
+!STACK 0
+java.lang.Exception: Error finishing flash operation
+	at org.eclipse.cdt.dsf.mi.service.command.AbstractMIControl$RxThread.processMIOutput(AbstractMIControl.java:1024)
+	at org.eclipse.cdt.dsf.mi.service.command.AbstractMIControl$RxThread.run(AbstractMIControl.java:853)
+!SESSION 2026-06-11 13:51:22.370 -----------------------------------------------
+eclipse.buildId=Version 1.19.0
+java.version=21.0.3
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=pt_BR
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 4 4 2026-06-11 13:51:37.450
+!MESSAGE CubeMX plugin appears to be active, Log4j initialization might be too late.
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2026-06-11 13:51:37.454
+!MESSAGE Log4j2 initialized with config file C:\Users\lucas\Desktop\Disciplinas\2026.1 (atual)\microcontroladores\Microcontroladores\MICRO_PROJETO_Alysson_Lucas_e_Maria_Victoria\.metadata\.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2026-06-11 13:51:50.417
+!MESSAGE Started RMI Server, listening on port 41337
